@@ -6,9 +6,10 @@ from Ping import Ping1D
 myPing = Ping1D()
 
 #Read and print three depth measurements
-for x in range(0,3):
+while True:
     myPing.updateSonar()
-    print(myPing.getDepth())
+    print("Current Depth: " + str(myPing.getDepth()))
+
 
 #This prints the values in the depth profile
 #print(myPing.getResults())

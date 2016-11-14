@@ -36,6 +36,11 @@ class Ping1D:
     def __init__(self):
         pass
 
+    def updateSonar(self):
+        sonarData = self.readSonar()
+        if (sonarData != 1):
+            self.handleSonar(sonarData)
+
     def handleSonar(self, sonarData):
         self.fw_version_major                      = sonarData[2]
         self.fw_version_minor                      = sonarData[3]
@@ -56,10 +61,8 @@ class Ping1D:
 
         for i in range(0,self.num_results):
             self.results[i] = sonarData[18 + i]
-        #self.results                               = sonarData[18]
 
-
-    def updateSonar(self):
+    def readSonar(self):
         buf = []
         data = ""
 
@@ -69,7 +72,7 @@ class Ping1D:
                 pass
             #Check second start signal
             if (self.ser.read() != "s"):
-                exit()
+                return 1
 
             #Add start signal to buffer, since we have a valid message
             buf.append("s")
@@ -84,9 +87,8 @@ class Ping1D:
                 buf.append(byte)
 
             unpacked = struct.unpack(self.packetFormat, data)
+            return unpacked
             #print(unpacked)
-
-            self.handleSonar(unpacked)
 
         except Exception as e:
             print "Error: "+str(e)
