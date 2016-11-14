@@ -38,7 +38,7 @@ class Ping1D:
 
     def updateSonar(self):
         sonarData = self.readSonar()
-        if (sonarData != 1):
+        if (sonarData != None):
             self.handleSonar(sonarData)
 
     def handleSonar(self, sonarData):
@@ -72,7 +72,7 @@ class Ping1D:
                 pass
             #Check second start signal
             if (self.ser.read() != "s"):
-                return 1
+                return None
 
             #Add start signal to buffer, since we have a valid message
             buf.append("s")
