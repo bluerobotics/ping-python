@@ -36,11 +36,13 @@ class Ping1D:
     def __init__(self):
         pass
 
+    #Read and Update
     def updateSonar(self):
         sonarData = self.readSonar()
         if (sonarData != None):
             self.handleSonar(sonarData)
 
+    #Update values from new sonar report
     def handleSonar(self, sonarData):
         self.fw_version_major                      = sonarData[2]
         self.fw_version_minor                      = sonarData[3]
@@ -62,9 +64,8 @@ class Ping1D:
         for i in range(0,self.num_results):
             self.results[i] = sonarData[18 + i]
 
+    #Read in sonar data over serial
     def readSonar(self):
-
-
         buf = []
         data = ""
 
@@ -97,24 +98,9 @@ class Ping1D:
             pass
 
 
+    #Accessor Methods
+    ################
 
-fw_version_major                      = 0
-fw_version_minor                      = 0
-num_results                           = 0
-supply_millivolts                     = 0
-start_mm                              = 0
-length_mm                             = 0
-this_ping_depth_mm                    = 0
-smoothed_depth_mm                     = 0
-smoothed_depth_confidence_percent     = 0
-ping_duration_usec                    = 0
-goertzel_n                            = 0
-goertzel_m                            = 0
-analog_gain                           = 0
-ping_number                           = 0
-timestamp_msec                        = 0
-index_of_bottom_result                = 0
-results
     #Returns a string of the version number
     def getVersion(self):
         return (str(self.fw_version_major) + "." + str(fw_version_minor))
