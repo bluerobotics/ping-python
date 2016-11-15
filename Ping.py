@@ -63,6 +63,8 @@ class Ping1D:
             self.results[i] = sonarData[18 + i]
 
     def readSonar(self):
+
+
         buf = []
         data = ""
 
@@ -94,7 +96,77 @@ class Ping1D:
             print "Error: "+str(e)
             pass
 
-    def getDepth(self):
+
+
+fw_version_major                      = 0
+fw_version_minor                      = 0
+num_results                           = 0
+supply_millivolts                     = 0
+start_mm                              = 0
+length_mm                             = 0
+this_ping_depth_mm                    = 0
+smoothed_depth_mm                     = 0
+smoothed_depth_confidence_percent     = 0
+ping_duration_usec                    = 0
+goertzel_n                            = 0
+goertzel_m                            = 0
+analog_gain                           = 0
+ping_number                           = 0
+timestamp_msec                        = 0
+index_of_bottom_result                = 0
+results
+    #Returns a string of the version number
+    def getVersion(self):
+        return (str(self.fw_version_major) + "." + str(fw_version_minor))
+
+    #Returns the number of data points in the last ping
+    def getNumResults(self):
+        return self.num_results
+
+    #Returns the operating voltage in mV
+    def getVoltage(self):
+        return self.supply_millivolts
+
+    #Returns the shallowest depth that Ping will look at
+    def getStartDepth(self):
+        return self.start_mm
+
+    #Returns the range of depth that is being scanned. Beginning at the start depth.
+    def getDepthRange(self):
+        return self.length_mm
+
+    #Returns the best guess for this individual ping. It is recommended to use getDepth() instead.
+    def getInstantDepth(self):
         return self.this_ping_depth_mm
+
+    #Returns the most recent smoothed depth reading.
+    def getDepth(self):
+        return self.smoothed_depth_mm
+
+    #Returns the confidence in the depth measurement
+    def getConfidence(self):
+        return self.smoothed_depth_confidence_percent
+
+    #Returns the duration of the sent ping
+    def getPingDuration(self):
+        return self.ping_duration_usec
+
+    #Retuns the index of the analog gain
+    def getGain(self):
+        return self.analog_gain
+
+    #Returns the number of pings that Ping has sent
+    def getPingNumber(self):
+        return self.ping_number
+
+    #Returns the milliseconds of uptime
+    def getTimestamp(self):
+        return self.timestamp_msec
+
+    #Returns the index of the depth reading that was chosen as the bottom
+    def getBottomIndex(self):
+        return self.index_of_bottom_result
+
+    #Returns list of all results from last ping
     def getResults(self):
         return self.results
