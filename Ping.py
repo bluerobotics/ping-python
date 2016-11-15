@@ -28,12 +28,10 @@ class Ping1D:
     index_of_bottom_result                = 0
     results                               = [0]*200
 
-    #Open the serial port
-    #ser = serial.Serial('/dev/tty.usbserial-A5059KLC', 115200)
-    ser = serial.Serial('/dev/ttyUSB0', 115200)
-
-
     def __init__(self):
+            #Open the serial port
+            #ser = serial.Serial('/dev/tty.usbserial-A5059KLC', 115200)
+            self.ser = serial.Serial('/dev/ttyUSB0', 115200)
         pass
 
     #Read and Update
@@ -113,27 +111,27 @@ class Ping1D:
     def getVoltage(self):
         return self.supply_millivolts
 
-    #Returns the shallowest depth that Ping will look at
+    #Returns the shallowest depth that Ping will look at, in mm
     def getStartDepth(self):
         return self.start_mm
 
-    #Returns the range of depth that is being scanned. Beginning at the start depth.
+    #Returns the range of depth that is being scanned in mm. Beginning at the start depth
     def getDepthRange(self):
         return self.length_mm
 
-    #Returns the best guess for this individual ping. It is recommended to use getDepth() instead.
+    #Returns the best guess for this individual ping in mm. It is recommended to use getDepth() instead
     def getInstantDepth(self):
         return self.this_ping_depth_mm
 
-    #Returns the most recent smoothed depth reading.
+    #Returns the most recent smoothed depth reading in mm
     def getDepth(self):
         return self.smoothed_depth_mm
 
-    #Returns the confidence in the depth measurement
+    #Returns the confidence in the depth measurement, as a percentage
     def getConfidence(self):
         return self.smoothed_depth_confidence_percent
 
-    #Returns the duration of the sent ping
+    #Returns the duration of the sent ping, in microseconds
     def getPingDuration(self):
         return self.ping_duration_usec
 
@@ -145,7 +143,7 @@ class Ping1D:
     def getPingNumber(self):
         return self.ping_number
 
-    #Returns the milliseconds of uptime
+    #Returns the uptime, in milliseconds
     def getTimestamp(self):
         return self.timestamp_msec
 
@@ -153,6 +151,6 @@ class Ping1D:
     def getBottomIndex(self):
         return self.index_of_bottom_result
 
-    #Returns list of all results from last ping
+    #Returns list of all results from last ping. Each point is on a scale of 0 to 255
     def getResults(self):
         return self.results
