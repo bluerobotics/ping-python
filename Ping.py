@@ -103,7 +103,7 @@ class Ping1D:
 
     #Returns a string of the version number
     def getVersion(self):
-        return (str(self.fw_version_major) + "." + str(fw_version_minor))
+        return (str(self.fw_version_major) + "." + str(self.fw_version_minor))
 
     #Returns the number of data points in the last ping
     def getNumResults(self):
