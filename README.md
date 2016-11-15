@@ -1,6 +1,3 @@
-# ping-python
-Python scripts and examples for the Ping sonar.
-
 #ping-python
 ------------
 Python library for the Ping sonar
