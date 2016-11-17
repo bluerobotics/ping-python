@@ -6,7 +6,7 @@ from Ping import Ping1D
 myPing = Ping1D()
 
 print("Starting Ping..")
-print("Press CTRL+Z to exit. CMD+Z on Mac")
+print("Press CTRL+Z to exit")
 print("------------------------------------")
 
 #Read and print depth measurements with confidence

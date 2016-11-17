@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+4#!/usr/bin/python -u
 #Ping.py
 
 import struct
@@ -95,6 +95,35 @@ class Ping1D:
             print "Error: "+str(e)
             pass
 
+
+    #This will create a CRC of the message and check it against the sent one
+    def validateCRC(message):
+        return false
+
+    #Control Methods
+    ###################
+
+    #Set mandatory configuration settings
+    #Run once on boot
+    #Rate, speed of sound in water
+    def setConfiguration(self, rate, c):
+        //TODO implement
+        return false
+
+    #Request the given message ID
+    def request(self, id):
+        //TODO implement
+        return false
+
+    #Manually set the scanning range
+    def setRange(self, auto, start, range):
+        //TODO implement
+        return false
+
+    #Set special debug options
+    def setDebugOptions(self, raw, auto, gain, c):
+        //TODO implement
+        return false
 
     #Accessor Methods
     ################
