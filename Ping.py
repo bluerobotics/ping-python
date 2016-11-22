@@ -1,8 +1,10 @@
-4#!/usr/bin/python -u
+#!/usr/bin/python -u
 #Ping.py
 
+import sys
 import struct
 import serial
+import getopt
 
 class Ping1D:
     #Sonar report packet
@@ -28,11 +30,13 @@ class Ping1D:
     index_of_bottom_result                = 0
     results                               = [0]*200
 
-    def __init__(self):
-            #Open the serial port
-            #ser = serial.Serial('/dev/tty.usbserial-A5059KLC', 115200)
-            self.ser = serial.Serial('/dev/ttyUSB0', 115200)
-        pass
+    def __init__(self, deviceName):
+        #Open the serial port
+        try:
+            self.ser = serial.Serial(deviceName, 115200)
+        except:
+            print("Failed to open the given serial port")
+            exit(1)
 
     #Read and Update
     def updateSonar(self):
@@ -107,22 +111,22 @@ class Ping1D:
     #Run once on boot
     #Rate, speed of sound in water
     def setConfiguration(self, rate, c):
-        //TODO implement
+        #TODO implement
         return false
 
     #Request the given message ID
     def request(self, id):
-        //TODO implement
+        #TODO implement
         return false
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
-        //TODO implement
+        #TODO implement
         return false
 
     #Set special debug options
     def setDebugOptions(self, raw, auto, gain, c):
-        //TODO implement
+        #TODO implement
         return false
 
     #Accessor Methods
