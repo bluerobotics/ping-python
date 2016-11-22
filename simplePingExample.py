@@ -35,4 +35,4 @@ print("------------------------------------")
 #Read and print depth measurements with confidence
 while True:
     myPing.updateSonar()
-    print("Current Depth: " + str(myPing.getDepth()) + " | Confidence: " str(myPing.getConfidence()))
+    print("Current Depth: " + str(myPing.getDepth()) + " | Confidence: " + str(myPing.getConfidence()))

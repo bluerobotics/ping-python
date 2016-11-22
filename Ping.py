@@ -68,12 +68,18 @@ class Ping1D:
 
     #Read in sonar data over serial
     def readSonar(self):
+        timeout = 10000
+        readCount = 0
         buf = []
         data = ""
 
         try:
             #Burn through data until start signal
             while(self.ser.read() != "s"):
+                readCount += 1
+                if (readCount > timeout):
+                    print("Serial Read Timeout. Check device and connections")
+                    exit(1)
                 pass
             #Check second start signal
             if (self.ser.read() != "s"):
