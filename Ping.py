@@ -11,6 +11,8 @@ class Ping1D:
     #452 Bytes
     packetFormat = "<ccHHhiiiiihhhhiIIhHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHcc"
 
+    instructions = "Usage: python simplePingExample.py -d <device_name>"
+
     #Parameters
     fw_version_major                      = 0
     fw_version_minor                      = 0
@@ -32,6 +34,9 @@ class Ping1D:
 
     def __init__(self, deviceName):
         #Open the serial port
+        if (deviceName == ''):
+            print(self.instructions)
+            exit(1)
         try:
             self.ser = serial.Serial(deviceName, 115200)
         except:

@@ -20,7 +20,8 @@ for opt, arg in options:
         print(instructions)
         exit(1)
     elif opt in ('-d', '--device'):
-        device = arg
+        if (arg != ''):
+            device = arg
     else:
         print(instructions)
         exit(1)
