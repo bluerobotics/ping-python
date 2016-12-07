@@ -28,10 +28,13 @@ for opt, arg in options:
 
 #Make a new Ping
 myPing = Ping1D(device)
-
+print()
+print("------------------------------------")
 print("Starting Ping..")
 print("Press CTRL+Z to exit")
 print("------------------------------------")
+
+raw_input("Press Enter to continue...")
 
 #Read and print depth measurements with confidence
 while True:
