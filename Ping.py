@@ -5,6 +5,7 @@ import sys
 import struct
 import serial
 import getopt
+import socket
 
 class Ping1D:
     #Sonar report packet
@@ -12,6 +13,14 @@ class Ping1D:
     packetFormat = "<ccHHhiiiiihhhhiIIhHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHcc"
 
     instructions = "Usage: python simplePingExample.py -d <device_name>"
+
+    #UDP input
+    UDP_IP="0.0.0.0"
+    UDP_PORT=5009
+
+    sock = socket.socket( socket.AF_INET, # Internet
+                      socket.SOCK_DGRAM ) # UDP
+    sock.bind( (UDP_IP,UDP_PORT) )
 
     #Parameters
     fw_version_major                      = 0
@@ -31,6 +40,12 @@ class Ping1D:
     timestamp_msec                        = 0
     index_of_bottom_result                = 0
     results                               = [0]*200
+
+    #Start signal detection
+    validation_1 = 'S'
+    validation_2 = 'S'
+    test_1 = ''
+    test_2 = ''
 
     def __init__(self, deviceName):
         #Open the serial port
@@ -72,23 +87,70 @@ class Ping1D:
             self.results[i] = sonarData[18 + i]
 
     #Read in sonar data over serial
+    # def readSonar(self):
+    #     timeout = 10000
+    #     readCount = 0
+    #     buf = []
+    #     data = ""
+    #
+    #     try:
+    #         #Burn through data until start signal
+    #         while(self.ser.read() != "s"):
+    #             readCount += 1
+    #             if (readCount > timeout):
+    #                 print("Serial Read Timeout. Check device and connections")
+    #                 exit(1)
+    #             pass
+    #         #Check second start signal
+    #         if (self.ser.read() != "s"):
+    #             return None
+    #
+    #         #Add start signal to buffer, since we have a valid message
+    #         buf.append("s")
+    #         buf.append("s")
+    #         data += struct.pack("<B", 83)
+    #         data += struct.pack("<B", 83)
+    #
+    #         #Get the content of the message
+    #         for i in range(0,450):
+    #             byte = self.ser.read()
+    #             data += struct.pack("<c", byte)
+    #             buf.append(byte)
+    #
+    #         unpacked = struct.unpack(self.packetFormat, data)
+    #         return unpacked
+    #         #print(unpacked)
+    #
+    #     except Exception as e:
+    #         print "Error: "+str(e)
+    #         pass
+
     def readSonar(self):
         timeout = 10000
         readCount = 0
         buf = []
         data = ""
+        start_signal_found = False
 
         try:
             #Burn through data until start signal
-            while(self.ser.read() != "s"):
-                readCount += 1
-                if (readCount > timeout):
-                    print("Serial Read Timeout. Check device and connections")
-                    exit(1)
+            while(!start_signal_found):
+                #Put new byte in second index
+                self.test_2 = self.ser.read()
+
+                #Check if start signal
+                if((self.test_1 == self.validation_1) && (self.test_2 == self.validation_2)):
+                    start_signal_found = True
+                else:
+                    #Move second byte to first byte
+                    self.test_1 = self.test_2
+
+                    #Check if timeout has been reached
+                    readCount += 1
+                    if (readCount > timeout):
+                        print("Serial Read Timeout. Check device and connections")
+                        return None
                 pass
-            #Check second start signal
-            if (self.ser.read() != "s"):
-                return None
 
             #Add start signal to buffer, since we have a valid message
             buf.append("s")
@@ -109,11 +171,6 @@ class Ping1D:
         except Exception as e:
             print "Error: "+str(e)
             pass
-
-
-    #This will create a CRC of the message and check it against the sent one
-    def validateCRC(message):
-        return false
 
     #Control Methods
     ###################
@@ -198,3 +255,18 @@ class Ping1D:
     #Returns list of all results from last ping. Each point is on a scale of 0 to 255
     def getResults(self):
         return self.results
+
+    #Internal
+    #########
+
+    def initUDP(self, ip, port):
+        UDP_IP="0.0.0.0"
+        UDP_PORT="5009"
+        self.sock = socket.socket( socket.AF_INET, # Internet
+                      socket.SOCK_DGRAM ) # UDP
+
+        self.sock.bind( (UDP_IP,UDP_PORT) )
+
+    #This will create a CRC of the message and check it against the sent one
+    def validateCRC(message):
+        return false
