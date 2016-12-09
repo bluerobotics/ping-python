@@ -95,12 +95,12 @@ class Ping1D:
 
         try:
             #Burn through data until start signal
-            while(!start_signal_found):
+            while(not start_signal_found):
                 #Put new byte in second index
                 self.test_2 = self.ser.read()
 
                 #Check if start signal
-                if((self.test_1 == self.validation_1) && (self.test_2 == self.validation_2)):
+                if((self.test_1 == self.validation_1) and (self.test_2 == self.validation_2)):
                     start_signal_found = True
                 else:
                     #Move second byte to first byte
