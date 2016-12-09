@@ -111,7 +111,6 @@ class Ping1D:
                     if (readCount > timeout):
                         print("Serial Read Timeout. Check device and connections")
                         return None
-                pass
 
             #Add start signal to buffer, since we have a valid message
             buf.append("s")
