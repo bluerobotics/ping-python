@@ -86,45 +86,6 @@ class Ping1D:
         for i in range(0,self.num_results):
             self.results[i] = sonarData[18 + i]
 
-    #Read in sonar data over serial
-    # def readSonar(self):
-    #     timeout = 10000
-    #     readCount = 0
-    #     buf = []
-    #     data = ""
-    #
-    #     try:
-    #         #Burn through data until start signal
-    #         while(self.ser.read() != "s"):
-    #             readCount += 1
-    #             if (readCount > timeout):
-    #                 print("Serial Read Timeout. Check device and connections")
-    #                 exit(1)
-    #             pass
-    #         #Check second start signal
-    #         if (self.ser.read() != "s"):
-    #             return None
-    #
-    #         #Add start signal to buffer, since we have a valid message
-    #         buf.append("s")
-    #         buf.append("s")
-    #         data += struct.pack("<B", 83)
-    #         data += struct.pack("<B", 83)
-    #
-    #         #Get the content of the message
-    #         for i in range(0,450):
-    #             byte = self.ser.read()
-    #             data += struct.pack("<c", byte)
-    #             buf.append(byte)
-    #
-    #         unpacked = struct.unpack(self.packetFormat, data)
-    #         return unpacked
-    #         #print(unpacked)
-    #
-    #     except Exception as e:
-    #         print "Error: "+str(e)
-    #         pass
-
     def readSonar(self):
         timeout = 10000
         readCount = 0
