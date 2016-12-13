@@ -1,5 +1,10 @@
 #ping-python
 ------------
+<a href="https://d3js.org">
+<img src="https://bluerobotics-avnk4szrcwmt8us9ai.netdna-ssl.com/images/br-logo-trans-blue-trans-sm-updated.png?x46260" align="left" hspace="10" vspace="6">
+</a>
+
+
 Python library for the Ping sonar. Ping is the simple and compact ultrasonic depthfinder for your next aquatic project!
 
 [Available here](http://www.bluerobotics.com/)
