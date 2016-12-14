@@ -1,3 +1,5 @@
+#Ping API Reference
+
 ##Methods
 
 * `getResults()`
