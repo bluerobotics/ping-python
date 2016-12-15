@@ -8,33 +8,33 @@ Returns list of all results from last ping. Each point is on a scale of 0 to 255
 <br/>
 <br/>
 
-* `getDepth()`
+* `getAltitude()`
 
-Returns the most recent smoothed depth reading in mm
+Returns the most recent smoothed altitude reading in mm
 <br/>
 <br/>
 
 * `getConfidence()`
 
-Returns the confidence in the depth measurement, as a percentage
+Returns the confidence in the altitude measurement, as a percentage
 <br/>
 <br/>
 
-* `getInstantDepth()`
+* `getInstantAltitude()`
 
-Returns the best guess for this individual ping in mm. It is recommended to use getDepth() instead
+Returns the best guess for this individual ping in mm. It is recommended to use getAltitude() instead
 <br/>
 <br/>
 
-* `getStartDepth()`
+* `getScanStart())`
 
-Returns the shallowest depth that Ping will look at, in mm
+Returns the closest that Ping will look at, in mm
 <br/>
 <br/>
 
-* `getDepthRange()`
+* `getScanRange()`
 
-Returns the range of depth that is being scanned in mm. Beginning at the start depth
+Returns the range that is being scanned in mm. Beginning at the start distance
 <br/>
 <br/>
 
@@ -82,4 +82,4 @@ Returns the uptime, in milliseconds
 
 * `getBottomIndex()`
 
-Returns the index of the depth reading that was chosen as the bottom
+Returns the index of the altitude reading that was chosen as the bottom

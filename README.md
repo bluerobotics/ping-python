@@ -5,9 +5,9 @@
 </a>
 
 
-Python library for the Ping sonar. Ping is the simple, affordable, and compact ultrasonic depthfinder for any aquatic project.
+Python library for the Ping sonar. Ping is the simple, affordable, and compact ultrasonic altimeter for any aquatic project.
 
-This library exposes all functionality of the device, such as getting depth profiles, controlling parameters, switching modes, or just simply reading in the depth measurement.
+This library exposes all functionality of the device, such as getting profiles, controlling parameters, switching modes, or just simply reading in the altitude measurement.
 
 [Available here](http://www.bluerobotics.com/)
 
@@ -16,18 +16,19 @@ This library exposes all functionality of the device, such as getting depth prof
 
 ## Resources
 
-* [API Reference](https://github.com/bluerobotics/ping-python/blob/master/API.md)
+* [API Reference](http://github.com/bluerobotics/ping-python/blob/master/docs/API.md)
 * [Device Specifications](http://www.bluerobotics.com/)
+* [Packet Format](http://github.com/bluerobotics/ping-python/blob/master/docs/Format.md)
 * [Support](http://docs.bluerobotics.com)
-* [License](https://github.com/bluerobotics/ping-python/blob/master/LICENSE)
+* [License](http://github.com/bluerobotics/ping-python/blob/master/LICENSE)
 
 ##Installing
 
-* `git clone --recursive https://github.com/bluerobotics/ping.git`
+* `git clone --recursive http://github.com/bluerobotics/ping-python.git`
 * `cd ping-python`
 
 ##Quick Start
 
-You can run a simple example that prints the depth reading repeatedly by executing the command below. Place your device's file descriptor after the --device option. For example, on Linux this will likely be /dev/ttyUSB0.
+You can run a simple example that prints the altitude reading repeatedly by executing the command below. Place your device's file descriptor after the --device option. For example, on Linux this will likely be /dev/ttyUSB0.
 
 `python simplePingExample.py --device <your-device>`

@@ -29,9 +29,9 @@ class Ping1D:
     supply_millivolts                     = 0
     start_mm                              = 0
     length_mm                             = 0
-    this_ping_depth_mm                    = 0
-    smoothed_depth_mm                     = 0
-    smoothed_depth_confidence_percent     = 0
+    this_ping_altitude_mm                    = 0
+    smoothed_altitude_mm                     = 0
+    smoothed_altitude_confidence_percent     = 0
     ping_duration_usec                    = 0
     goertzel_n                            = 0
     goertzel_m                            = 0
@@ -72,9 +72,9 @@ class Ping1D:
         self.supply_millivolts                     = sonarData[5]
         self.start_mm                              = sonarData[6]
         self.length_mm                             = sonarData[7]
-        self.this_ping_depth_mm                    = sonarData[8]
-        self.smoothed_depth_mm                     = sonarData[9]
-        self.smoothed_depth_confidence_percent     = sonarData[10]
+        self.this_ping_altitude_mm                 = sonarData[8]
+        self.smoothed_altitude_mm                  = sonarData[9]
+        self.smoothed_altitude_confidence_percent  = sonarData[10]
         self.ping_duration_usec                    = sonarData[11]
         self.goertzel_n                            = sonarData[12]
         self.goertzel_m                            = sonarData[13]
@@ -172,25 +172,25 @@ class Ping1D:
     def getVoltage(self):
         return self.supply_millivolts
 
-    #Returns the shallowest depth that Ping will look at, in mm
-    def getStartDepth(self):
+    #Returns the closest distance that Ping will look at, in mm
+    def getScanStart(self):
         return self.start_mm
 
-    #Returns the range of depth that is being scanned in mm. Beginning at the start depth
-    def getDepthRange(self):
+    #Returns the range that is being scanned in mm. Beginning at the start distance.
+    def getScanRange(self):
         return self.length_mm
 
-    #Returns the best guess for this individual ping in mm. It is recommended to use getDepth() instead
-    def getInstantDepth(self):
-        return self.this_ping_depth_mm
+    #Returns the best guess for this individual ping in mm. It is recommended to use getAltitude() instead
+    def getInstantAltitude(self):
+        return self.this_ping_altitude_mm
 
-    #Returns the most recent smoothed depth reading in mm
-    def getDepth(self):
-        return self.smoothed_depth_mm
+    #Returns the most recent smoothed altitude reading in mm
+    def getAltitude(self):
+        return self.smoothed_altitude_mm
 
-    #Returns the confidence in the depth measurement, as a percentage
+    #Returns the confidence in the altitude measurement, as a percentage
     def getConfidence(self):
-        return self.smoothed_depth_confidence_percent
+        return self.smoothed_altitude_confidence_percent
 
     #Returns the duration of the sent ping, in microseconds
     def getPingDuration(self):
@@ -208,7 +208,7 @@ class Ping1D:
     def getTimestamp(self):
         return self.timestamp_msec
 
-    #Returns the index of the depth reading that was chosen as the bottom
+    #Returns the index of the altitude reading that was chosen as the bottom
     def getBottomIndex(self):
         return self.index_of_bottom_result
 
