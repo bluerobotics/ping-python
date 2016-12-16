@@ -36,7 +36,7 @@ print("------------------------------------")
 
 raw_input("Press Enter to continue...")
 
-#Read and print depth measurements with confidence
+#Read and print altitude measurements with confidence
 while True:
     myPing.updateSonar()
-    print("Current Depth: " + str(myPing.getDepth()) + " | Confidence: " + str(myPing.getConfidence()))
+    print("Current Altitude: " + str(myPing.getAltitude()) + " | Confidence: " + str(myPing.getConfidence()))
