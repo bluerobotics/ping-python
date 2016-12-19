@@ -12,14 +12,14 @@
 
 ##Message Definitions
 
-###Altitude
+###Distance
 
 Message ID: 0x01
 
 | Byte |   Type   |    Name    |           Value           |
 |------|----------|------------|---------------------------|
 | 5    | uint8_t  | confidence | Percent confidence, 0-100 |
-| 6-9  | uint32_t | altitude   | Measured altitude, in mm  |
+| 6-9  | uint32_t | distance   | Measured distance, in mm  |
 
 
 ###Profile
@@ -29,9 +29,9 @@ Message ID: 0x02
 |        Byte         |   Type   |    Name    |                  Value                   |
 |---------------------|----------|------------|------------------------------------------|
 | 5                   | uint8_t  | confidence | Percent confidence, 0-100                |
-| 6-9                 | uint32_t | altitude   | Measured altitude, in mm                 |
-| 10-13               | uint32_t | startAlt   | Upper altitude range of returned profile |
-| 14-17               | uint32_t | endAlt     | Low altitude range of returned profile   |
+| 6-9                 | uint32_t | distance   | Measured distance, in mm                 |
+| 10-13               | uint32_t | startAlt   | Upper distance range of returned profile |
+| 14-17               | uint32_t | endAlt     | Low distance range of returned profile   |
 | 18-19               | uint16_t | gain       | Analog gain value                        |
 | 20                  | uint8_t  | pulse      | Pulse length in µs from 0-255            |
 | 21-22               | uint16_t | numPoints  | Number of data points returned           |

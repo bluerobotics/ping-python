@@ -7,7 +7,7 @@
 
 Python library for the Ping sonar. Ping is the simple, affordable, and compact ultrasonic altimeter for any aquatic project.
 
-This library exposes all functionality of the device, such as getting profiles, controlling parameters, switching modes, or just simply reading in the altitude measurement.
+This library exposes all functionality of the device, such as getting profiles, controlling parameters, switching modes, or just simply reading in the distance measurement.
 
 [Available here](http://www.bluerobotics.com/)
 
@@ -29,6 +29,6 @@ This library exposes all functionality of the device, such as getting profiles, 
 
 ##Quick Start
 
-You can run a simple example that prints the altitude reading repeatedly by executing the command below. Place your device's file descriptor after the --device option. For example, on Linux this will likely be /dev/ttyUSB0.
+You can run a simple example that prints the distance reading repeatedly by executing the command below. Place your device's file descriptor after the --device option. For example, on Linux this will likely be /dev/ttyUSB0.
 
 `python simplePingExample.py --device <your-device>`

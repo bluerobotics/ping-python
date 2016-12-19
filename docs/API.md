@@ -12,21 +12,21 @@ Returns list of all results from last ping. Each point is on a scale of 0 to 255
 <br/>
 <br/>
 
-* `getAltitude()`
+* `getDistance()`
 
-Returns the most recent smoothed altitude reading in mm
+Returns the most recent smoothed distance reading in mm
 <br/>
 <br/>
 
 * `getConfidence()`
 
-Returns the confidence in the altitude measurement, as a percentage
+Returns the confidence in the distance measurement, as a percentage
 <br/>
 <br/>
 
-* `getInstantAltitude()`
+* `getInstantDistance()`
 
-Returns the best guess for this individual ping in mm. It is recommended to use getAltitude() instead
+Returns the best guess for this individual ping in mm. It is recommended to use getDistance() instead
 <br/>
 <br/>
 
@@ -86,7 +86,7 @@ Returns the uptime, in milliseconds
 
 * `getBottomIndex()`
 
-Returns the index of the altitude reading that was chosen as the bottom
+Returns the index of the reading that was chosen as the result
 ##Control Methods
 
 These methods are to control the device. Leave any argument as 0 to ignore, or leave as the default.
@@ -114,7 +114,7 @@ Requests a message from Ping. See the [Serial Protocol](http://github.com/bluero
 
 |      Argument      | Value |  Result  |
 |--------------------|-------|----------|
-| messageID          | 0x01  | altitude |
+| messageID          | 0x01  | distance |
 |                    | 0x02  | profile  |
 |                    | 0x03  | status   |
 
@@ -132,7 +132,7 @@ Set the range that Ping will scan for the bottom. If manual mode is set, you may
 | auto           | 0           | Automatic scanning range           |
 |                | 1           | Manual scanning range              |
 | start          | 0           | Default / unchanged                |
-|                | 1 - 60000   | Set start depth in mm              |
+|                | 1 - 60000   | Set start distance in mm              |
 | range          | 0           | Default / unchanged                |
 |                | 500 - 60000 | Set length of scanning range in mm |
 
