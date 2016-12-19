@@ -69,6 +69,20 @@ Returns the duration of the sent ping, in microseconds
 * `getGain()`
 
 Retuns the index of the analog gain
+
+| Index | Gain (dB) |
+|-------|-----------|
+|     0 |      -6.6 |
+|     1 |         3 |
+|     2 |      12.6 |
+|     3 |        20 |
+|     4 |      27.4 |
+|     5 |        37 |
+|     6 |      44.4 |
+|     7 |      50.6 |
+|     8 |        58 |
+|     9 |        64 |
+
 <br/>
 <br/>
 
@@ -89,7 +103,7 @@ Returns the uptime, in milliseconds
 Returns the index of the reading that was chosen as the result
 ##Control Methods
 
-These methods are to control the device. Leave any argument as 0 to ignore, or leave as the default.
+These methods are to control the device. Leave any argument as 0 to ignore.
 
 -----
 
@@ -99,10 +113,10 @@ Sends configuration options to Ping. See [here](http://keisan.casio.com/exec/sys
 
 |    Argument     |    Value    |             Result             |
 |-----------------|-------------|--------------------------------|
-| rate            | 0           | Default / unchanged            |
+| rate            | 0           | Ignore                         |
 |                 | 1           | Single                         |
 |                 | 2           | Continuous with Automatic rate |
-| cWater          | 0           | Default / unchanged            |
+| cWater          | 0           | Ignore                         |
 |                 | 1000 - 2000 | Sets the speed of sound in m/s |
 
 <br/>
@@ -131,9 +145,9 @@ Set the range that Ping will scan for the bottom. If manual mode is set, you may
 |----------------|-------------|------------------------------------|
 | auto           | 0           | Automatic scanning range           |
 |                | 1           | Manual scanning range              |
-| start          | 0           | Default / unchanged                |
-|                | 1 - 60000   | Set start distance in mm              |
-| range          | 0           | Default / unchanged                |
+| start          | 0           | Ignore                             |
+|                | 1 - 60000   | Set start distance in mm           |
+| range          | 0           | Ignore                             |
 |                | 500 - 60000 | Set length of scanning range in mm |
 
 <br/>
