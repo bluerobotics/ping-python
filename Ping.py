@@ -42,8 +42,8 @@ class Ping1D:
     results                               = [0]*200
 
     #Start signal detection
-    validation_1 = 'S'
-    validation_2 = 'S'
+    validation_1 = 'B'
+    validation_2 = 'R'
     test_1 = ''
     test_2 = ''
 
@@ -228,5 +228,14 @@ class Ping1D:
         self.sock.bind( (UDP_IP,UDP_PORT) )
 
     #This will create a CRC of the message and check it against the sent one
-    def validateChecksum(message):
-        return false
+    def validateChecksum(message, claimedChecksum):
+        #TODO Length of message must exclude checksum
+        messageSize = len(message)
+        checksum = 0
+
+        for i in range(0, messageSize):
+            checksum += message[i]
+
+        checksum = checksum & 0xffff
+
+        return (checksum == claimedChecksum)
