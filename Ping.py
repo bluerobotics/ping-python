@@ -29,9 +29,9 @@ class Ping1D:
     supply_millivolts                     = 0
     start_mm                              = 0
     length_mm                             = 0
-    this_ping_distance_mm                    = 0
-    smoothed_distance_mm                     = 0
-    smoothed_distance_confidence_percent     = 0
+    this_ping_distance_mm                 = 0
+    smoothed_distance_mm                  = 0
+    smoothed_distance_confidence_percent  = 0
     ping_duration_usec                    = 0
     goertzel_n                            = 0
     goertzel_m                            = 0
@@ -228,5 +228,5 @@ class Ping1D:
         self.sock.bind( (UDP_IP,UDP_PORT) )
 
     #This will create a CRC of the message and check it against the sent one
-    def validateCRC(message):
+    def validateChecksum(message):
         return false
