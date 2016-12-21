@@ -8,9 +8,30 @@ import getopt
 import socket
 
 class Ping1D:
-    #Sonar report packet
+    #Early Sonar report packet
     #452 Bytes
     packetFormat = "<ccHHhiiiiihhhhiIIhHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHcc"
+    #200
+    #BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+    #Meta Formats
+    ############
+    #Header
+    headerFormat = "<BBHHH"
+    #Checksum
+    checksumFormat = "<H"
+
+    #Message Formats
+    ################
+    #Distance Message
+    distanceMessageFormat = "<BI"
+
+    #Profile Message
+    #200 Points
+    profileMessageFormat = "<BIIIHBIBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+
+    #Status Message
+    statusMessageFormat = "<HHHB"
 
     instructions = "Usage: python simplePingExample.py -d <device_name>"
 
@@ -126,7 +147,6 @@ class Ping1D:
 
             unpacked = struct.unpack(self.packetFormat, data)
             return unpacked
-            #print(unpacked)
 
         except Exception as e:
             print "Error: "+str(e)
