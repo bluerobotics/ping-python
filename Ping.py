@@ -21,10 +21,18 @@ class Ping1D:
 
     #Message Formats
     ################
-    #Altitude Message
-    altitudeMessageFormat = '<IIB'
-    #Full Profile Message
-    fullProfileFormat = '<IIHHIIIhhHIIHH' + 'B' * 200
+    msgACKFormat = '<H'                                           #ACK
+    msgNACKFormat = '<Hs'                                         #NACK
+    msgAltitudeMessageFormat = '<IIB'                             #Altitude
+    msgFullProfileFormat = '<IIHHIIIhhHIIHH' + 'B' * 200          #Full Profile
+    msgGeneralInfoFormat = '<HHHH'                                #General Info
+    msgAsciiTextFormat = '<B'                                     #ASCII Text
+    msgConfigFormat = ''                                          #Config
+    msgRequestFormat = '<HH'                                      #Request
+    msgRangeFormat = '<HH'                                        #Range
+    msgDebugFormat = '<BBHH'                                      #Debug
+    msgSetSpeedFormat = '<I'                                      #Set C
+
 
     #Profile Message
     #200 Points
