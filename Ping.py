@@ -21,12 +21,13 @@ class Ping1D:
 
     #Message Formats
     ################
-    #Distance Message
-    distanceMessageFormat = "<BI"
+    #Altitude Message
+    altitudeMessageFormat = '<IIB'
+    #Full Profile Message
+    fullProfileFormat = '<IIHHIIIhhHIIHH' + 'B' * 200
 
     #Profile Message
     #200 Points
-    ##profileMessageFormat = "<BIIIHBIBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
     profileMessageFormat = '<BIIIHBI' + 'B' * 200
     #Status Message
     statusMessageFormat = "<HHHB"
@@ -34,12 +35,12 @@ class Ping1D:
     instructions = "Usage: python simplePingExample.py -d <device_name>"
 
     #UDP input
-    UDP_IP="0.0.0.0"
-    UDP_PORT=5009
-
-    sock = socket.socket( socket.AF_INET, # Internet
-                      socket.SOCK_DGRAM ) # UDP
-    sock.bind( (UDP_IP,UDP_PORT) )
+    # UDP_IP="0.0.0.0"
+    # UDP_PORT=5009
+    #
+    # sock = socket.socket( socket.AF_INET, # Internet
+    #                   socket.SOCK_DGRAM ) # UDP
+    # sock.bind( (UDP_IP,UDP_PORT) )
 
     #Parameters
     fw_version_major                      = 0
@@ -77,8 +78,10 @@ class Ping1D:
             print("Failed to open the given serial port")
             exit(1)
 
+
     #Read and Update
     def updateSonar(self):
+
         sonarData = self.readSonar()
         if (sonarData != None):
             self.handleSonar(sonarData)
@@ -109,8 +112,15 @@ class Ping1D:
         timeout = 10000
         readCount = 0
         buf = []
+
+        headerRaw = []
+        bodyRaw = []
+        checksumRaw = []
+
         data = ""
         start_signal_found = False
+
+        print("readSonar()")
 
         try:
             #Burn through data until start signal
@@ -120,6 +130,7 @@ class Ping1D:
 
                 #Check if start signal
                 if((self.test_1 == self.validation_1) and (self.test_2 == self.validation_2)):
+                    print("Found start")
                     start_signal_found = True
                 else:
                     #Move second byte to first byte
@@ -132,18 +143,35 @@ class Ping1D:
                         return None
 
             #Add start signal to buffer, since we have a valid message
-            buf.append("s")
-            buf.append("s")
-            data += struct.pack("<B", 83)
-            data += struct.pack("<B", 83)
+            buf.append(validation_1)
+            buf.append(validation_2)
+            data += struct.pack("<B", validation_1)
+            data += struct.pack("<B", validation_2)
 
-            #Get the content of the message
-            for i in range(0,450):
+
+            #Get the header
+            for i in range(2, 7):
                 byte = self.ser.read()
-                data += struct.pack("<c", byte)
-                buf.append(byte)
+                print(byte)
+                headerRaw += struct.pack("<B", byte)
 
-            unpacked = struct.unpack(self.packetFormat, data)
+            #Decode Header
+            header = struct.unpack(self.headerFormat, header)
+
+            #Find how long the message body is
+            bodyLength = header[2]
+            print(bodyLength)
+            #Get the message body
+
+            #Get the Checksum
+
+
+            # for i in range(0,450):
+            #     byte = self.ser.read()
+            #     data += struct.pack("<c", byte)
+            #     buf.append(byte)
+            #
+            # unpacked = struct.unpack(self.packetFormat, data)
             return unpacked
 
         except Exception as e:
@@ -161,8 +189,9 @@ class Ping1D:
         return false
 
     #Request the given message ID
-    def request(self, id):
-        #TODO implement
+    def request(self, id, rate):
+
+        self.sendMessage(id, payload)
         return false
 
     #Manually set the scanning range
@@ -174,6 +203,9 @@ class Ping1D:
     def setDebugOptions(self, raw, auto, gain, c):
         #TODO implement
         return false
+
+    def sendMessage(self, id, payload):
+
 
     #Accessor Methods
     ################
@@ -236,14 +268,14 @@ class Ping1D:
 
     #Internal
     #########
-
-    def initUDP(self, ip, port):
-        UDP_IP="0.0.0.0"
-        UDP_PORT="5009"
-        self.sock = socket.socket( socket.AF_INET, # Internet
-                      socket.SOCK_DGRAM ) # UDP
-
-        self.sock.bind( (UDP_IP,UDP_PORT) )
+    #
+    # def initUDP(self, ip, port):
+    #     UDP_IP="0.0.0.0"
+    #     UDP_PORT="5009"
+    #     self.sock = socket.socket( socket.AF_INET, # Internet
+    #                   socket.SOCK_DGRAM ) # UDP
+    #
+    #     self.sock.bind( (UDP_IP,UDP_PORT) )
 
     #This will create a CRC of the message and check it against the sent one
     def validateChecksum(message, claimedChecksum):
