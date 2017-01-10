@@ -189,13 +189,6 @@ class Ping1D:
     #Control Methods
     ###################
 
-    #Set mandatory configuration settings
-    #Run once on boot
-    #Rate, speed of sound in water
-    def setConfiguration(self, rate, c):
-        #TODO implement
-        return false
-
     #Request the given message ID
     def request(self, id, rate):
 
