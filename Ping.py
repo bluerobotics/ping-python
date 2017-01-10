@@ -190,9 +190,10 @@ class Ping1D:
     ###################
 
     #Request the given message ID
-    def request(self, id, rate):
-
-        self.sendMessage(id, payload)
+    def request(self, m_id, m_rate):
+        payloadData = [m_id, m_rate]
+        payload = struct.pack(msgRequestFormat, payloadData)
+        self.sendMessage(0x101, payload)
         return false
 
     #Manually set the scanning range
