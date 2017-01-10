@@ -15,9 +15,9 @@ class Ping1D:
     #Meta Formats
     ############
     #Header
-    headerFormat = "<BBHHH"
+    headerFormat = '<BBHHH'
     #Checksum
-    checksumFormat = "<H"
+    checksumFormat = '<H'
 
     #Message Formats
     ################
@@ -213,7 +213,10 @@ class Ping1D:
         return false
 
     def sendMessage(self, id, payload):
+        payloadLength = len(payload)
+        header = buildHeader(payloadLength, id)
 
+        self.ser.write(result)
 
     #Accessor Methods
     ################
@@ -297,3 +300,12 @@ class Ping1D:
         checksum = checksum & 0xffff
 
         return (checksum == claimedChecksum)
+
+    def buildHeader(length, messageID):
+        headerData = [self.validation_1, self.validation_2, length, messageID, 0]
+        headerPacked = struct.pack(headerFormat, *headerData)
+        return headerPacked
+
+    def buildMessage(messageID, message):
+        #TODO Implement
+        return False
