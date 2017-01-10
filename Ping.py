@@ -89,7 +89,8 @@ class Ping1D:
 
     #Read and Update
     def updateSonar(self):
-
+        #TODO this is temporary to get the altitude message only
+        self.request(0x3, 1)
         sonarData = self.readSonar()
         if (sonarData != None):
             self.handleSonar(sonarData)
@@ -208,8 +209,9 @@ class Ping1D:
 
     def sendMessage(self, id, payload):
         payloadLength = len(payload)
-        header = buildHeader(payloadLength, id)
-
+        finalHeader = buildHeader(payloadLength, id)
+        finalPayload = buildPayload(payload)
+        finalChecksum = buildChecksum(finalHeader, finalPayload)
         self.ser.write(result)
 
     #Accessor Methods
@@ -300,6 +302,7 @@ class Ping1D:
         headerPacked = struct.pack(headerFormat, *headerData)
         return headerPacked
 
-    def buildMessage(messageID, message):
-        #TODO Implement
-        return False
+    def buildPayload(payloadRaw):
+        payloadFormat = '<' + 'c' * len(payload)
+        payload = struct.pack(payloadFormat, payloadRaw)
+        return payload
