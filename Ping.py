@@ -207,9 +207,9 @@ class Ping1D:
         #TODO implement
         return false
 
-    def sendMessage(self, id, payload):
+    def sendMessage(self, m_id, payload):
         payloadLength = len(payload)
-        finalHeader = buildHeader(payloadLength, id)
+        finalHeader = buildHeader(payloadLength, m_id)
         finalPayload = buildPayload(payload)
         finalChecksum = buildChecksum(finalHeader, finalPayload)
         self.ser.write(result)
@@ -306,3 +306,5 @@ class Ping1D:
         payloadFormat = '<' + 'c' * len(payload)
         payload = struct.pack(payloadFormat, payloadRaw)
         return payload
+
+    def buildChecksum(h, p):
