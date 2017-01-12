@@ -303,8 +303,19 @@ class Ping1D:
         return headerPacked
 
     def buildPayload(payloadRaw):
-        payloadFormat = '<' + 'c' * len(payload)
+        payloadFormat = '<' + 'B' * len(payload)
         payload = struct.pack(payloadFormat, payloadRaw)
         return payload
 
     def buildChecksum(h, p):
+        hSize = len(h)
+        pSize = len(p)
+        sumOfBytes = 0
+        for i in range(0, hSize):
+            sumOfBytes += h[i]
+
+        for i in range(0, pSize):
+            sumOfBytes += p[i]
+
+        checksum = sumOfBytes & 0xffff
+        return checksum
