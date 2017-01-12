@@ -294,14 +294,7 @@ class Ping1D:
 
     #This will create a CRC of the message and check it against the sent one
     def validateChecksum(message, claimedChecksum):
-        #TODO Length of message must exclude checksum
-        messageSize = len(message)
-        checksum = 0
-
-        for i in range(0, messageSize):
-            checksum += message[i]
-
-        checksum = checksum & 0xffff
+        checksum = evaluateChecksum(message)
 
         return (checksum == claimedChecksum)
 
@@ -320,6 +313,17 @@ class Ping1D:
         payloadFormat = '<' + 'B' * len(payloadRaw)
         payloadPacked = struct.pack(payloadFormat, payloadRaw)
         return payloadPacked
+
+    #Checksum = sum(0 -> n) & 0xffff
+    def evaluateChecksum(m):
+        mSize = len(m)
+        sumOfBytes = 0
+        #The -2 here is to not count the checksum itself
+        for i in range(0, (mSize - 2)):
+            sumOfBytes += m[i]
+
+        checksum = sumOfBytes & 0xffff
+        return checksum
 
     #Checksum = sum(0 -> n) & 0xffff
     def buildChecksum(h, p):
