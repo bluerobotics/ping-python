@@ -208,10 +208,18 @@ class Ping1D:
         return false
 
     def sendMessage(self, m_id, payload):
+        #Needed to build header
         payloadLength = len(payload)
-        finalHeader = buildHeader(payloadLength, m_id)
+
+        #Create and pack header
+        header = buildHeader(payloadLength, m_id)
+        finalHeader = packHeader(header)
+
+        #Pack payload
         finalPayload = buildPayload(payload)
-        finalChecksum = buildChecksum(finalHeader, finalPayload)
+
+        #Create Checksum
+        finalChecksum = buildChecksum(header, payload)
         self.ser.write(result)
 
     #Accessor Methods
@@ -275,7 +283,7 @@ class Ping1D:
 
     #Internal
     #########
-    #
+
     # def initUDP(self, ip, port):
     #     UDP_IP="0.0.0.0"
     #     UDP_PORT="5009"
@@ -299,13 +307,16 @@ class Ping1D:
 
     def buildHeader(length, messageID):
         headerData = [self.validation_1, self.validation_2, length, messageID, 0]
+        return headerData
+
+    def packHeader(headerData):
         headerPacked = struct.pack(headerFormat, *headerData)
         return headerPacked
 
-    def buildPayload(payloadRaw):
-        payloadFormat = '<' + 'B' * len(payload)
-        payload = struct.pack(payloadFormat, payloadRaw)
-        return payload
+    def packPayload(payloadRaw):
+        payloadFormat = '<' + 'B' * len(payloadRaw)
+        payloadPacked = struct.pack(payloadFormat, payloadRaw)
+        return payloadPacked
 
     def buildChecksum(h, p):
         hSize = len(h)
@@ -313,7 +324,6 @@ class Ping1D:
         sumOfBytes = 0
         for i in range(0, hSize):
             sumOfBytes += h[i]
-
         for i in range(0, pSize):
             sumOfBytes += p[i]
 
