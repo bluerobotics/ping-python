@@ -305,19 +305,23 @@ class Ping1D:
 
         return (checksum == claimedChecksum)
 
+    #Return a list of the data in the header
     def buildHeader(length, messageID):
         headerData = [self.validation_1, self.validation_2, length, messageID, 0]
         return headerData
 
+    #Pack the header so it can be sent
     def packHeader(headerData):
         headerPacked = struct.pack(headerFormat, *headerData)
         return headerPacked
 
+    #Pack the payload so it can be sent
     def packPayload(payloadRaw):
         payloadFormat = '<' + 'B' * len(payloadRaw)
         payloadPacked = struct.pack(payloadFormat, payloadRaw)
         return payloadPacked
 
+    #Checksum = sum(0 -> n) & 0xffff
     def buildChecksum(h, p):
         hSize = len(h)
         pSize = len(p)
