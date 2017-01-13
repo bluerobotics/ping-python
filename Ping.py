@@ -7,6 +7,7 @@ import serial
 import getopt
 import socket
 
+
 class Ping1D:
     #Early Sonar report packet
     #452 Bytes
@@ -181,7 +182,8 @@ class Ping1D:
             #     buf.append(byte)
             #
             # unpacked = struct.unpack(self.packetFormat, data)
-            return unpacked
+            return None
+            #return unpacked
 
         except Exception as e:
             print "Error: "+str(e)
@@ -193,9 +195,7 @@ class Ping1D:
     #Request the given message ID
     def request(self, m_id, m_rate):
         payloadData = [m_id, m_rate]
-        payload = struct.pack(msgRequestFormat, payloadData)
-        self.sendMessage(0x101, payload)
-        return false
+        self.sendMessage(0x101, payloadData)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
@@ -208,18 +208,19 @@ class Ping1D:
         return false
 
     def sendMessage(self, m_id, payload):
+        #Pack payload first, because metadata is required for the header
+        finalPayload = self.packPayload(payload)
+
+        #TODO This doesn't work. It finds the number of items in the payload, not the number of bytes
         #Needed to build header
         payloadLength = len(payload)
 
         #Create and pack header
-        header = buildHeader(payloadLength, m_id)
-        finalHeader = packHeader(header)
-
-        #Pack payload
-        finalPayload = buildPayload(payload)
+        header = self.buildHeader(payloadLength, m_id)
+        #finalHeader = self.packHeader(header)
 
         #Create Checksum
-        finalChecksum = buildChecksum(header, payload)
+        finalChecksum = self.buildChecksum(header, payload)
         self.ser.write(result)
 
     #Accessor Methods
@@ -293,29 +294,32 @@ class Ping1D:
     #     self.sock.bind( (UDP_IP,UDP_PORT) )
 
     #This will create a CRC of the message and check it against the sent one
-    def validateChecksum(message, claimedChecksum):
+    def validateChecksum(self, message, claimedChecksum):
         checksum = evaluateChecksum(message)
 
         return (checksum == claimedChecksum)
 
     #Return a list of the data in the header
-    def buildHeader(length, messageID):
+    def buildHeader(self, length, messageID):
         headerData = [self.validation_1, self.validation_2, length, messageID, 0]
         return headerData
 
     #Pack the header so it can be sent
-    def packHeader(headerData):
-        headerPacked = struct.pack(headerFormat, *headerData)
+    def packHeader(self, headerData):
+        headerPacked = struct.pack(self.headerFormat, *headerData)
         return headerPacked
 
     #Pack the payload so it can be sent
-    def packPayload(payloadRaw):
+    def packPayload(self, payloadRaw):
+        if (payloadRaw == []):
+            return
+
         payloadFormat = '<' + 'B' * len(payloadRaw)
-        payloadPacked = struct.pack(payloadFormat, payloadRaw)
+        payloadPacked = struct.pack(payloadFormat, *payloadRaw)
         return payloadPacked
 
     #Checksum = sum(0 -> n) & 0xffff
-    def evaluateChecksum(m):
+    def evaluateChecksum(self, m):
         mSize = len(m)
         sumOfBytes = 0
         #The -2 here is to not count the checksum itself
@@ -326,14 +330,19 @@ class Ping1D:
         return checksum
 
     #Checksum = sum(0 -> n) & 0xffff
-    def buildChecksum(h, p):
+    def buildChecksum(self, h, p):
+        # hByteArray = bytearray(h)
+        # pByteArray = bytearray(p)
+        print(h)
+        print("---")
+        print(p)
         hSize = len(h)
         pSize = len(p)
         sumOfBytes = 0
         for i in range(0, hSize):
-            sumOfBytes += h[i]
+            sumOfBytes += hByteArray[i]
         for i in range(0, pSize):
-            sumOfBytes += p[i]
+            sumOfBytes += pByteArray[i]
 
         checksum = sumOfBytes & 0xffff
         return checksum
