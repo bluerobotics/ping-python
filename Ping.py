@@ -124,7 +124,7 @@ class Ping1D:
         timeout = 10000
         readCount = 0
 
-        headerRaw = []
+        headerRaw = ""
         bodyRaw = []
         checksumRaw = []
 
@@ -153,8 +153,8 @@ class Ping1D:
                         return None
 
             #Add start signal to buffer, since we have a valid message
-            headerRaw.append(self.validation_1)
-            headerRaw.append(self.validation_2)
+            headerRaw += self.validation_1
+            headerRaw += self.validation_2
             data += struct.pack("<c", self.validation_1)
             data += struct.pack("<c", self.validation_2)
 
@@ -162,12 +162,11 @@ class Ping1D:
             #Get the header
             for i in range(2, 8):
                 byte = self.ser.read()
-                headerRaw.append(byte)
+                headerRaw += struct.pack("<c", byte)
 
             #Decode Header
-            print(headerRaw)
-            #header = struct.pack(self.headerFormat, *headerRaw)
-            #print(header)
+            header = struct.unpack(self.headerFormat, headerRaw)
+            print(header)
             #Find how long the message body is
             #bodyLength = header[2]
             #print(bodyLength)
