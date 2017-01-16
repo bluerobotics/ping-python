@@ -123,7 +123,6 @@ class Ping1D:
     def readSonar(self):
         timeout = 10000
         readCount = 0
-        buf = []
 
         headerRaw = []
         bodyRaw = []
@@ -142,7 +141,6 @@ class Ping1D:
 
                 #Check if start signal
                 if((self.test_1 == self.validation_1) and (self.test_2 == self.validation_2)):
-                    print("Found start")
                     start_signal_found = True
                 else:
                     #Move second byte to first byte
@@ -155,24 +153,24 @@ class Ping1D:
                         return None
 
             #Add start signal to buffer, since we have a valid message
-            buf.append(self.validation_1)
-            buf.append(self.validation_2)
+            headerRaw.append(self.validation_1)
+            headerRaw.append(self.validation_2)
             data += struct.pack("<c", self.validation_1)
             data += struct.pack("<c", self.validation_2)
 
 
             #Get the header
-            for i in range(2, 7):
+            for i in range(2, 8):
                 byte = self.ser.read()
-                print(byte)
-                #headerRaw += struct.pack("<c", byte)
+                headerRaw.append(byte)
 
             #Decode Header
-            header = struct.unpack(self.headerFormat, header)
-
+            print(headerRaw)
+            #header = struct.pack(self.headerFormat, *headerRaw)
+            #print(header)
             #Find how long the message body is
-            bodyLength = header[2]
-            print(bodyLength)
+            #bodyLength = header[2]
+            #print(bodyLength)
             #Get the message body
 
             #Get the Checksum
