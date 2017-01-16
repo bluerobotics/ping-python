@@ -197,7 +197,7 @@ class Ping1D:
     def request(self, m_id, m_rate):
         payloadData = [m_id, m_rate]
         #TODO this is hardcoded for now
-        self.sendMessage(0x101, payloadData)
+        self.sendMessage(0x101, msgRequestFormat, payloadData)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
@@ -210,13 +210,14 @@ class Ping1D:
         return false
 
     #Used for sending of all messages
-    def sendMessage(self, m_id, payload):
+    def sendMessage(self, m_id, m_format, m_payload):
         #Pack payload first, because metadata is required for the header
-        finalPayload = self.packPayload(payload)
+        finalPayload = self.packPayload(m_format, m_payload)
 
         #TODO This doesn't work. It finds the number of items in the payload, not the number of bytes
         #Needed to build header
-        payloadLength = len(payload)
+        #payloadLength = len(payload)
+        payloadLength = calcsize(m_format)
 
         #Create and pack header
         header = self.buildHeader(payloadLength, m_id)
@@ -313,11 +314,10 @@ class Ping1D:
         return headerPacked
 
     #Pack the payload so it can be sent
-    def packPayload(self, payloadRaw):
+    def packPayload(self, payloadFormat, payloadRaw):
         if (payloadRaw == []):
             return
 
-        payloadFormat = '<' + 'B' * len(payloadRaw)
         payloadPacked = struct.pack(payloadFormat, *payloadRaw)
         return payloadPacked
 
@@ -336,7 +336,7 @@ class Ping1D:
     def buildChecksum(self, h, p):
         hUnpacked = struct.unpack("<BBBBBBBB", h)
         print(hUnpacked)
-        
+
         hSize = len(h)
         pSize = len(p)
         sumOfBytes = 0
