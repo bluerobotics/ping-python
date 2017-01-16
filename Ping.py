@@ -25,7 +25,8 @@ class Ping1D:
     msgACKFormat = '<H'                                           #ACK
     msgNACKFormat = '<Hs'                                         #NACK
     msgAltitudeMessageFormat = '<IIB'                             #Altitude
-    msgFullProfileFormat = '<IIHHIIIhhHIIHH' + 'B' * 200          #Full Profile
+    #msgFullProfileFormat = '<IIHHIIIhhHIIHH' + 'B' * 200          #Full Profile
+    msgFullProfileFormat = '<IIHHIIIhhHIIHH200B'                  #Full Profile
     msgGeneralInfoFormat = '<HHHH'                                #General Info
     msgAsciiTextFormat = '<B'                                     #ASCII Text
     msgConfigFormat = ''                                          #Config
@@ -197,7 +198,7 @@ class Ping1D:
     def request(self, m_id, m_rate):
         payloadData = [m_id, m_rate]
         #TODO this is hardcoded for now
-        self.sendMessage(0x101, msgRequestFormat, payloadData)
+        self.sendMessage(0x101, self.msgRequestFormat, payloadData)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
@@ -214,17 +215,15 @@ class Ping1D:
         #Pack payload first, because metadata is required for the header
         finalPayload = self.packPayload(m_format, m_payload)
 
-        #TODO This doesn't work. It finds the number of items in the payload, not the number of bytes
         #Needed to build header
-        #payloadLength = len(payload)
-        payloadLength = calcsize(m_format)
+        payloadLength = struct.calcsize(m_format)
 
         #Create and pack header
         header = self.buildHeader(payloadLength, m_id)
-        #finalHeader = self.packHeader(header)
+        finalHeader = self.packHeader(header)
 
         #Create Checksum
-        finalChecksum = self.buildChecksum(header, payload)
+        finalChecksum = self.buildChecksum(finalHeader, finalPayload)
         self.ser.write(result)
 
     #Accessor Methods
@@ -310,6 +309,7 @@ class Ping1D:
 
     #Pack the header so it can be sent
     def packHeader(self, headerData):
+        print(headerData)
         headerPacked = struct.pack(self.headerFormat, *headerData)
         return headerPacked
 
