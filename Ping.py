@@ -34,6 +34,7 @@ class Ping1D:
     msgDebugFormat = '<BBHH'                                      #Debug
     msgSetSpeedFormat = '<I'                                      #Set C
 
+    #TODO: Can use calcsize() to get the size of a struct from the template string
 
     #Profile Message
     #200 Points
@@ -195,6 +196,7 @@ class Ping1D:
     #Request the given message ID
     def request(self, m_id, m_rate):
         payloadData = [m_id, m_rate]
+        #TODO this is hardcoded for now
         self.sendMessage(0x101, payloadData)
 
     #Manually set the scanning range
@@ -207,6 +209,7 @@ class Ping1D:
         #TODO implement
         return false
 
+    #Used for sending of all messages
     def sendMessage(self, m_id, payload):
         #Pack payload first, because metadata is required for the header
         finalPayload = self.packPayload(payload)
@@ -331,18 +334,16 @@ class Ping1D:
 
     #Checksum = sum(0 -> n) & 0xffff
     def buildChecksum(self, h, p):
-        # hByteArray = bytearray(h)
-        # pByteArray = bytearray(p)
-        print(h)
-        print("---")
-        print(p)
+        hUnpacked = struct.unpack("<BBBBBBBB", h)
+        print(hUnpacked)
+        
         hSize = len(h)
         pSize = len(p)
         sumOfBytes = 0
         for i in range(0, hSize):
-            sumOfBytes += hByteArray[i]
-        for i in range(0, pSize):
-            sumOfBytes += pByteArray[i]
+            sumOfBytes += hUnpacked[i]
+        # for i in range(0, pSize):
+        #     sumOfBytes += pByteArray[i]
 
         checksum = sumOfBytes & 0xffff
         return checksum
