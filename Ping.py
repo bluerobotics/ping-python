@@ -16,7 +16,7 @@ class Ping1D:
     #Meta Formats
     ############
     #Header
-    headerFormat = '<BBHHH'
+    headerFormat = '<ccHHH'
     #Checksum
     checksumFormat = '<H'
 
@@ -73,8 +73,8 @@ class Ping1D:
     results                               = [0]*200
 
     #Start signal detection
-    validation_1 = 'B'
-    validation_2 = 'R'
+    validation_1 = b'B'
+    validation_2 = b'R'
     test_1 = ''
     test_2 = ''
 
@@ -155,17 +155,17 @@ class Ping1D:
                         return None
 
             #Add start signal to buffer, since we have a valid message
-            buf.append(validation_1)
-            buf.append(validation_2)
-            data += struct.pack("<B", validation_1)
-            data += struct.pack("<B", validation_2)
+            buf.append(self.validation_1)
+            buf.append(self.validation_2)
+            data += struct.pack("<c", self.validation_1)
+            data += struct.pack("<c", self.validation_2)
 
 
             #Get the header
             for i in range(2, 7):
                 byte = self.ser.read()
                 print(byte)
-                headerRaw += struct.pack("<B", byte)
+                #headerRaw += struct.pack("<c", byte)
 
             #Decode Header
             header = struct.unpack(self.headerFormat, header)
@@ -223,8 +223,13 @@ class Ping1D:
         finalHeader = self.packHeader(header)
 
         #Create Checksum
-        finalChecksum = self.buildChecksum(finalHeader, finalPayload)
-        self.ser.write(result)
+        checksum = self.buildChecksum(finalHeader, finalPayload)
+        finalChecksum = self.packChecksum(checksum)
+
+        #Send it!
+        self.ser.write(finalHeader)
+        self.ser.write(finalPayload)
+        self.ser.write(finalChecksum)
 
     #Accessor Methods
     ################
@@ -309,7 +314,6 @@ class Ping1D:
 
     #Pack the header so it can be sent
     def packHeader(self, headerData):
-        print(headerData)
         headerPacked = struct.pack(self.headerFormat, *headerData)
         return headerPacked
 
@@ -335,15 +339,19 @@ class Ping1D:
     #Checksum = sum(0 -> n) & 0xffff
     def buildChecksum(self, h, p):
         hUnpacked = struct.unpack("<BBBBBBBB", h)
-        print(hUnpacked)
+        pFormat = '<' + (len(p) * 'B')
+        pUnpacked = struct.unpack(pFormat, p)
 
         hSize = len(h)
         pSize = len(p)
         sumOfBytes = 0
         for i in range(0, hSize):
             sumOfBytes += hUnpacked[i]
-        # for i in range(0, pSize):
-        #     sumOfBytes += pByteArray[i]
+        for i in range(0, pSize):
+            sumOfBytes += pUnpacked[i]
 
         checksum = sumOfBytes & 0xffff
         return checksum
+
+    def packChecksum(self, c):
+        return struct.pack(self.checksumFormat, c)
