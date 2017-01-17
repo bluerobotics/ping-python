@@ -95,8 +95,9 @@ class Ping1D:
         #TODO this is temporary to get the altitude message only
         self.request(0x3, 1)
         sonarData = self.readSonar()
-        if (sonarData != None):
-            self.handleSonar(sonarData)
+        #TODO work out new data handling
+        #if (sonarData != None):
+        #    self.handleSonar(sonarData)
 
     #Update values from new sonar report
     def handleSonar(self, sonarData):
@@ -121,6 +122,7 @@ class Ping1D:
             self.results[i] = sonarData[18 + i]
 
     def readSonar(self):
+        print("")
         timeout = 10000
         readCount = 0
 
@@ -130,8 +132,6 @@ class Ping1D:
 
         data = ""
         start_signal_found = False
-
-        print("readSonar()")
 
         try:
             #Burn through data until start signal
@@ -167,9 +167,14 @@ class Ping1D:
             #Decode Header
             header = struct.unpack(self.headerFormat, headerRaw)
             print(header)
+
             #Find how long the message body is
-            #bodyLength = header[2]
-            #print(bodyLength)
+            payloadLength = header[2]
+            print('Payload length: ' + str(payloadLength))
+
+            messageID = header[3]
+            print('Message ID: ' + str(messageID))
+
             #Get the message body
 
             #Get the Checksum
