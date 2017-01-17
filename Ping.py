@@ -126,12 +126,9 @@ class Ping1D:
         timeout = 10000
         readCount = 0
 
-
         headerRaw = ""
         payloadRaw = ""
         checksumRaw = ""
-
-        data = ""
         start_signal_found = False
 
         try:
@@ -156,9 +153,6 @@ class Ping1D:
             #Add start signal to buffer, since we have a valid message
             headerRaw += struct.pack('<c', self.validation_1)
             headerRaw += struct.pack('<c', self.validation_2)
-            data += struct.pack("<c", self.validation_1)
-            data += struct.pack("<c", self.validation_2)
-
 
             #Get the header
             for i in range(2, 8):
@@ -167,8 +161,6 @@ class Ping1D:
 
             #Decode Header
             header = struct.unpack(self.headerFormat, headerRaw)
-            # viewableHeader = struct.unpack('<BBBBBBBB', headerRaw)
-            # print(viewableHeader)
 
             #Find how long the message body is
             payloadLength = header[2]
@@ -184,26 +176,20 @@ class Ping1D:
 
             #Decode the body
             payload = struct.unpack('<IBBBB', payloadRaw)
-            # viewablePayload = struct.unpack('<8B', bodyRaw)
-            # print(viewablePayload)
-            #print('Payload: ' + str(payload))
 
             #Get the Checksum
             for i in range(0, 2):
                 byte = self.ser.read()
                 checksumRaw += struct.pack("<c", byte)
+
             checksum = struct.unpack(self.checksumFormat, checksumRaw)
-            print("Checksum (read): " + str(checksum[0]))
+            checksum = checksum[0]
 
-            checksumCalculated = self.buildChecksum(headerRaw, payloadRaw)
-            print("Checksum (calculated): " + str(checksumCalculated))
+            checksumMatch = self.evaluateChecksum(headerRaw, payloadRaw, checksum)
+            #Return None if there is a checksum error
+            if (not checksumMatch):
+                return None
 
-            # for i in range(0,450):
-            #     byte = self.ser.read()
-            #     data += struct.pack("<c", byte)
-            #     buf.append(byte)
-            #
-            # unpacked = struct.unpack(self.packetFormat, data)
             return None
             #return unpacked
 
@@ -346,15 +332,22 @@ class Ping1D:
         return payloadPacked
 
     #Checksum = sum(0 -> n) & 0xffff
-    def evaluateChecksum(self, m):
-        mSize = len(m)
+    def evaluateChecksum(self, h, p, c):
+        hUnpacked = struct.unpack("<BBBBBBBB", h)
+        pFormat = '<' + (len(p) * 'B')
+        pUnpacked = struct.unpack(pFormat, p)
+
+        hSize = len(h)
+        pSize = len(p)
         sumOfBytes = 0
-        #The -2 here is to not count the checksum itself
-        for i in range(0, (mSize - 2)):
-            sumOfBytes += m[i]
+        for i in range(0, hSize):
+            sumOfBytes += hUnpacked[i]
+        for i in range(0, pSize):
+            sumOfBytes += pUnpacked[i]
 
         checksum = sumOfBytes & 0xffff
-        return checksum
+
+        return checksum == c
 
     #Checksum = sum(0 -> n) & 0xffff
     def buildChecksum(self, h, p):
