@@ -126,9 +126,10 @@ class Ping1D:
         timeout = 10000
         readCount = 0
 
+
         headerRaw = ""
-        bodyRaw = []
-        checksumRaw = []
+        bodyRaw = ""
+        checksumRaw = ""
 
         data = ""
         start_signal_found = False
@@ -153,8 +154,8 @@ class Ping1D:
                         return None
 
             #Add start signal to buffer, since we have a valid message
-            headerRaw += self.validation_1
-            headerRaw += self.validation_2
+            headerRaw += struct.pack('<c', self.validation_1)
+            headerRaw += struct.pack('<c', self.validation_2)
             data += struct.pack("<c", self.validation_1)
             data += struct.pack("<c", self.validation_2)
 
@@ -166,7 +167,8 @@ class Ping1D:
 
             #Decode Header
             header = struct.unpack(self.headerFormat, headerRaw)
-            print(header)
+            # viewableHeader = struct.unpack('<BBBBBBBB', headerRaw)
+            # print(viewableHeader)
 
             #Find how long the message body is
             payloadLength = header[2]
@@ -176,9 +178,22 @@ class Ping1D:
             print('Message ID: ' + str(messageID))
 
             #Get the message body
+            for i in range(0, payloadLength):
+                byte = self.ser.read()
+                bodyRaw += struct.pack("<c", byte)
+
+            #Decode the body
+            payload = struct.unpack('<IBBBB', bodyRaw)
+            # viewablePayload = struct.unpack('<8B', bodyRaw)
+            # print(viewablePayload)
+            #print('Payload: ' + str(payload))
 
             #Get the Checksum
-
+            for i in range(0, 2):
+                byte = self.ser.read()
+                checksumRaw += struct.pack("<c", byte)
+            checksum = struct.unpack(self.checksumFormat, checksumRaw)
+            print(checksum)
 
             # for i in range(0,450):
             #     byte = self.ser.read()
