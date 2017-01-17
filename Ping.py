@@ -93,7 +93,7 @@ class Ping1D:
     #Read and Update
     def updateSonar(self):
         #TODO this is temporary to get the altitude message only
-        self.request(0x3, 1)
+        self.request(0x4, 1)
         sonarData = self.readSonar()
         #TODO work out new data handling
         #if (sonarData != None):
@@ -122,13 +122,13 @@ class Ping1D:
             self.results[i] = sonarData[18 + i]
 
     def readSonar(self):
-        print("")
         timeout = 10000
         readCount = 0
 
         headerRaw = ""
         payloadRaw = ""
         checksumRaw = ""
+
         start_signal_found = False
 
         try:
@@ -162,35 +162,29 @@ class Ping1D:
             #Decode Header
             header = struct.unpack(self.headerFormat, headerRaw)
 
-            #Find how long the message body is
+            #Look at header metadata
             payloadLength = header[2]
-            print('Payload length: ' + str(payloadLength))
-
             messageID = header[3]
-            print('Message ID: ' + str(messageID))
 
             #Get the message body
             for i in range(0, payloadLength):
                 byte = self.ser.read()
                 payloadRaw += struct.pack("<c", byte)
 
-            #Decode the body
-            payload = struct.unpack('<IBBBB', payloadRaw)
-
             #Get the Checksum
             for i in range(0, 2):
                 byte = self.ser.read()
                 checksumRaw += struct.pack("<c", byte)
 
-            checksum = struct.unpack(self.checksumFormat, checksumRaw)
-            checksum = checksum[0]
-
+            #Decode the checksum
+            checksum = struct.unpack(self.checksumFormat, checksumRaw)[0]
             checksumMatch = self.evaluateChecksum(headerRaw, payloadRaw, checksum)
+
             #Return None if there is a checksum error
             if (not checksumMatch):
                 return None
 
-            return None
+            return payloadRaw
             #return unpacked
 
         except Exception as e:
@@ -332,6 +326,7 @@ class Ping1D:
         return payloadPacked
 
     #Checksum = sum(0 -> n) & 0xffff
+    #Returns true if checksum match
     def evaluateChecksum(self, h, p, c):
         hUnpacked = struct.unpack("<BBBBBBBB", h)
         pFormat = '<' + (len(p) * 'B')
