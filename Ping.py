@@ -128,7 +128,7 @@ class Ping1D:
 
 
         headerRaw = ""
-        bodyRaw = ""
+        payloadRaw = ""
         checksumRaw = ""
 
         data = ""
@@ -180,10 +180,10 @@ class Ping1D:
             #Get the message body
             for i in range(0, payloadLength):
                 byte = self.ser.read()
-                bodyRaw += struct.pack("<c", byte)
+                payloadRaw += struct.pack("<c", byte)
 
             #Decode the body
-            payload = struct.unpack('<IBBBB', bodyRaw)
+            payload = struct.unpack('<IBBBB', payloadRaw)
             # viewablePayload = struct.unpack('<8B', bodyRaw)
             # print(viewablePayload)
             #print('Payload: ' + str(payload))
@@ -193,7 +193,10 @@ class Ping1D:
                 byte = self.ser.read()
                 checksumRaw += struct.pack("<c", byte)
             checksum = struct.unpack(self.checksumFormat, checksumRaw)
-            print(checksum)
+            print("Checksum (read): " + str(checksum[0]))
+
+            checksumCalculated = self.buildChecksum(headerRaw, payloadRaw)
+            print("Checksum (calculated): " + str(checksumCalculated))
 
             # for i in range(0,450):
             #     byte = self.ser.read()
