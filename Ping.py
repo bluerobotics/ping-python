@@ -93,33 +93,38 @@ class Ping1D:
     #Read and Update
     def updateSonar(self):
         #TODO this is temporary to get the altitude message only
-        self.request(0x4, 1)
+        self.request(0x3, 1)
         sonarData = self.readSonar()
-        #TODO work out new data handling
-        #if (sonarData != None):
-        #    self.handleSonar(sonarData)
+        if (sonarData != None):
+           self.handleSonar(sonarData)
 
     #Update values from new sonar report
     def handleSonar(self, sonarData):
-        self.fw_version_major                      = sonarData[2]
-        self.fw_version_minor                      = sonarData[3]
-        self.num_results                           = sonarData[4]
-        self.supply_millivolts                     = sonarData[5]
-        self.start_mm                              = sonarData[6]
-        self.length_mm                             = sonarData[7]
-        self.this_ping_distance_mm                 = sonarData[8]
-        self.smoothed_distance_mm                  = sonarData[9]
-        self.smoothed_distance_confidence_percent  = sonarData[10]
-        self.ping_duration_usec                    = sonarData[11]
-        self.goertzel_n                            = sonarData[12]
-        self.goertzel_m                            = sonarData[13]
-        self.analog_gain                           = sonarData[14]
-        self.ping_number                           = sonarData[15]
-        self.timestamp_msec                        = sonarData[16]
-        self.index_of_bottom_result                = sonarData[17]
+        messageID = sonarData[0]
+        payloadPacked = sonarData[1]
 
-        for i in range(0,self.num_results):
-            self.results[i] = sonarData[18 + i]
+        if  (messageID == 1):
+            print("ACK")
+
+        elif(messageID == 2):
+            payload = struct.unpack(self.msgNACKFormat, payloadPacked)
+            print("Error: " + payload[1])
+            print("NACK")
+
+        elif(messageID == 3):
+            payload = struct.unpack(self.msgAltitudeMessageFormat, payloadPacked)
+            self.ping_range                           = payload[0]
+            self.smoothed_distance_mm                 = payload[1]
+            self.smoothed_distance_confidence_percent = payload[2]
+
+        elif(messageID == 4):
+            print("Full Profile")
+
+        elif(messageID == 6):
+            print("General Info")
+
+        elif(messageID == 7):
+            print("Ascii")
 
     def readSonar(self):
         timeout = 10000
@@ -184,7 +189,7 @@ class Ping1D:
             if (not checksumMatch):
                 return None
 
-            return payloadRaw
+            return (messageID, payloadRaw)
             #return unpacked
 
         except Exception as e:
