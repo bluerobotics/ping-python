@@ -40,4 +40,4 @@ raw_input("Press Enter to continue...")
 while True:
     myPing.updateSonar()
     #TODO reactivate when finished
-    #print("Current Distance: " + str(myPing.getDistance()) + " | Confidence: " + str(myPing.getConfidence()))
+    print("Current Distance: " + str(myPing.getDistance()) + " | Confidence: " + str(myPing.getConfidence()))
