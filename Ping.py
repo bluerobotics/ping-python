@@ -9,11 +9,7 @@ import socket
 
 
 class Ping1D:
-    #Early Sonar report packet
-    #452 Bytes
-    packetFormat = "<ccHHhiiiiihhhhiIIhHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHcc"
-
-    #Meta Formats
+    #Metadata Formats
     ############
     #Header
     headerFormat = '<ccHHH'
@@ -25,7 +21,6 @@ class Ping1D:
     msgACKFormat = '<H'                                           #ACK
     msgNACKFormat = '<Hs'                                         #NACK
     msgAltitudeMessageFormat = '<IIB'                             #Altitude
-    #msgFullProfileFormat = '<IIHHIIIhhHIIHH' + 'B' * 200          #Full Profile
     msgFullProfileFormat = '<IIHHIIIhhHIIHH200B'                  #Full Profile
     msgGeneralInfoFormat = '<HHHH'                                #General Info
     msgAsciiTextFormat = '<B'                                     #ASCII Text
@@ -35,11 +30,9 @@ class Ping1D:
     msgDebugFormat = '<BBHH'                                      #Debug
     msgSetSpeedFormat = '<I'                                      #Set C
 
-    #TODO: Can use calcsize() to get the size of a struct from the template string
-
     #Profile Message
     #200 Points
-    profileMessageFormat = '<BIIIHBI' + 'B' * 200
+    profileMessageFormat = '<BIIIHBI200B'
     #Status Message
     statusMessageFormat = "<HHHB"
 
@@ -88,7 +81,6 @@ class Ping1D:
         except:
             print("Failed to open the given serial port")
             exit(1)
-
 
     #Read and Update
     def updateSonar(self):
@@ -190,7 +182,6 @@ class Ping1D:
                 return None
 
             return (messageID, payloadRaw)
-            #return unpacked
 
         except Exception as e:
             print "Error: "+str(e)
@@ -202,7 +193,6 @@ class Ping1D:
     #Request the given message ID
     def request(self, m_id, m_rate):
         payloadData = [m_id, m_rate]
-        #TODO this is hardcoded for now
         self.sendMessage(0x101, self.msgRequestFormat, payloadData)
 
     #Manually set the scanning range
@@ -326,8 +316,8 @@ class Ping1D:
     def packPayload(self, payloadFormat, payloadRaw):
         if (payloadRaw == []):
             return
-
         payloadPacked = struct.pack(payloadFormat, *payloadRaw)
+
         return payloadPacked
 
     #Checksum = sum(0 -> n) & 0xffff
