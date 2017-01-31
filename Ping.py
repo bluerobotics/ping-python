@@ -30,8 +30,8 @@ class Ping1D:
     msgDebugFormat = '<BBHH'                                      #Debug
     msgSetSpeedFormat = '<I'                                      #Set C
 
+    #Old Formats
     #Profile Message
-    #200 Points
     profileMessageFormat = '<BIIIHBI200B'
     #Status Message
     statusMessageFormat = "<HHHB"
@@ -65,7 +65,7 @@ class Ping1D:
     index_of_bottom_result                = 0
     results                               = [0]*200
 
-    #Start signal detection
+    #Start Signal
     validation_1 = b'B'
     validation_2 = b'R'
     test_1 = ''
