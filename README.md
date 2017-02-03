@@ -9,7 +9,7 @@ Python library for the Ping sonar. Ping is the simple, affordable, and compact u
 
 This library exposes all functionality of the device, such as getting profiles, controlling parameters, switching modes, or just simply reading in the distance measurement.
 
-[Available here](http://www.bluerobotics.com/)
+[Available here](https://www.bluerobotics.com/store/electronics/lumen-light-r1/)
 
 <br/>
 <br/>
