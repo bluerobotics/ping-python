@@ -11,9 +11,7 @@ import socket
 class Ping1D:
     #Metadata Formats
     ############
-    #Header
     headerFormat = '<ccHHH'
-    #Checksum
     checksumFormat = '<H'
 
     #Message Formats
@@ -29,12 +27,6 @@ class Ping1D:
     msgRangeFormat = '<HH'                                        #Range
     msgDebugFormat = '<BBHH'                                      #Debug
     msgSetSpeedFormat = '<I'                                      #Set C
-
-    #Old Formats
-    #Profile Message
-    profileMessageFormat = '<BIIIHBI200B'
-    #Status Message
-    statusMessageFormat = "<HHHB"
 
     instructions = "Usage: python simplePingExample.py -d <device_name>"
 
