@@ -15,7 +15,7 @@
 
 ###Distance
 
-Message ID: 0x01
+Message ID: 0x3
 
 | Byte |   Type   |    Name    |           Value           |
 |------|----------|------------|---------------------------|
@@ -25,7 +25,7 @@ Message ID: 0x01
 
 ###Profile
 
-Message ID: 0x02
+Message ID: 0x04
 
 |        Byte         |   Type   |    Name    |                  Value                   |
 |---------------------|----------|------------|------------------------------------------|
@@ -41,7 +41,7 @@ Message ID: 0x02
 
 ###Status
 
-Message ID: 0x03
+Message ID: 0x06
 
 | Byte |   Type   |      Name      |             Value             |
 |------|----------|----------------|-------------------------------|
