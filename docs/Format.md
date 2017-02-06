@@ -6,7 +6,8 @@
 | 1           | uint8_t  | startByte2 | "R"                                             |
 | 2-3         | uint16_t | length     | Length of message body (not including checksum) |
 | 4-5         | uint16_t | messageID  | Message identifier                              |
-| 6-n         |          | data       | data packet                                     |
+| 6-7         | uint16_t | reserved   | Reserved. Must be 0                             |
+| 8-n         |          | data       | data packet                                     |
 | (n+1)-(n+2) | uint16_t | checksum   | CRC16                                           |
 
 
