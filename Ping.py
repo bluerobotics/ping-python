@@ -156,6 +156,9 @@ class Ping1D:
             messageID = header[3]
 
             #TODO check "is this message for me?"
+            #If it is, continue as usual.
+            #If not, burn through the rest of the message and discard
+
 
             #Get the message body
             for i in range(0, payloadLength):
