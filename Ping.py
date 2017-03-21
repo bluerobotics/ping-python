@@ -155,6 +155,8 @@ class Ping1D:
             payloadLength = header[2]
             messageID = header[3]
 
+            #TODO check "is this message for me?"
+
             #Get the message body
             for i in range(0, payloadLength):
                 byte = self.ser.read()
