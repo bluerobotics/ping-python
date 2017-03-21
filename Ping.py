@@ -7,11 +7,10 @@ import serial
 import getopt
 import socket
 
-
 class Ping1D:
     #Metadata Formats
     ############
-    headerFormat = '<ccHHH'
+    headerFormat = '<ccHHcc'
     checksumFormat = '<H'
 
     #Message Formats
