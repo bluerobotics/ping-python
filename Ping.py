@@ -187,6 +187,10 @@ class Ping1D:
     #Control Methods
     ###################
 
+    #####################
+    #TODO: Update these to match the new Protocol
+    #####################
+
     #Request the given message ID
     def request(self, m_id, m_rate):
         payloadData = [m_id, m_rate]
