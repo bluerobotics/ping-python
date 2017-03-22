@@ -226,6 +226,10 @@ class Ping1D:
     #Accessor Methods
     ################
 
+    ##################
+    #TODO: Update these to match the new Protocol
+    ##################
+
     #Returns a string of the version number
     def getVersion(self):
         return (str(self.fw_version_major) + "." + str(self.fw_version_minor))
