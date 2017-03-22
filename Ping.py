@@ -300,7 +300,6 @@ class Ping1D:
     #This will create a CRC of the message and check it against the sent one
     def validateChecksum(self, message, claimedChecksum):
         checksum = evaluateChecksum(message)
-
         return (checksum == claimedChecksum)
 
     #Return a list of the data in the header
@@ -318,7 +317,6 @@ class Ping1D:
         if (payloadRaw == []):
             return
         payloadPacked = struct.pack(payloadFormat, *payloadRaw)
-
         return payloadPacked
 
     #Checksum = sum(0 -> n) & 0xffff
