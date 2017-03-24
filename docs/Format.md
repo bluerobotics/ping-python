@@ -23,7 +23,7 @@ Message ID: 0x3
 | 6-9  | uint32_t | distance   | Measured distance, in mm  |
 
 
-###Profile
+### Profile
 
 Message ID: 0x04
 
@@ -39,7 +39,7 @@ Message ID: 0x04
 | 23-(23+numPoints-1) | uint8_t  | data       | Echo data array                          |
 
 
-###Status
+### Status
 
 Message ID: 0x06
 
