@@ -11,9 +11,9 @@
 | (n+1)-(n+2) | uint16_t | checksum   | CRC16                                           |
 
 
-##Message Definitions
+## Message Definitions
 
-###Distance
+### Distance
 
 Message ID: 0x3
 
