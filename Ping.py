@@ -7,11 +7,10 @@ import serial
 import getopt
 import socket
 
-
 class Ping1D:
     #Metadata Formats
     ############
-    headerFormat = '<ccHHH'
+    headerFormat = '<ccHHcc'
     checksumFormat = '<H'
 
     #Message Formats
@@ -87,6 +86,7 @@ class Ping1D:
         messageID = sonarData[0]
         payloadPacked = sonarData[1]
 
+	#TODO update to match protocol
         if  (messageID == 1):
             print("ACK")
 
@@ -155,6 +155,11 @@ class Ping1D:
             payloadLength = header[2]
             messageID = header[3]
 
+            #TODO check "is this message for me?"
+            #If it is, continue as usual.
+            #If not, burn through the rest of the message and discard
+
+
             #Get the message body
             for i in range(0, payloadLength):
                 byte = self.ser.read()
@@ -181,6 +186,10 @@ class Ping1D:
 
     #Control Methods
     ###################
+
+    #####################
+    #TODO: Update these to match the new Protocol
+    #####################
 
     #Request the given message ID
     def request(self, m_id, m_rate):
@@ -220,6 +229,10 @@ class Ping1D:
 
     #Accessor Methods
     ################
+
+    ##################
+    #TODO: Update these to match the new Protocol
+    ##################
 
     #Returns a string of the version number
     def getVersion(self):
@@ -291,7 +304,6 @@ class Ping1D:
     #This will create a CRC of the message and check it against the sent one
     def validateChecksum(self, message, claimedChecksum):
         checksum = evaluateChecksum(message)
-
         return (checksum == claimedChecksum)
 
     #Return a list of the data in the header
@@ -309,7 +321,6 @@ class Ping1D:
         if (payloadRaw == []):
             return
         payloadPacked = struct.pack(payloadFormat, *payloadRaw)
-
         return payloadPacked
 
     #Checksum = sum(0 -> n) & 0xffff
