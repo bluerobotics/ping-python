@@ -153,12 +153,18 @@ class Ping1D:
 
             #Look at header metadata
             payloadLength = header[2]
-            messageID = header[3]
+            messageID     = header[3]
+            sourceID      = header[4]
+            destinationID = header[5]
 
-            #TODO check "is this message for me?"
-            #If it is, continue as usual.
-            #If not, burn through the rest of the message and discard
+            messageForHost = False
 
+            if(destinationID != 0):
+                print("Got message intended for other device")
+                messageForHost = False
+            else:
+                print("Got message directed at host")
+                messageForHost = True
 
             #Get the message body
             for i in range(0, payloadLength):
@@ -169,6 +175,10 @@ class Ping1D:
             for i in range(0, 2):
                 byte = self.ser.read()
                 checksumRaw += struct.pack("<c", byte)
+
+            #Ignore message if it was not directed at the host
+            if (!messageForHost):
+                return None
 
             #Decode the checksum
             checksum = struct.unpack(self.checksumFormat, checksumRaw)[0]
