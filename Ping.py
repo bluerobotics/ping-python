@@ -38,6 +38,7 @@ class Ping1D:
     # sock.bind( (UDP_IP,UDP_PORT) )
 
     #Parameters
+    device_id                             = 255
     fw_version_major                      = 0
     fw_version_minor                      = 0
     num_results                           = 0
