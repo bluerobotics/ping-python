@@ -1,4 +1,4 @@
-#ping-python
+# ping-python
 
 <a href="https://bluerobotics.com">
 <img src="https://avatars2.githubusercontent.com/u/7120633?v=3&s=200" align="left" hspace="10" vspace="6">
@@ -22,12 +22,12 @@ This library exposes all functionality of the device, such as getting profiles, 
 * [Support](http://docs.bluerobotics.com)
 * [License](http://github.com/bluerobotics/ping-python/blob/master/LICENSE)
 
-##Installing
+## Installing
 
 * `git clone --recursive http://github.com/bluerobotics/ping-python.git`
 * `cd ping-python`
 
-##Quick Start
+## Quick Start
 
 You can run a simple example that prints the distance reading repeatedly by executing the command below. Place your device's file descriptor after the --device option. For example, on Linux this will likely be /dev/ttyUSB0.
 

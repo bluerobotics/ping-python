@@ -1,6 +1,6 @@
-#Ping API Reference
+# Ping API Reference
 
-##Accessor Methods
+## Accessor Methods
 
 These methods are used to acquire data from the device
 
