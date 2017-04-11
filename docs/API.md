@@ -35,37 +35,56 @@ Returns the most recent distance reading and confidence. Provides no advantage o
 <br/>
 <br/>
 
-* `getRange())`
+* `getProfile()`
 
-Description
+Returns the latest distance reading data. Includes all metadata. 
+
+| Item               | Description                                        |
+|--------------------|----------------------------------------------------|
+| distance           | Nearest object to Ping                             |
+| confidence         | Confidence in the measurement, as a percent        |
+| pulse_usec         | Length of the sent pulse, in microseconds          |
+| ping_number        | Counts the pings since startup                     |
+| start_mm           | Closest distance that Ping was scanning            |
+| length_mm          | Length of scanning range                           |
+| gain_index         | Receiving gain index                               |
+| num_points         | Number of data points                              |
+| points[num_points] | Array of profile data points                       |
+
+<br/>
+<br/>
+
+* `getRange()`
+
+Returns information about the range that Ping is scanning in.
+
+| Item          | Description                                        |
+|---------------|----------------------------------------------------|
+| start_mm      | Closest distance that Ping was scanning            |
+| length_mm     | Confidence in the measurement, as a percent        |
 
 <br/>
 <br/>
 
 * `getMode()`
 
-Description
+Returns whether Ping is in auto or manual mode.
+
+| Item             | Description                                        |
+|------------------|----------------------------------------------------|
+| auto_manual      | 1 = auto, 0 = manual                               |
 
 <br/>
 <br/>
 
 * `getRate()`
 
-Description
+Returns information about the ping rate.
 
-<br/>
-<br/>
+| Item               | Description                                        |
+|--------------------|----------------------------------------------------|
+| msec_per_ping      | 0 = disable continuous ping                        |
 
-* `getGain()`
-
-Description
-
-<br/>
-<br/>
-
-* `getPulseLength()`
-
-Description
 
 <br/>
 <br/>
@@ -89,3 +108,12 @@ Retuns the index of the analog gain
 
 <br/>
 <br/>
+
+* `getPulseLength()`
+
+Description
+
+<br/>
+<br/>
+
+
