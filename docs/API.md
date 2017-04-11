@@ -19,6 +19,7 @@ Returns the most recent distance reading and confidence.
 <br/>
 
 * `getRange())`
+
 Description
 <br/>
 <br/>
@@ -30,6 +31,7 @@ Description
 <br/>
 
 * `getRate()`
+
 Description
 <br/>
 <br/>
