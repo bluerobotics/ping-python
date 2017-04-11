@@ -124,7 +124,7 @@ Sends configuration options to Ping. See [here](http://keisan.casio.com/exec/sys
 
 * `sendRequest(messageID)`
 
-Requests a message from Ping. See the [Serial Protocol](http://github.com/bluerobotics/ping-python/blob/master/docs/Format.md) for message formats.
+Requests a message from Ping. See the [Serial Protocol](http://github.com/bluerobotics/ping-protocol/blob/master/README.md) for message formats.
 
 |      Argument      | Value |  Result  |
 |--------------------|-------|----------|
