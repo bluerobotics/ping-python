@@ -9,6 +9,17 @@ These methods are used to acquire data from the device
 * `getDistance()`
 
 Returns the latest distance reading data. Includes all metadata. 
+
+| Item          | Description                                        |
+|---------------|----------------------------------------------------|
+| distance      | Nearest object to Ping                             |
+| confidence    | Confidence in the measurement, as a percent        |
+| pulse_usec    | Length of the sent pulse, in microseconds          |
+| ping_number   | Counts the pings since startup                     |
+| start_mm      | Closest distance that Ping was scanning            |
+| length_mm     | Length of scanning range                           |
+| gain_index    | Receiving gain index                               |
+
 <br/>
 <br/>
 
