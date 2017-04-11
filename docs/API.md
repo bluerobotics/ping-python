@@ -25,37 +25,48 @@ Returns the latest distance reading data. Includes all metadata.
 
 * `getDistanceSimple()`
 
-Returns the most recent distance reading and confidence. 
+Returns the most recent distance reading and confidence. Provides no advantage over the full `getDistance()` message
+
+| Item          | Description                                        |
+|---------------|----------------------------------------------------|
+| distance      | Nearest object to Ping                             |
+| confidence    | Confidence in the measurement, as a percent        |
+
 <br/>
 <br/>
 
 * `getRange())`
 
 Description
+
 <br/>
 <br/>
 
 * `getMode()`
 
 Description
+
 <br/>
 <br/>
 
 * `getRate()`
 
 Description
+
 <br/>
 <br/>
 
 * `getGain()`
 
 Description
+
 <br/>
 <br/>
 
 * `getPulseLength()`
 
 Description
+
 <br/>
 <br/>
 
