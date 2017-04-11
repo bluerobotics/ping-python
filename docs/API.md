@@ -79,19 +79,14 @@ Returns whether Ping is in auto or manual mode.
 
 * `getRate()`
 
-Returns information about the ping rate.
-
-| Item               | Description                                        |
-|--------------------|----------------------------------------------------|
-| msec_per_ping      | 0 = disable continuous ping                        |
-
+Returns the ping rate, in Hz.
 
 <br/>
 <br/>
 
 * `getGain()`
 
-Retuns the index of the analog gain
+Retuns the index of the receiving analog gain. See table below for reference.
 
 | Index | Gain (dB) |
 |-------|-----------|
@@ -111,9 +106,11 @@ Retuns the index of the analog gain
 
 * `getPulseLength()`
 
-Description
+Returns the sent pulse length.
 
 <br/>
 <br/>
+
+## Control Methods
 
 
