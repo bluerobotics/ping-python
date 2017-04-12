@@ -1,5 +1,16 @@
 # Ping API Reference
 
+
+-----
+
+## Table of Conents
+
+* [Accessor Methods]()
+  * [getDistance()]()
+
+-----
+
+
 ## Accessor Methods
 
 These methods are used to acquire data from the device. They return a named tuple which can be used to access specific fields. 
@@ -116,9 +127,9 @@ Returns the sent pulse length.
 ## Control Methods
 
 
-* `getRange()`
+* `setRange()`
 
-Returns information about the range that Ping is scanning in.
+Sets information about the range that Ping is scanning in.
 
 | Item          | Description                                        |
 |---------------|----------------------------------------------------|
@@ -128,9 +139,9 @@ Returns information about the range that Ping is scanning in.
 <br/>
 <br/>
 
-* `getMode()`
+* `setMode()`
 
-Returns whether Ping is in auto or manual mode.
+Sets whether Ping is in auto or manual mode.
 
 | Item             | Description                                        |
 |------------------|----------------------------------------------------|
@@ -139,16 +150,16 @@ Returns whether Ping is in auto or manual mode.
 <br/>
 <br/>
 
-* `getRate()`
+* `setRate()`
 
-Returns the ping rate, in Hz.
+Sets the ping rate, in Hz.
 
 <br/>
 <br/>
 
-* `getGain()`
+* `setGain()`
 
-Retuns the index of the receiving analog gain. See table below for reference.
+Sets the index of the receiving analog gain. See table below for reference.
 
 | Index | Gain (dB) |
 |-------|-----------|
@@ -166,9 +177,9 @@ Retuns the index of the receiving analog gain. See table below for reference.
 <br/>
 <br/>
 
-* `getPulseLength()`
+* `setPulseLength()`
 
-Returns the sent pulse length.
+Sets the sent pulse length.
 
 <br/>
 <br/>
