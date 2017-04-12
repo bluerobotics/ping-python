@@ -1,4 +1,4 @@
-# Ping API Reference
+# Ping-Python API Reference
 
 
 ## Table of Conents
