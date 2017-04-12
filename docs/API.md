@@ -3,9 +3,22 @@
 
 ## Table of Conents
 
-* [Accessor Methods]()
-  * [getDistance()]()
-
+* [Accessor Methods](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#accessor-methods)
+  * [getDistance](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#getdistance)
+  * [getDistanceSimple](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#getdistancesimple)
+  * [getProfile]()
+  * [getRange]()
+  * [getMode]()
+  * [getRate]()
+  * [getGain]()
+  * [getPulseLength]()
+* [Control Methods](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#control-methods)
+  * [setRange]()
+  * [setMode]()
+  * [setRate]()
+  * [setGain]()
+  * [setPulseLength]()
+  
 -----
 
 
