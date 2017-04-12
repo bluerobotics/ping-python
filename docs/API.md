@@ -138,37 +138,33 @@ Returns the sent pulse length.
 ## Control Methods
 
 
-### `setRange()`
+### `setRange(start_mm, length_mm)`
 
 Sets information about the range that Ping is scanning in.
 
 | Item          | Description                                        |
 |---------------|----------------------------------------------------|
-| start_mm      | Closest distance that Ping was scanning            |
-| length_mm     | Confidence in the measurement, as a percent        |
+| start_mm      | Closest distance that Ping will scan               |
+| length_mm     | Length that Ping will look at                      |
 
 <br/>
 <br/>
 
-### `setMode()`
+### `setMode(auto_manual)`
 
-Sets whether Ping is in auto or manual mode.
-
-| Item             | Description                                        |
-|------------------|----------------------------------------------------|
-| auto_manual      | 1 = auto, 0 = manual                               |
+Sets whether Ping is in auto or manual mode. 1 = Auto. 0 = Manual. 
 
 <br/>
 <br/>
 
-### `setRate()`
+### `setRate(rate)`
 
 Sets the ping rate, in Hz.
 
 <br/>
 <br/>
 
-### `setGain()`
+### `setGain(gain)`
 
 Sets the index of the receiving analog gain. See table below for reference.
 
@@ -188,7 +184,7 @@ Sets the index of the receiving analog gain. See table below for reference.
 <br/>
 <br/>
 
-### `setPulseLength()`
+### `setPulseLength(pulseLength)`
 
 Sets the sent pulse length.
 
