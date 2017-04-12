@@ -2,7 +2,9 @@
 
 ## Accessor Methods
 
-These methods are used to acquire data from the device
+These methods are used to acquire data from the device. They return a named tuple which can be used to access specific fields. 
+
+`code example here`
 
 -----
 
@@ -112,5 +114,63 @@ Returns the sent pulse length.
 <br/>
 
 ## Control Methods
+
+
+* `getRange()`
+
+Returns information about the range that Ping is scanning in.
+
+| Item          | Description                                        |
+|---------------|----------------------------------------------------|
+| start_mm      | Closest distance that Ping was scanning            |
+| length_mm     | Confidence in the measurement, as a percent        |
+
+<br/>
+<br/>
+
+* `getMode()`
+
+Returns whether Ping is in auto or manual mode.
+
+| Item             | Description                                        |
+|------------------|----------------------------------------------------|
+| auto_manual      | 1 = auto, 0 = manual                               |
+
+<br/>
+<br/>
+
+* `getRate()`
+
+Returns the ping rate, in Hz.
+
+<br/>
+<br/>
+
+* `getGain()`
+
+Retuns the index of the receiving analog gain. See table below for reference.
+
+| Index | Gain (dB) |
+|-------|-----------|
+|     0 |      -6.6 |
+|     1 |         3 |
+|     2 |      12.6 |
+|     3 |        20 |
+|     4 |      27.4 |
+|     5 |        37 |
+|     6 |      44.4 |
+|     7 |      50.6 |
+|     8 |        58 |
+|     9 |        64 |
+
+<br/>
+<br/>
+
+* `getPulseLength()`
+
+Returns the sent pulse length.
+
+<br/>
+<br/>
 
 
