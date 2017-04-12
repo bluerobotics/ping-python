@@ -1,8 +1,6 @@
 # Ping API Reference
 
 
------
-
 ## Table of Conents
 
 * [Accessor Methods]()
@@ -19,7 +17,7 @@ These methods are used to acquire data from the device. They return a named tupl
 
 -----
 
-* `getDistance()`
+### `getDistance()`
 
 Returns the latest distance reading data. Includes all metadata. 
 
@@ -36,7 +34,7 @@ Returns the latest distance reading data. Includes all metadata.
 <br/>
 <br/>
 
-* `getDistanceSimple()`
+### `getDistanceSimple()`
 
 Returns the most recent distance reading and confidence. Provides no advantage over the full `getDistance()` message
 
@@ -48,7 +46,7 @@ Returns the most recent distance reading and confidence. Provides no advantage o
 <br/>
 <br/>
 
-* `getProfile()`
+### `getProfile()`
 
 Returns the latest distance reading data. Includes all metadata. 
 
@@ -67,7 +65,7 @@ Returns the latest distance reading data. Includes all metadata.
 <br/>
 <br/>
 
-* `getRange()`
+### `getRange()`
 
 Returns information about the range that Ping is scanning in.
 
@@ -79,7 +77,7 @@ Returns information about the range that Ping is scanning in.
 <br/>
 <br/>
 
-* `getMode()`
+### `getMode()`
 
 Returns whether Ping is in auto or manual mode.
 
@@ -90,14 +88,14 @@ Returns whether Ping is in auto or manual mode.
 <br/>
 <br/>
 
-* `getRate()`
+### `getRate()`
 
 Returns the ping rate, in Hz.
 
 <br/>
 <br/>
 
-* `getGain()`
+### `getGain()`
 
 Retuns the index of the receiving analog gain. See table below for reference.
 
@@ -117,7 +115,7 @@ Retuns the index of the receiving analog gain. See table below for reference.
 <br/>
 <br/>
 
-* `getPulseLength()`
+### `getPulseLength()`
 
 Returns the sent pulse length.
 
@@ -127,7 +125,7 @@ Returns the sent pulse length.
 ## Control Methods
 
 
-* `setRange()`
+### `setRange()`
 
 Sets information about the range that Ping is scanning in.
 
@@ -139,7 +137,7 @@ Sets information about the range that Ping is scanning in.
 <br/>
 <br/>
 
-* `setMode()`
+### `setMode()`
 
 Sets whether Ping is in auto or manual mode.
 
@@ -150,14 +148,14 @@ Sets whether Ping is in auto or manual mode.
 <br/>
 <br/>
 
-* `setRate()`
+### `setRate()`
 
 Sets the ping rate, in Hz.
 
 <br/>
 <br/>
 
-* `setGain()`
+### `setGain()`
 
 Sets the index of the receiving analog gain. See table below for reference.
 
@@ -177,7 +175,7 @@ Sets the index of the receiving analog gain. See table below for reference.
 <br/>
 <br/>
 
-* `setPulseLength()`
+### `setPulseLength()`
 
 Sets the sent pulse length.
 
