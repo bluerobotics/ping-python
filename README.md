@@ -18,7 +18,7 @@ This library exposes all functionality of the device, such as getting profiles, 
 
 * [API Reference](http://github.com/bluerobotics/ping-python/blob/master/docs/API.md)
 * [Device Specifications](http://www.bluerobotics.com/)
-* [Packet Format](http://github.com/bluerobotics/ping-python/blob/master/docs/Format.md)
+* [Serial Protocol](https://github.com/bluerobotics/ping-protocol)
 * [Support](http://docs.bluerobotics.com)
 * [License](http://github.com/bluerobotics/ping-python/blob/master/LICENSE)
 
