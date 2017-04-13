@@ -13,11 +13,11 @@
   * [getGain](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#getgain)
   * [getPulseLength](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#getpulselength)
 * [Control Methods](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#control-methods)
-  * [setRange](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setrange)
-  * [setMode](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setmode)
-  * [setRate](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setrate)
-  * [setGain](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setgain)
-  * [setPulseLength](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setpulselength)
+  * [setRange](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setrangestart_mm-length_mm)
+  * [setMode](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setmodeauto_manual)
+  * [setRate](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setraterate)
+  * [setGain](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setgaingain)
+  * [setPulseLength](https://github.com/bluerobotics/ping-python/blob/master/docs/API.md#setpulselengthpulselength)
   
 -----
 
