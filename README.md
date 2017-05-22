@@ -14,6 +14,7 @@ This library exposes all functionality of the device, such as getting profiles, 
 <br/>
 <br/>
 
+
 ## Resources
 
 * [API Reference](http://github.com/bluerobotics/ping-python/blob/master/docs/API.md)
@@ -22,10 +23,12 @@ This library exposes all functionality of the device, such as getting profiles, 
 * [Support](http://docs.bluerobotics.com)
 * [License](http://github.com/bluerobotics/ping-python/blob/master/LICENSE)
 
+
 ## Installing
 
 * `git clone --recursive http://github.com/bluerobotics/ping-python.git`
 * `cd ping-python`
+
 
 ## Quick Start
 
