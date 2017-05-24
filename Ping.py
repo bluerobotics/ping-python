@@ -15,6 +15,7 @@ class Ping1D:
 
     #Message Formats
     ################
+    #TODO Verify for 2.32
     msgACKFormat = '<H'                                           #ACK
     msgNACKFormat = '<Hs'                                         #NACK
     msgAltitudeMessageFormat = '<IIB'                             #Altitude
@@ -38,6 +39,7 @@ class Ping1D:
     # sock.bind( (UDP_IP,UDP_PORT) )
 
     #Parameters
+    #TODO Update for 2.32
     device_id                             = 255
     fw_version_major                      = 0
     fw_version_minor                      = 0
