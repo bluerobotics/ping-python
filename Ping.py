@@ -10,7 +10,8 @@ import socket
 class Ping1D:
     #Metadata Formats
     ############
-    headerFormat = '<ccHHcc'
+    #headerFormat = '<ccHHcc'
+    headerFormat = '<ccHHBB'
     checksumFormat = '<H'
 
     #Message Formats
@@ -23,7 +24,7 @@ class Ping1D:
     msgGeneralInfoFormat = '<HHHH'                                #General Info
     msgAsciiTextFormat = '<B'                                     #ASCII Text
     msgConfigFormat = ''                                          #Config
-    msgRequestFormat = '<HH'                                      #Request
+    msgRequestFormat = '<H'                                       #Request
     msgRangeFormat = '<HH'                                        #Range
     msgDebugFormat = '<BBHH'                                      #Debug
     msgSetSpeedFormat = '<I'                                      #Set C
@@ -79,10 +80,11 @@ class Ping1D:
     #Read and Update
     def updateSonar(self):
         #TODO this is temporary to get the altitude message only
-        self.request(0x3, 1)
+        self.request(101)
         sonarData = self.readSonar()
         if (sonarData != None):
-           self.handleSonar(sonarData)
+           print("Handling disabled for now!")
+           #self.handleSonar(sonarData)
 
     #Update values from new sonar report
     def handleSonar(self, sonarData):
@@ -128,6 +130,7 @@ class Ping1D:
             while(not start_signal_found):
                 #Put new byte in second index
                 self.test_2 = self.ser.read()
+                print(self.test_2)
 
                 #Check if start signal
                 if((self.test_1 == self.validation_1) and (self.test_2 == self.validation_2)):
@@ -160,13 +163,13 @@ class Ping1D:
             sourceID      = header[4]
             destinationID = header[5]
 
+            print("Payload Length: ", sourceID)
+
             messageForHost = False
 
             if(destinationID != 0):
-                print("Got message intended for other device")
                 messageForHost = False
             else:
-                print("Got message directed at host")
                 messageForHost = True
 
             #Get the message body
@@ -180,7 +183,7 @@ class Ping1D:
                 checksumRaw += struct.pack("<c", byte)
 
             #Ignore message if it was not directed at the host
-            if (!messageForHost):
+            if (not messageForHost):
                 return None
 
             #Decode the checksum
@@ -189,6 +192,7 @@ class Ping1D:
 
             #Return None if there is a checksum error
             if (not checksumMatch):
+                print("Checksum mismatch!")
                 return None
 
             return (messageID, payloadRaw)
@@ -205,9 +209,9 @@ class Ping1D:
     #####################
 
     #Request the given message ID
-    def request(self, m_id, m_rate):
-        payloadData = [m_id, m_rate]
-        self.sendMessage(0x101, self.msgRequestFormat, payloadData)
+    def request(self, m_id):
+        payloadData = [m_id]
+        self.sendMessage(120, self.msgRequestFormat, payloadData, 1)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
@@ -220,7 +224,7 @@ class Ping1D:
         return false
 
     #Used for sending of all messages
-    def sendMessage(self, m_id, m_format, m_payload):
+    def sendMessage(self, m_id, m_format, m_payload, m_destination):
         #Pack payload first, because metadata is required for the header
         finalPayload = self.packPayload(m_format, m_payload)
 
@@ -228,7 +232,7 @@ class Ping1D:
         payloadLength = struct.calcsize(m_format)
 
         #Create and pack header
-        header = self.buildHeader(payloadLength, m_id)
+        header = self.buildHeader(payloadLength, m_id, m_destination)
         finalHeader = self.packHeader(header)
 
         #Create Checksum
@@ -320,8 +324,8 @@ class Ping1D:
         return (checksum == claimedChecksum)
 
     #Return a list of the data in the header
-    def buildHeader(self, length, messageID):
-        headerData = [self.validation_1, self.validation_2, length, messageID, 0]
+    def buildHeader(self, length, messageID, destinationID):
+        headerData = [self.validation_1, self.validation_2, length, messageID, 0, destinationID]
         return headerData
 
     #Pack the header so it can be sent
