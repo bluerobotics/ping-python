@@ -92,7 +92,7 @@ class Ping1D:
         payloadPacked = sonarData[1]
 
 	#TODO update to match protocol
-        if  (messageID == 1):
+        if (messageID == 1):
             print("ACK")
 
         elif(messageID == 2):
@@ -162,8 +162,6 @@ class Ping1D:
             messageID     = header[3]
             sourceID      = header[4]
             destinationID = header[5]
-
-            print("Payload Length: ", sourceID)
 
             messageForHost = False
 
