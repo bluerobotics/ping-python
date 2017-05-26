@@ -83,8 +83,7 @@ class Ping1D:
         self.request(101)
         sonarData = self.readSonar()
         if (sonarData != None):
-           print("Handling disabled for now!")
-           #self.handleSonar(sonarData)
+           self.handleSonar(sonarData)
 
     #Update values from new sonar report
     def handleSonar(self, sonarData):
@@ -130,7 +129,6 @@ class Ping1D:
             while(not start_signal_found):
                 #Put new byte in second index
                 self.test_2 = self.ser.read()
-                print(self.test_2)
 
                 #Check if start signal
                 if((self.test_1 == self.validation_1) and (self.test_2 == self.validation_2)):
