@@ -10,24 +10,26 @@ import socket
 class Ping1D:
     #Metadata Formats
     ############
-    #headerFormat = '<ccHHcc'
-    headerFormat = '<ccHHBB'
-    checksumFormat = '<H'
+    msg_header   = '<ccHHBB'
+    msg_checksum = '<H'
 
     #Message Formats
     ################
-    #TODO Verify for 2.32
-    msgACKFormat = '<H'                                           #ACK
-    msgNACKFormat = '<Hs'                                         #NACK
-    msgAltitudeMessageFormat = '<IIB'                             #Altitude
-    msgFullProfileFormat = '<IIHHIIIhhHIIHH200B'                  #Full Profile
-    msgGeneralInfoFormat = '<HHHH'                                #General Info
-    msgAsciiTextFormat = '<B'                                     #ASCII Text
-    msgConfigFormat = ''                                          #Config
-    msgRequestFormat = '<H'                                       #Request
-    msgRangeFormat = '<HH'                                        #Range
-    msgDebugFormat = '<BBHH'                                      #Debug
-    msgSetSpeedFormat = '<I'                                      #Set C
+
+    #General Messages
+    msg_gen_goto_bootloader = ''
+    msg_gen_version = '<BBHH'
+    msg_gen_reset = ''
+    msg_gen_device_id = '<B'
+    msg_gen_new_data = '<B'
+    msg_gen_cmd_request = '<H'                                       #Request
+    msg_gen_voltage = '<H'
+
+    #Sonar Messages
+    msg_sonar_velocity = '<I'
+
+    #EchoSounder Messages
+    msg_es_distance_simple = '<IB'
 
     instructions = "Usage: python simplePingExample.py -d <device_name>"
 
@@ -91,28 +93,29 @@ class Ping1D:
         payloadPacked = sonarData[1]
 
 	#TODO update to match protocol
-        if (messageID == 1):
-            print("ACK")
+        if (messageID == 101):
+            print("Got Version")
+            print(sonarData[1])
 
-        elif(messageID == 2):
-            payload = struct.unpack(self.msgNACKFormat, payloadPacked)
-            print("Error: " + payload[1])
-            print("NACK")
-
-        elif(messageID == 3):
-            payload = struct.unpack(self.msgAltitudeMessageFormat, payloadPacked)
-            self.ping_range                           = payload[0]
-            self.smoothed_distance_mm                 = payload[1]
-            self.smoothed_distance_confidence_percent = payload[2]
-
-        elif(messageID == 4):
-            print("Full Profile")
-
-        elif(messageID == 6):
-            print("General Info")
-
-        elif(messageID == 7):
-            print("Ascii")
+        # elif(messageID == 2):
+        #     payload = struct.unpack(self.msgNACKFormat, payloadPacked)
+        #     print("Error: " + payload[1])
+        #     print("NACK")
+        #
+        # elif(messageID == 3):
+        #     payload = struct.unpack(self.msgAltitudeMessageFormat, payloadPacked)
+        #     self.ping_range                           = payload[0]
+        #     self.smoothed_distance_mm                 = payload[1]
+        #     self.smoothed_distance_confidence_percent = payload[2]
+        #
+        # elif(messageID == 4):
+        #     print("Full Profile")
+        #
+        # elif(messageID == 6):
+        #     print("General Info")
+        #
+        # elif(messageID == 7):
+        #     print("Ascii")
 
     def readSonar(self):
         timeout = 10000
@@ -153,7 +156,7 @@ class Ping1D:
                 headerRaw += struct.pack("<c", byte)
 
             #Decode Header
-            header = struct.unpack(self.headerFormat, headerRaw)
+            header = struct.unpack(self.msg_header, headerRaw)
 
             #Look at header metadata
             payloadLength = header[2]
@@ -183,7 +186,7 @@ class Ping1D:
                 return None
 
             #Decode the checksum
-            checksum = struct.unpack(self.checksumFormat, checksumRaw)[0]
+            checksum = struct.unpack(self.msg_checksum, checksumRaw)[0]
             checksumMatch = self.evaluateChecksum(headerRaw, payloadRaw, checksum)
 
             #Return None if there is a checksum error
@@ -326,7 +329,7 @@ class Ping1D:
 
     #Pack the header so it can be sent
     def packHeader(self, headerData):
-        headerPacked = struct.pack(self.headerFormat, *headerData)
+        headerPacked = struct.pack(self.msg_header, *headerData)
         return headerPacked
 
     #Pack the payload so it can be sent
@@ -373,4 +376,4 @@ class Ping1D:
         return checksum
 
     def packChecksum(self, c):
-        return struct.pack(self.checksumFormat, c)
+        return struct.pack(self.msg_checksum, c)
