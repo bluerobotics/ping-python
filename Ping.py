@@ -90,12 +90,17 @@ class Ping1D:
             print(sonarData[1])
             print("")
 
-        elif(messageID == 110):
+        elif (messageID == 110):
             print("Got Device ID")
             print(sonarData[1])
             print("")
 
-        
+        elif (messageID == 130):
+            print("Got Voltage")
+            print(sonarData[1])
+            print("")
+
+
         # elif(messageID == 2):
         #     payload = struct.unpack(self.msgNACKFormat, payloadPacked)
         #     print("Error: " + payload[1])
