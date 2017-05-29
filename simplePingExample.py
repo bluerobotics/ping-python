@@ -28,6 +28,8 @@ for opt, arg in options:
 
 #Make a new Ping
 myPing = Ping1D(device)
+myPing.initialize()
+
 print()
 print("------------------------------------")
 print("Starting Ping..")
@@ -38,5 +40,6 @@ raw_input("Press Enter to continue...")
 
 #Read and print distance measurements with confidence
 while True:
-    myPing.updateSonar()
-    print("Current Distance: " + str(myPing.getDistance()) + " | Confidence: " + str(myPing.getConfidence()))
+    myPing.updateSonar(1100)
+    sleep(1)
+    #print("Current Distance: " + str(myPing.getDistance()) + " | Confidence: " + str(myPing.getConfidence()))
