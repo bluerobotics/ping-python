@@ -214,7 +214,7 @@ class Ping1D:
     #Request the given message ID
     def request(self, m_id):
         payloadData = [m_id]
-        self.sendMessage(120, self.msgRequestFormat, payloadData, dev_id)
+        self.sendMessage(120, self.msg_gen_cmd_request, payloadData, self.dev_id)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
