@@ -42,25 +42,14 @@ class Ping1D:
     # sock.bind( (UDP_IP,UDP_PORT) )
 
     #Parameters
-    #TODO Update for 2.32
-    device_id                             = 255
-    fw_version_major                      = 0
-    fw_version_minor                      = 0
-    num_results                           = 0
-    supply_millivolts                     = 0
-    start_mm                              = 0
-    length_mm                             = 0
-    this_ping_distance_mm                 = 0
-    smoothed_distance_mm                  = 0
-    smoothed_distance_confidence_percent  = 0
-    ping_duration_usec                    = 0
-    goertzel_n                            = 0
-    goertzel_m                            = 0
-    analog_gain                           = 0
-    ping_number                           = 0
-    timestamp_msec                        = 0
-    index_of_bottom_result                = 0
-    results                               = [0]*200
+    dev_id                                    = 255
+    dev_type                                  = 0
+    dev_model                                 = 0
+    dev_fw_version_major                      = 0
+    dev_fw_version_minor                      = 0
+
+    dev_
+
 
     #Start Signal
     validation_1 = b'B'
@@ -79,10 +68,15 @@ class Ping1D:
             print("Failed to open the given serial port")
             exit(1)
 
+    def initialize(self):
+        self.update(110)
+        self.update(101)
+        self.update(130)
+
     #Read and Update
-    def updateSonar(self):
+    def update(self, messageID):
         #TODO this is temporary to get the altitude message only
-        self.request(101)
+        self.request(messageID)
         sonarData = self.readSonar()
         if (sonarData != None):
            self.handleSonar(sonarData)
@@ -210,7 +204,7 @@ class Ping1D:
     #Request the given message ID
     def request(self, m_id):
         payloadData = [m_id]
-        self.sendMessage(120, self.msgRequestFormat, payloadData, 1)
+        self.sendMessage(120, self.msgRequestFormat, payloadData, dev_id)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
