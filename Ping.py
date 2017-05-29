@@ -47,8 +47,7 @@ class Ping1D:
     dev_model                                 = 0
     dev_fw_version_major                      = 0
     dev_fw_version_minor                      = 0
-
-    dev_
+    dev_voltage                               = 0
 
 
     #Start Signal
