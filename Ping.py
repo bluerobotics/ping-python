@@ -104,7 +104,9 @@ class Ping1D:
             self.dev_voltage = payload[0]
 
         elif (messageID == 1100):
-            self.dev_distance
+            payload = struct.unpack(self.msg_es_distance_simple, payloadPacked)
+            self.dev_distance = payload[0]
+            self.dev_confidence = payload[1]
 
 
         # elif(messageID == 2):
@@ -286,11 +288,13 @@ class Ping1D:
 
     #Returns the most recent smoothed distance reading in mm
     def getDistance(self):
-        return self.smoothed_distance_mm
+        self.update(1100)
+        return self.dev_distance
 
     #Returns the confidence in the distance measurement, as a percentage
     def getConfidence(self):
-        return self.smoothed_distance_confidence_percent
+        self.update(1100)
+        return self.dev_distance
 
     #Returns the duration of the sent ping, in microseconds
     def getPingDuration(self):
