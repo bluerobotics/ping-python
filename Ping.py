@@ -49,6 +49,9 @@ class Ping1D:
     dev_fw_version_minor                      = 0
     dev_voltage                               = 0
 
+    dev_distance                              = 0
+    dev_confidence                            = 0
+
 
     #Start Signal
     validation_1 = b'B'
@@ -97,12 +100,11 @@ class Ping1D:
             self.dev_id = payload[0]
 
         elif (messageID == 130):
-            print("Got Voltage")
-            print(sonarData[1])
-            print("")
+            payload = struct.unpack(self.msg_gen_voltage, payloadPacked)
+            self.dev_voltage = payload[0]
 
         elif (messageID == 1100):
-            print("Got distance simple")
+            self.dev_distance
 
 
         # elif(messageID == 2):
