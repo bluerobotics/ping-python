@@ -22,13 +22,14 @@ class Ping1D:
     msg_gen_reset = ''
     msg_gen_device_id = '<B'
     msg_gen_new_data = '<B'
-    msg_gen_cmd_request = '<H'                                       #Request
+    msg_gen_cmd_request = '<H'
     msg_gen_voltage = '<H'
 
     #Sonar Messages
     msg_sonar_velocity = '<I'
 
     #EchoSounder Messages
+    #TODO implement all of these
     msg_es_distance_simple = '<IB'
 
     instructions = "Usage: python simplePingExample.py -d <device_name>"
@@ -107,27 +108,6 @@ class Ping1D:
             payload = struct.unpack(self.msg_es_distance_simple, payloadPacked)
             self.dev_distance = payload[0]
             self.dev_confidence = payload[1]
-
-
-        # elif(messageID == 2):
-        #     payload = struct.unpack(self.msgNACKFormat, payloadPacked)
-        #     print("Error: " + payload[1])
-        #     print("NACK")
-        #
-        # elif(messageID == 3):
-        #     payload = struct.unpack(self.msgAltitudeMessageFormat, payloadPacked)
-        #     self.ping_range                           = payload[0]
-        #     self.smoothed_distance_mm                 = payload[1]
-        #     self.smoothed_distance_confidence_percent = payload[2]
-        #
-        # elif(messageID == 4):
-        #     print("Full Profile")
-        #
-        # elif(messageID == 6):
-        #     print("General Info")
-        #
-        # elif(messageID == 7):
-        #     print("Ascii")
 
     def readSonar(self):
         timeout = 10000
@@ -263,62 +243,40 @@ class Ping1D:
     ##################
 
     #Returns a string of the version number
-    def getVersion(self):
+    def getVersions(self):
         return (str(self.fw_version_major) + "." + str(self.fw_version_minor))
 
-    #Returns the number of data points in the last ping
-    def getNumResults(self):
-        return self.num_results
+    def getDeviceID(self):
+        self.update(110)
+        return self.dev_id
 
-    #Returns the operating voltage in mV
-    def getVoltage(self):
-        return self.supply_millivolts
+    def getVoltage():
+        return 0
 
-    #Returns the closest distance that Ping will look at, in mm
-    def getScanStart(self):
-        return self.start_mm
+    def getSimpleDistance():
+        return 0
 
-    #Returns the range that is being scanned in mm. Beginning at the start distance.
-    def getScanRange(self):
-        return self.length_mm
+    def getDistance():
+        return 0
 
-    #Returns the best guess for this individual ping in mm. It is recommended to use getDistance() instead
-    def getInstantDistance(self):
-        return self.this_ping_distance_mm
+    def getProfile():
+        return 0
 
-    #Returns the most recent smoothed distance reading in mm
-    def getDistance(self):
-        self.update(1100)
-        return self.dev_distance
+    def getRange():
+        return 0
 
-    #Returns the confidence in the distance measurement, as a percentage
-    def getConfidence(self):
-        self.update(1100)
-        return self.dev_distance
+    def getMode():
+        return 0
 
-    #Returns the duration of the sent ping, in microseconds
-    def getPingDuration(self):
-        return self.ping_duration_usec
+    def getRate():
+        return 0
 
-    #Retuns the index of the analog gain
-    def getGain(self):
-        return self.analog_gain
+    def getGain():
+        return 0
 
-    #Returns the number of pings that Ping has sent
-    def getPingNumber(self):
-        return self.ping_number
+    def getPulseLength():
+        return 0
 
-    #Returns the uptime, in milliseconds
-    def getTimestamp(self):
-        return self.timestamp_msec
-
-    #Returns the index of the distance reading that was chosen as the bottom
-    def getBottomIndex(self):
-        return self.index_of_bottom_result
-
-    #Returns list of all results from last ping. Each point is on a scale of 0 to 255
-    def getResults(self):
-        return self.results
 
     #Internal
     #########
@@ -369,7 +327,6 @@ class Ping1D:
             sumOfBytes += pUnpacked[i]
 
         checksum = sumOfBytes & 0xffff
-
         return checksum == c
 
     #Checksum = sum(0 -> n) & 0xffff
