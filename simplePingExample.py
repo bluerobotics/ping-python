@@ -40,6 +40,5 @@ raw_input("Press Enter to continue...")
 
 #Read and print distance measurements with confidence
 while True:
-    myPing.updateSonar(1100)
-    sleep(1)
+    myPing.update(1100)
     #print("Current Distance: " + str(myPing.getDistance()) + " | Confidence: " + str(myPing.getConfidence()))
