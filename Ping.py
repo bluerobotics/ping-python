@@ -86,19 +86,23 @@ class Ping1D:
         payloadPacked = sonarData[1]
 
         if (messageID == 101):
-            print("Got Version Data")
-            print(sonarData[1])
-            print("")
+            payload = struct.unpack(self.msg_gen_version, payloadPacked)
+            self.dev_type = payload[0]
+            self.dev_model = payload[1]
+            self.dev_fw_version_major = payload[2]
+            self.dev_fw_version_minor = payload[3]
 
         elif (messageID == 110):
-            print("Got Device ID")
-            print(sonarData[1])
-            print("")
+            payload = struct.unpack(self.msg_gen_device_id, payloadPacked)
+            self.dev_id = payload[0]
 
         elif (messageID == 130):
             print("Got Voltage")
             print(sonarData[1])
             print("")
+
+        elif (messageID == 1100):
+            print("Got distance simple")
 
 
         # elif(messageID == 2):
