@@ -377,8 +377,7 @@ class Ping1D:
 
     #Sonar Messages
     def p_sonar_velocity(self, payload):
-        print("Got Sonar Velocity Message")
-        #TODO Implement this
+        self.dev_c_water = payload[0]
 
     #EchoSounder Messages
     def p_es_distance_simple(self, payload):
