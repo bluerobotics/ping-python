@@ -42,7 +42,3 @@ raw_input("Press Enter to continue...")
 while True:
     deviceID = myPing.getDeviceID()
     print(deviceID)
-    #print("Firmware Version: " , myPing.dev_fw_version_major , "." , myPing.dev_fw_version_minor)
-
-    #myPing.update(1100)
-    #print("Current Distance: " + str(myPing.getDistance()) + " | Confidence: " + str(myPing.getConfidence()))
