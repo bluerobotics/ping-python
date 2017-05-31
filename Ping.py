@@ -244,7 +244,9 @@ class Ping1D:
 
     #Returns a string of the version number
     def getVersions(self):
-        return (str(self.fw_version_major) + "." + str(self.fw_version_minor))
+        self.update(101)
+        data = {'device_type':self.dev_type, 'device_model': self.dev_model, 'fw_version_major': self.dev_fw_version_major, 'fw_version_minor': self.dev_fw_version_minor}
+        return data
 
     def getDeviceID(self):
         self.update(110)
