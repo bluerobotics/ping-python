@@ -39,6 +39,28 @@ class Ping1D:
     msg_es_pulse                = {'id': 1114, 'format': '<H'}
 
 
+    #Message Dictionary
+    #####################
+    messages = {
+        'msg_gen_goto_bootloader': msg_gen_goto_bootloader,
+        'msg_gen_version': msg_gen_version,
+        'msg_gen_reset': msg_gen_reset,
+        'msg_gen_device_id': msg_gen_device_id,
+        'msg_gen_new_data': msg_gen_new_data,
+        'msg_gen_cmd_request': msg_gen_cmd_request,
+        'msg_gen_voltage': msg_gen_voltage,
+        'msg_sonar_velocity': msg_sonar_velocity,
+        'msg_es_distance_simple': msg_es_distance_simple,
+        'msg_es_distance': msg_es_distance,
+        'msg_es_profile': msg_es_profile,
+        'msg_es_range': msg_es_range,
+        'msg_es_mode': msg_es_mode,
+        'msg_es_rate': msg_es_rate,
+        'msg_es_gain': msg_es_gain,
+        'msg_es_pulse': msg_es_pulse
+    }
+
+
     instructions = "Usage: python simplePingExample.py -d <device_name>"
 
     #UDP input
