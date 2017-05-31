@@ -15,9 +15,9 @@ class Ping1D:
 
     #General Messages
     ################
-    gen_goto_bootloader     = {'id': 100, 'format': ''}
+    gen_goto_bootloader     = {'id': 100, 'format': '<'}
     gen_version             = {'id': 101, 'format': '<BBHH'}
-    gen_reset               = {'id': 102, 'format': ''}
+    gen_reset               = {'id': 102, 'format': '<'}
     gen_device_id           = {'id': 110, 'format': '<B'}
     gen_new_data            = {'id': 112, 'format': '<B'}
     gen_cmd_request         = {'id': 120, 'format': '<H'}
@@ -278,7 +278,7 @@ class Ping1D:
 
     #Returns a string of the version number
     def getVersions(self):
-        self.update(101)
+        self.update(self.messages['gen_version'])
         data = {
             'device_type':self.dev_type,
             'device_model': self.dev_model,
@@ -289,43 +289,43 @@ class Ping1D:
         return data
 
     def getDeviceID(self):
-        self.update(110)
+        self.update(self.messages['gen_device_id'])
         return self.dev_id
 
     def getVoltage():
-        self.update(130)
+        self.update(self.messages['gen_voltage'])
         return self.dev_voltage
 
     def getSimpleDistance():
-        self.update(1100)
+        self.update(self.messages['es_distance_simple'])
         return {'distance': self.dev_distance, 'confidence': self.dev_confidence}
 
     def getDistance():
-        self.update(1101)
+        self.update(self.messages['es_distance'])
         data = {}
         return data
 
     def getProfile():
-        self.update(1102)
+        self.update(self.messages['es_profile'])
         data = {}
         return data
-
-    def getRange():
-        self.update(1110)
-        return 0
-
-    def getMode():
-        return 0
-
-    def getRate():
-        return 0
-
-    def getGain():
-        return 0
-
-    def getPulseLength():
-        return 0
-
+    #
+    # def getRange():
+    #     self.update(1110)
+    #     return 0
+    #
+    # def getMode():
+    #     return 0
+    #
+    # def getRate():
+    #     return 0
+    #
+    # def getGain():
+    #     return 0
+    #
+    # def getPulseLength():
+    #     return 0
+    #
 
     #Internal
     #########
