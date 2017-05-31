@@ -23,12 +23,25 @@ class Ping1D:
     dev_id                                    = 255
     dev_type                                  = 0
     dev_model                                 = 0
+    dev_is_new_data                           = 0
     dev_fw_version_major                      = 0
     dev_fw_version_minor                      = 0
     dev_voltage                               = 0
 
+    dev_c_water                               = 0
+
     dev_distance                              = 0
     dev_confidence                            = 0
+    dev_pulse_usec                            = 0
+    dev_ping_number                           = 0
+    dev_start_mm                              = 0
+    dev_length_mm                             = 0
+    dev_gain_index                            = 0
+    dev_num_points                            = 0
+    #TODO store profile points
+    dev_auto_manual                           = 0
+    dev_msec_per_ping                         = 0
+    dev_gain_index                            = 0
 
 
     #Start Signal
@@ -364,6 +377,7 @@ class Ping1D:
 
     #Sonar Messages
     def p_sonar_velocity(self, payload):
+        print("Got Sonar Velocity Message")
         #TODO Implement this
 
     #EchoSounder Messages
@@ -377,27 +391,28 @@ class Ping1D:
         self.dev_ping_number = payload[3]
         self.dev_start_mm = payload[4]
         self.dev_length_mm = payload[5]
-        self.gain_index = payload[6]
+        self.dev_gain_index = payload[6]
     def p_es_profile(self, payload):
         self.dev_distance = payload[0]
         self.dev_confidence = payload[1]
-        self.dev_pulse = payload[2]
+        self.dev_pulse_usec = payload[2]
         self.dev_ping_number = payload[3]
         self.dev_start_mm = payload[4]
         self.dev_length_mm = payload[5]
-        self.gain_index = payload[6]
-        self.num_points = payload[7]
+        self.dev_gain_index = payload[6]
+        self.dev_num_points = payload[7]
         #TODO Store the profile data
     def p_range(self, payload):
-        #Code
+        self.dev_start_mm = payload[0]
+        self.dev_length_mm = payload[1]
     def p_mode(self, payload):
-        #Code
+        self.dev_auto_manual = payload[0]
     def p_rate(self, payload):
-        #Code
+        self.dev_msec_per_ping = payload[0]
     def p_gain(self, payload):
-        #Code
+        self.dev_gain_index = payload[0]
     def p_pulse(self, payload):
-        #Code
+        self.dev_pulse_usec = payload[0]
 
 
     #Metadata Format
