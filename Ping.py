@@ -15,49 +15,48 @@ class Ping1D:
 
     #General Messages
     ################
-    msg_gen_goto_bootloader     = {'id': 100, 'format': ''}
-    msg_gen_version             = {'id': 101, 'format': '<BBHH'}
-    msg_gen_reset               = {'id': 102, 'format': ''}
-    msg_gen_device_id           = {'id': 110, 'format': '<B'}
-    msg_gen_new_data            = {'id': 112, 'format': '<B'}
-    msg_gen_cmd_request         = {'id': 120, 'format': '<H'}
-    msg_gen_voltage             = {'id': 130, 'format': '<H'}
+    gen_goto_bootloader     = {'id': 100, 'format': ''}
+    gen_version             = {'id': 101, 'format': '<BBHH'}
+    gen_reset               = {'id': 102, 'format': ''}
+    gen_device_id           = {'id': 110, 'format': '<B'}
+    gen_new_data            = {'id': 112, 'format': '<B'}
+    gen_cmd_request         = {'id': 120, 'format': '<H'}
+    gen_voltage             = {'id': 130, 'format': '<H'}
 
     #Sonar Messages
     ####################
-    msg_sonar_velocity          = {'id': 1000, 'format': '<I'}
+    sonar_velocity          = {'id': 1000, 'format': '<I'}
 
     #EchoSounder Messages
     #####################
-    msg_es_distance_simple      = {'id': 1100, 'format': '<IB'}
-    msg_es_distance             = {'id': 1101, 'format': '<IBH4I'}
-    msg_es_profile              = {'id': 1102, 'format': '<IBH4IH200B'}
-    msg_es_range                = {'id': 1110, 'format': '<II'}
-    msg_es_mode                 = {'id': 1111, 'format': '<B'}
-    msg_es_rate                 = {'id': 1112, 'format': '<H'}
-    msg_es_gain                 = {'id': 1113, 'format': '<I'}
-    msg_es_pulse                = {'id': 1114, 'format': '<H'}
-
+    es_distance_simple      = {'id': 1100, 'format': '<IB'}
+    es_distance             = {'id': 1101, 'format': '<IBH4I'}
+    es_profile              = {'id': 1102, 'format': '<IBH4IH200B'}
+    es_range                = {'id': 1110, 'format': '<II'}
+    es_mode                 = {'id': 1111, 'format': '<B'}
+    es_rate                 = {'id': 1112, 'format': '<H'}
+    es_gain                 = {'id': 1113, 'format': '<I'}
+    es_pulse                = {'id': 1114, 'format': '<H'}
 
     #Message Dictionary
     #####################
     messages = {
-        'msg_gen_goto_bootloader': msg_gen_goto_bootloader,
-        'msg_gen_version': msg_gen_version,
-        'msg_gen_reset': msg_gen_reset,
-        'msg_gen_device_id': msg_gen_device_id,
-        'msg_gen_new_data': msg_gen_new_data,
-        'msg_gen_cmd_request': msg_gen_cmd_request,
-        'msg_gen_voltage': msg_gen_voltage,
-        'msg_sonar_velocity': msg_sonar_velocity,
-        'msg_es_distance_simple': msg_es_distance_simple,
-        'msg_es_distance': msg_es_distance,
-        'msg_es_profile': msg_es_profile,
-        'msg_es_range': msg_es_range,
-        'msg_es_mode': msg_es_mode,
-        'msg_es_rate': msg_es_rate,
-        'msg_es_gain': msg_es_gain,
-        'msg_es_pulse': msg_es_pulse
+        'gen_goto_bootloader': gen_goto_bootloader,
+        'gen_version': gen_version,
+        'gen_reset': gen_reset,
+        'gen_device_id': gen_device_id,
+        'gen_new_data': gen_new_data,
+        'gen_cmd_request': gen_cmd_request,
+        'gen_voltage': gen_voltage,
+        'sonar_velocity': sonar_velocity,
+        'es_distance_simple': es_distance_simple,
+        'es_distance': es_distance,
+        'es_profile': es_profile,
+        'es_range': es_range,
+        'es_mode': es_mode,
+        'es_rate': es_rate,
+        'es_gain': es_gain,
+        'es_pulse': es_pulse
     }
 
 
@@ -72,6 +71,7 @@ class Ping1D:
     # sock.bind( (UDP_IP,UDP_PORT) )
 
     #Parameters
+
     dev_id                                    = 255
     dev_type                                  = 0
     dev_model                                 = 0
@@ -101,14 +101,13 @@ class Ping1D:
             exit(1)
 
     def initialize(self):
-        self.update(110)
-        self.update(101)
-        self.update(130)
+        self.update(self.messages['gen_device_id'])
+        self.update(self.messages['gen_version'])
+        self.update(self.messages['gen_voltage'])
 
     #Read and Update
-    def update(self, messageID):
-        #TODO this is temporary to get the altitude message only
-        self.request(messageID)
+    def update(self, message):
+        self.request(message['id'])
         sonarData = self.readSonar()
         if (sonarData != None):
            self.handleSonar(sonarData)
@@ -118,23 +117,29 @@ class Ping1D:
         messageID = sonarData[0]
         payloadPacked = sonarData[1]
 
-        if (messageID == 101):
-            payload = struct.unpack(self.msg_gen_version, payloadPacked)
+        ##TODO make this loop through the dict of messages rather than an if/elif
+
+        if (messageID == self.messages['gen_version']['id']):
+            message = self.messages['gen_version']
+            payload = struct.unpack(message['format'], payloadPacked)
             self.dev_type = payload[0]
             self.dev_model = payload[1]
             self.dev_fw_version_major = payload[2]
             self.dev_fw_version_minor = payload[3]
 
-        elif (messageID == 110):
-            payload = struct.unpack(self.msg_gen_device_id, payloadPacked)
+        elif (messageID == self.messages['gen_device_id']['id']):
+            message = self.messages['gen_device_id']
+            payload = struct.unpack(message['format'], payloadPacked)
             self.dev_id = payload[0]
 
-        elif (messageID == 130):
-            payload = struct.unpack(self.msg_gen_voltage, payloadPacked)
+        elif (messageID == self.messages['gen_voltage']['id']):
+            message = self.messages['gen_voltage']
+            payload = struct.unpack(message['format'], payloadPacked)
             self.dev_voltage = payload[0]
 
-        elif (messageID == 1100):
-            payload = struct.unpack(self.msg_es_distance_simple, payloadPacked)
+        elif (messageID == self.messages['es_distance_simple']['id']):
+            message = self.messages['es_distance_simple']
+            payload = struct.unpack(message['format'], payloadPacked)
             self.dev_distance = payload[0]
             self.dev_confidence = payload[1]
 
@@ -231,7 +236,7 @@ class Ping1D:
     #Request the given message ID
     def request(self, m_id):
         payloadData = [m_id]
-        self.sendMessage(120, self.msg_gen_cmd_request, payloadData, self.dev_id)
+        self.sendMessage(self.messages['gen_cmd_request'], payloadData, self.dev_id)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
@@ -244,15 +249,15 @@ class Ping1D:
         return false
 
     #Used for sending of all messages
-    def sendMessage(self, m_id, m_format, m_payload, m_destination):
+    def sendMessage(self, m_message, m_payload, m_destination):
         #Pack payload first, because metadata is required for the header
-        finalPayload = self.packPayload(m_format, m_payload)
+        finalPayload = self.packPayload(m_message['format'], m_payload)
 
         #Needed to build header
-        payloadLength = struct.calcsize(m_format)
+        payloadLength = struct.calcsize(m_message['format'])
 
         #Create and pack header
-        header = self.buildHeader(payloadLength, m_id, m_destination)
+        header = self.buildHeader(payloadLength, m_message['id'], m_destination)
         finalHeader = self.packHeader(header)
 
         #Create Checksum
