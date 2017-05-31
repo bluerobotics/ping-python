@@ -8,29 +8,36 @@ import getopt
 import socket
 
 class Ping1D:
-    #Metadata Formats
+    #Metadata Format
     ############
     msg_header   = '<ccHHBB'
     msg_checksum = '<H'
 
-    #Message Formats
-    ################
-
     #General Messages
-    msg_gen_goto_bootloader = ''
-    msg_gen_version = '<BBHH'
-    msg_gen_reset = ''
-    msg_gen_device_id = '<B'
-    msg_gen_new_data = '<B'
-    msg_gen_cmd_request = '<H'
-    msg_gen_voltage = '<H'
+    ################
+    msg_gen_goto_bootloader     = {'id': 100, 'format': ''}
+    msg_gen_version             = {'id': 101, 'format': '<BBHH'}
+    msg_gen_reset               = {'id': 102, 'format': ''}
+    msg_gen_device_id           = {'id': 110, 'format': '<B'}
+    msg_gen_new_data            = {'id': 112, 'format': '<B'}
+    msg_gen_cmd_request         = {'id': 120, 'format': '<H'}
+    msg_gen_voltage             = {'id': 130, 'format': '<H'}
 
     #Sonar Messages
-    msg_sonar_velocity = '<I'
+    ####################
+    msg_sonar_velocity          = {'id': 1000, 'format': '<I'}
 
     #EchoSounder Messages
-    #TODO implement all of these
-    msg_es_distance_simple = '<IB'
+    #####################
+    msg_es_distance_simple      = {'id': 1100, 'format': '<IB'}
+    msg_es_distance             = {'id': 1101, 'format': '<IBH4I'}
+    msg_es_profile              = {'id': 1102, 'format': '<IBH4IH200B'}
+    msg_es_range                = {'id': 1110, 'format': '<II'}
+    msg_es_mode                 = {'id': 1111, 'format': '<B'}
+    msg_es_rate                 = {'id': 1112, 'format': '<H'}
+    msg_es_gain                 = {'id': 1113, 'format': '<I'}
+    msg_es_pulse                = {'id': 1114, 'format': '<H'}
+
 
     instructions = "Usage: python simplePingExample.py -d <device_name>"
 
@@ -245,7 +252,13 @@ class Ping1D:
     #Returns a string of the version number
     def getVersions(self):
         self.update(101)
-        data = {'device_type':self.dev_type, 'device_model': self.dev_model, 'fw_version_major': self.dev_fw_version_major, 'fw_version_minor': self.dev_fw_version_minor}
+        data = {
+            'device_type':self.dev_type,
+            'device_model': self.dev_model,
+            'fw_version_major': self.dev_fw_version_major,
+            'fw_version_minor': self.dev_fw_version_minor
+        }
+
         return data
 
     def getDeviceID(self):
@@ -253,18 +266,25 @@ class Ping1D:
         return self.dev_id
 
     def getVoltage():
-        return 0
+        self.update(130)
+        return self.dev_voltage
 
     def getSimpleDistance():
-        return 0
+        self.update(1100)
+        return {'distance': self.dev_distance, 'confidence': self.dev_confidence}
 
     def getDistance():
-        return 0
+        self.update(1101)
+        data = {}
+        return data
 
     def getProfile():
-        return 0
+        self.update(1102)
+        data = {}
+        return data
 
     def getRange():
+        self.update(1110)
         return 0
 
     def getMode():
