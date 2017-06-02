@@ -13,18 +13,21 @@ def foo_action(ping,msg):
 #General Messages
 gen_bootloader = Message(
     100,
-    "gen_version"
+    'gen_version'
 )
 
 
 gen_version = Message(
     101,
-    "gen_version",
-    "<BBHH",
+    'gen_version',
+    '<BBHH',
 
 )
 
-gen_reset
+gen_reset = Message(
+    102,
+    ''
+)
 gen_device_id
 gen_new_data
 gen_cmd_request
