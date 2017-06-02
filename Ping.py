@@ -6,6 +6,7 @@ import struct
 import serial
 import getopt
 import socket
+import Message
 
 class Ping1D:
     instructions = "Usage: python simplePingExample.py -d <device_name>"
@@ -337,6 +338,11 @@ class Ping1D:
 
     #Message Handling
     #################
+
+    def unpack_payload(self, msg, payload):
+        for i,attr in enumerate(msg.payload_fields):
+            self.__settattr__(attr,payload[i])
+
 
     #General Messages
     def p_goto_bootloader(self, payload):
