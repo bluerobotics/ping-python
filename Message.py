@@ -106,7 +106,6 @@ es_distance = Message(
     )
 )
 
-#TODO add storage of points
 es_profile = Message(
     1102,
     'es_profile',
@@ -119,7 +118,8 @@ es_profile = Message(
         'start_mm',
         'length_mm',
         'gain_index',
-        'num_points'
+        'num_points',
+        'points'
     )
 )
 
