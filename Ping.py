@@ -14,9 +14,9 @@ class Ping1D:
     #Parameters
     ###########
     #General
-    device_id                                    = 255
-    device_type                                  = 0
-    device_model                                 = 0
+    device_id                             = 255
+    device_type                           = 0
+    device_model                          = 0
     is_new_data                           = 0
     fw_version_major                      = 0
     fw_version_minor                      = 0
@@ -34,7 +34,7 @@ class Ping1D:
     length_mm                             = 0
     gain_index                            = 0
     num_points                            = 0
-    #TODO store profile points
+    points                                = [None] * 200
     auto_manual                           = 0
     msec_per_ping                         = 0
     gain_index                            = 0
@@ -77,7 +77,12 @@ class Ping1D:
         payload = struct.unpack(new_message.format, payloadPacked)
 
         for i,attr in enumerate(new_message.payload_fields):
-            setattr(self, attr, payload[i])
+            #Have to have a separate line for lists / arrays
+            if (attr == "points"):
+                self.points = (payload[((len(payload) - self.num_points)):(len(payloadPacked))])
+            else:
+                setattr(self, attr, payload[i])
+
 
     def readSonar(self):
         timeout = 10000
@@ -165,10 +170,6 @@ class Ping1D:
     #Control Methods
     ###################
 
-    #####################
-    #TODO: Update these to match the new Protocol
-    #####################
-
     #Request the given message ID
     def request(self, m_id):
         payloadData = [m_id]
@@ -250,7 +251,6 @@ class Ping1D:
         }
         return data
 
-    #TODO Add returning of points
     def getProfile(self):
         self.update(Message.es_profile)
         data = {
@@ -262,6 +262,7 @@ class Ping1D:
                 'length_mm': self.length_mm,
                 'gain_index': self.gain_index,
                 'num_points': self.num_points,
+                'points': self.points
         }
         return data
 
