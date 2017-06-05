@@ -36,7 +36,7 @@ gen_version = Message(
 #TODO add a reset action here
 gen_reset = Message(
     102,
-k    'gen_reset',
+    'gen_reset',
     '<',
     (,)
 )
@@ -76,12 +76,77 @@ sonar_velocity = Message(
     ('dev_c_water',)
 )
 
-#Message Dictionary
-es_distance_simple
-es_distance
-es_profile
-es_range
-es_mode
-es_rate
-es_gain
-es_pulse
+#EchoSounder Messages
+es_distance_simple = Message(
+    1100,
+    'es_distance_simple',
+    '<IB',
+    ('dev_distance','dev_confidence')
+)
+
+es_distance = Message(
+    1101,
+    es_distance,
+    'IBH4I',
+    (
+        'dev_distance',
+        'dev_confidence',
+        'dev_pulse_usec',
+        'dev_ping_number',
+        'dev_start_mm',
+        'dev_length_mm',
+        'dev_gain_index'
+    )
+)
+
+#TODO add storage of points
+es_profile = Message(
+    1102,
+    'es_profile',
+    '<IBH4IH200B',
+    (
+        'dev_distance',
+        'dev_confidence',
+        'dev_pulse_usec',
+        'dev_ping_number',
+        'dev_start_mm',
+        'dev_length_mm',
+        'dev_gain_index',
+        'dev_num_points'
+    )
+)
+
+es_range = Message(
+    1110,
+    'es_range',
+    '<II',
+    ('dev_start_mm','dev_length_mm')
+)
+
+es_mode = Message(
+    1111,
+    'es_mode',
+    '<B',
+    ('dev_auto_manual',)
+)
+
+es_rate = Message(
+    1112,
+    'es_rage',
+    '<H',
+    ('dev_msec_per_ping',)
+)
+
+es_gain = Message(
+    1113,
+    'es_gain',
+    '<I',
+    ('dev_gain_index',)
+)
+
+es_pulse = Message(
+    1114,
+    'es_pulse',
+    '<H',
+    ('dev_pulse_usec',)
+)
