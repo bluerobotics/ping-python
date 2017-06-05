@@ -7,6 +7,16 @@ class Message:
         self.format = format
         self.payload_fields = payload_fields
 
+    def __repr__(self):
+        representation = (
+            'ID: ' + str(self.id) + '\n' +
+            'Name: ' + str(self.name) + '\n' +
+            'Format: ' + str(self.format) + '\n' +
+            'Fields: ' + str(self.payload_fields) + '\n'
+        )
+        return representation
+
+
 def foo_action(ping,msg):
     pass
 
@@ -36,9 +46,7 @@ gen_version = Message(
 #TODO add a reset action here
 gen_reset = Message(
     102,
-    'gen_reset',
-    '<',
-    (,)
+    'gen_reset'
 )
 
 gen_device_id = Message(
@@ -86,7 +94,7 @@ es_distance_simple = Message(
 
 es_distance = Message(
     1101,
-    es_distance,
+    'es_distance',
     'IBH4I',
     (
         'dev_distance',
@@ -150,3 +158,4 @@ es_pulse = Message(
     '<H',
     ('dev_pulse_usec',)
 )
+print(es_distance)
