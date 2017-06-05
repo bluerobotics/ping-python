@@ -14,30 +14,30 @@ class Ping1D:
     #Parameters
     ###########
     #General
-    dev_id                                    = 255
-    dev_type                                  = 0
-    dev_model                                 = 0
-    dev_is_new_data                           = 0
-    dev_fw_version_major                      = 0
-    dev_fw_version_minor                      = 0
-    dev_voltage                               = 0
+    device_id                                    = 255
+    device_type                                  = 0
+    device_model                                 = 0
+    is_new_data                           = 0
+    fw_version_major                      = 0
+    fw_version_minor                      = 0
+    voltage                               = 0
 
     #Sonar
-    dev_c_water                               = 0
+    c_water                               = 0
 
     #EchoSounder
-    dev_distance                              = 0
-    dev_confidence                            = 0
-    dev_pulse_usec                            = 0
-    dev_ping_number                           = 0
-    dev_start_mm                              = 0
-    dev_length_mm                             = 0
-    dev_gain_index                            = 0
-    dev_num_points                            = 0
+    distance                              = 0
+    confidence                            = 0
+    pulse_usec                            = 0
+    ping_number                           = 0
+    start_mm                              = 0
+    length_mm                             = 0
+    gain_index                            = 0
+    num_points                            = 0
     #TODO store profile points
-    dev_auto_manual                           = 0
-    dev_msec_per_ping                         = 0
-    dev_gain_index                            = 0
+    auto_manual                           = 0
+    msec_per_ping                         = 0
+    gain_index                            = 0
 
     #Start Signal
     validation_1 = b'B'
@@ -77,7 +77,6 @@ class Ping1D:
         payload = struct.unpack(new_message.format, payloadPacked)
 
         for i,attr in enumerate(new_message.payload_fields):
-            #print("Setting " + str(attr) + " to " + str(payload[i]))
             setattr(self, attr, payload[i])
 
     def readSonar(self):
@@ -173,7 +172,7 @@ class Ping1D:
     #Request the given message ID
     def request(self, m_id):
         payloadData = [m_id]
-        self.sendMessage(Message.gen_cmd_request, payloadData, self.dev_id)
+        self.sendMessage(Message.gen_cmd_request, payloadData, self.device_id)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
@@ -213,60 +212,60 @@ class Ping1D:
     def getVersion(self):
         self.update(Message.gen_version)
         data = {
-            'device_type':self.dev_type,
-            'device_model': self.dev_model,
-            'fw_version_major': self.dev_fw_version_major,
-            'fw_version_minor': self.dev_fw_version_minor
+            'device_type':self.device_type,
+            'device_model': self.device_model,
+            'fw_version_major': self.fw_version_major,
+            'fw_version_minor': self.fw_version_minor
         }
 
         return data
 
     def getDeviceID(self):
         self.update(Message.gen_device_id)
-        return self.dev_id
+        return self.device_id
 
-    def getVoltage():
+    def getVoltage(self):
         self.update(Message.gen_voltage)
-        return self.dev_voltage
+        return self.voltage
 
-    def getSimpleDistance():
+    def getSimpleDistance(self):
         self.update(Message.es_distance_simple)
         data = {
-            'distance': self.dev_distance,
-            'confidence': self.dev_confidence
+            'distance': self.distance,
+            'confidence': self.confidence
         }
         return data
 
 
-    def getDistance():
+    def getDistance(self):
         self.update(Message.es_distance)
         data = {
-                'distance': self.dev_distance,
-                'confidence': self.dev_confidence,
-                'pulse_usec': self.dev_pulse_usec,
-                'ping_number': self.dev_ping_number,
-                'start_mm': self.dev_start_mm,
-                'length_mm': self.dev_length_mm,
-                'gain_index': self.dev_gain_index
+                'distance': self.distance,
+                'confidence': self.confidence,
+                'pulse_usec': self.pulse_usec,
+                'ping_number': self.ping_number,
+                'start_mm': self.start_mm,
+                'length_mm': self.length_mm,
+                'gain_index': self.gain_index
         }
         return data
 
     #TODO Add returning of points
-    def getProfile():
+    def getProfile(self):
         self.update(Message.es_profile)
         data = {
-                'distance': self.dev_distance,
-                'confidence': self.dev_confidence,
-                'pulse_usec': self.dev_pulse_usec,
-                'ping_number': self.dev_ping_number,
-                'start_mm': self.dev_start_mm,
-                'length_mm': self.dev_length_mm,
-                'gain_index': self.dev_gain_index,
-                'num_points': self.dev_num_points,
+                'distance': self.distance,
+                'confidence': self.confidence,
+                'pulse_usec': self.pulse_usec,
+                'ping_number': self.ping_number,
+                'start_mm': self.start_mm,
+                'length_mm': self.length_mm,
+                'gain_index': self.gain_index,
+                'num_points': self.num_points,
         }
         return data
 
-    def getRange():
+    def getRange(self):
         self.update(Message.es_range)
         data = {
             'start_mm':self.start_mm,
@@ -274,21 +273,21 @@ class Ping1D:
         }
         return data
 
-    def getMode():
+    def getMode(self):
         self.update(Message.es_mode)
-        return self.dev_auto_manual
+        return self.auto_manual
 
-    def getRate():
+    def getRate(self):
         self.update(Message.es_rate)
-        return self.dev_pulse_usec
+        return self.pulse_usec
 
-    def getGain():
+    def getGain(self):
         self.update(Message.es_gain)
-        return self.dev_gain_index
+        return self.gain_index
 
-    def getPulseLength():
+    def getPulseLength(self):
         self.update(Message.es_pulse)
-        return self.dev_pulse_usec
+        return self.pulse_usec
 
 
     #Internal
