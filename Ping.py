@@ -415,8 +415,8 @@ class Ping1D:
     msg_checksum = '<H'
 
     #General Messages
-    gen_goto_bootloader     = {'id': 100, 'format': '<'}
-    gen_version             = {'id': 101, 'format': '<BBHH', 'processor': p_gen_version}
+    #gen_goto_bootloader     = {'id': 100, 'format': '<'}
+    #gen_version             = {'id': 101, 'format': '<BBHH', 'processor': p_gen_version}
     gen_reset               = {'id': 102, 'format': '<'}
     gen_device_id           = {'id': 110, 'format': '<B', 'processor': p_gen_device_id}
     gen_new_data            = {'id': 112, 'format': '<B'}
