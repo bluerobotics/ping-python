@@ -362,105 +362,9 @@ class Ping1D:
         return struct.pack(self.msg_checksum, c)
 
 
-
-    #Message Handling
-    #################
-
-    #def handle_payload(self, msg, payload):
-
-            #self.__settattr__(attr,payload[i])
-
-
-    #General Messages
-    # def p_goto_bootloader(self, payload):
-    #     print("Received Goto Bootloader Message")
-    #
-    # def p_gen_version(self, payload):
-    #     self.dev_type             = payload[0]
-    #     self.dev_model            = payload[1]
-    #     self.dev_fw_version_major = payload[2]
-    #     self.dev_fw_version_minor = payload[3]
-    #
-    # def p_gen_reset(self, payload):
-    #     #TODO Figure out what this should do
-    #     print("Received Reset Message")
-    #
-    # def p_gen_device_id(self, payload):
-    #     self.dev_id               = payload[0]
-    #
-    # def p_gen_new_data(self, payload):
-    #     print("Received New Data Message")
-    #
-    # def p_gen_cmd_request(self, payload):
-    #     print("Received Request Message")
-    #
-    # def p_gen_voltage(self, payload):
-    #     self.dev_voltage          = payload[0]
-    #
-    # #Sonar Messages
-    # def p_sonar_velocity(self, payload):
-    #     self.dev_c_water          = payload[0]
-    #
-    # #EchoSounder Messages
-    # def p_es_distance_simple(self, payload):
-    #     self.dev_distance         = payload[0]
-    #     self.dev_confidence       = payload[1]
-    # def p_es_distance(self, payload):
-    #     self.dev_distance         = payload[0]
-    #     self.dev_confidence       = payload[1]
-    #     self.dev_pulse_usec       = payload[2]
-    #     self.dev_ping_number      = payload[3]
-    #     self.dev_start_mm         = payload[4]
-    #     self.dev_length_mm        = payload[5]
-    #     self.dev_gain_index       = payload[6]
-    # def p_es_profile(self, payload):
-    #     self.dev_distance         = payload[0]
-    #     self.dev_confidence       = payload[1]
-    #     self.dev_pulse_usec       = payload[2]
-    #     self.dev_ping_number      = payload[3]
-    #     self.dev_start_mm         = payload[4]
-    #     self.dev_length_mm        = payload[5]
-    #     self.dev_gain_index       = payload[6]
-    #     self.dev_num_points       = payload[7]
-    #     #TODO Store the profile data
-    # def p_range(self, payload):
-    #     self.dev_start_mm         = payload[0]
-    #     self.dev_length_mm        = payload[1]
-    # def p_mode(self, payload):
-    #     self.dev_auto_manual      = payload[0]
-    # def p_rate(self, payload):
-    #     self.dev_msec_per_ping    = payload[0]
-    # def p_gain(self, payload):
-    #     self.dev_gain_index       = payload[0]
-    # def p_pulse(self, payload):
-    #     self.dev_pulse_usec       = payload[0]
-    #
-
     #Metadata Format
     msg_header   = '<ccHHBB'
     msg_checksum = '<H'
-
-    #General Messages
-    # gen_goto_bootloader     = {'id': 100, 'format': '<'}
-    # gen_version             = {'id': 101, 'format': '<BBHH', 'processor': p_gen_version}
-    # gen_reset               = {'id': 102, 'format': '<'}
-    # gen_device_id           = {'id': 110, 'format': '<B', 'processor': p_gen_device_id}
-    # gen_new_data            = {'id': 112, 'format': '<B'}
-    # gen_cmd_request         = {'id': 120, 'format': '<H'}
-    # gen_voltage             = {'id': 130, 'format': '<H', 'processor': p_gen_voltage}
-    #
-    # #Sonar Messages
-    # sonar_velocity          = {'id': 1000, 'format': '<I'}
-    #
-    # #EchoSounder Messages
-    # es_distance_simple      = {'id': 1100, 'format': '<IB', 'processor': p_es_distance_simple}
-    # es_distance             = {'id': 1101, 'format': '<IBH4I'}
-    # es_profile              = {'id': 1102, 'format': '<IBH4IH200B'}
-    # es_range                = {'id': 1110, 'format': '<II'}
-    # es_mode                 = {'id': 1111, 'format': '<B'}
-    # es_rate                 = {'id': 1112, 'format': '<H'}
-    # es_gain                 = {'id': 1113, 'format': '<I'}
-    # es_pulse                = {'id': 1114, 'format': '<H'}
 
     #Message Dictionary
     messages = {
@@ -479,5 +383,5 @@ class Ping1D:
         1111: Message.es_mode,
         1112: Message.es_rate,
         1113: Message.es_gain,
-        1114: Message.es_pulse,
+        1114: Message.es_pulse
     }
