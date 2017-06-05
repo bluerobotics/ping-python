@@ -94,7 +94,7 @@ es_distance_simple = Message(
 es_distance = Message(
     1101,
     'es_distance',
-    'IBH4I',
+    '<IBH4I',
     (
         'distance',
         'confidence',
