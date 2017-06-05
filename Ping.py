@@ -243,7 +243,7 @@ class Ping1D:
         data = {
                 'distance': self.dev_distance,
                 'confidence': self.dev_confidence,
-                'pulse_usec': self.dev_pulse_usec,,
+                'pulse_usec': self.dev_pulse_usec,
                 'ping_number': self.dev_ping_number,
                 'start_mm': self.dev_start_mm,
                 'length_mm': self.dev_length_mm,
@@ -257,7 +257,7 @@ class Ping1D:
         data = {
                 'distance': self.dev_distance,
                 'confidence': self.dev_confidence,
-                'pulse_usec': self.dev_pulse_usec,,
+                'pulse_usec': self.dev_pulse_usec,
                 'ping_number': self.dev_ping_number,
                 'start_mm': self.dev_start_mm,
                 'length_mm': self.dev_length_mm,
