@@ -16,7 +16,6 @@ class Message:
         )
         return representation
 
-
 def foo_action(ping,msg):
     pass
 
@@ -31,7 +30,7 @@ def foo_action(ping,msg):
 #  None
 #)
 
-gen_bootloader = Message(
+gen_goto_bootloader = Message(
     100,
     'gen_version'
 )
@@ -158,4 +157,3 @@ es_pulse = Message(
     '<H',
     ('dev_pulse_usec',)
 )
-print(es_distance)
