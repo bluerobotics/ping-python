@@ -57,13 +57,13 @@ class Ping1D:
             exit(1)
 
     def initialize(self):
-        self.update(self.messages['gen_device_id'])
-        self.update(self.messages['gen_version'])
-        self.update(self.messages['gen_voltage'])
+        self.update(Message.gen_device_id)
+        self.update(Message.gen_version)
+        self.update(Message.gen_voltage)
 
     #Read and Update
     def update(self, message):
-        self.request(message['id'])
+        self.request(message.id)
         sonarData = self.readSonar()
         if (sonarData != None):
            self.handleMessage(sonarData)
@@ -73,11 +73,16 @@ class Ping1D:
         messageID = sonarData[0]
         payloadPacked = sonarData[1]
 
-        for messageName,message in self.messages.iteritems():
-            if (messageID == message['id']):
-                payload = struct.unpack(message['format'], payloadPacked)
-                processor = message['processor']
-                processor(self, payload)
+        new_message = self.messages[messageID]
+        print(new_message)
+
+        # for messageID,message in self.messages.iteritems():
+        #     if (messageID == message.id):
+        #         payload = struct.unpack(message.format, payloadPacked)
+        #         print(payload)
+                #unpack_payload
+                # processor = message['processor']
+                # processor(self, payload)
 
     def readSonar(self):
         timeout = 10000
@@ -172,7 +177,7 @@ class Ping1D:
     #Request the given message ID
     def request(self, m_id):
         payloadData = [m_id]
-        self.sendMessage(self.messages['gen_cmd_request'], payloadData, self.dev_id)
+        self.sendMessage(Message.gen_cmd_request, payloadData, self.dev_id)
 
     #Manually set the scanning range
     def setRange(self, auto, start, range):
@@ -187,13 +192,13 @@ class Ping1D:
     #Used for sending of all messages
     def sendMessage(self, m_message, m_payload, m_destination):
         #Pack payload first, because metadata is required for the header
-        finalPayload = self.packPayload(m_message['format'], m_payload)
+        finalPayload = self.packPayload(m_message.format, m_payload)
 
         #Needed to build header
-        payloadLength = struct.calcsize(m_message['format'])
+        payloadLength = struct.calcsize(m_message.format)
 
         #Create and pack header
-        header = self.buildHeader(payloadLength, m_message['id'], m_destination)
+        header = self.buildHeader(payloadLength, m_message.id, m_destination)
         finalHeader = self.packHeader(header)
 
         #Create Checksum
@@ -209,57 +214,59 @@ class Ping1D:
     ################
 
     #Returns a string of the version number
-    def getVersions(self):
-        self.update(self.messages['gen_version'])
-        data = {
-            'device_type':self.dev_type,
-            'device_model': self.dev_model,
-            'fw_version_major': self.dev_fw_version_major,
-            'fw_version_minor': self.dev_fw_version_minor
-        }
+    def getVersion(self):
+        # self.update(self.messages['gen_version'])
+        # data = {
+        #     'device_type':self.dev_type,
+        #     'device_model': self.dev_model,
+        #     'fw_version_major': self.dev_fw_version_major,
+        #     'fw_version_minor': self.dev_fw_version_minor
+        # }
 
-        return data
+        return ""
 
     def getDeviceID(self):
-        self.update(self.messages['gen_device_id'])
-        return self.dev_id
+        # self.update(self.messages['gen_device_id'])
+        # return self.dev_id
+        return None
 
     def getVoltage():
-        self.update(self.messages['gen_voltage'])
-        return self.dev_voltage
+        # self.update(self.messages['gen_voltage'])
+        # return self.dev_voltage
+        return None
 
     def getSimpleDistance():
-        self.update(self.messages['es_distance_simple'])
-        return {'distance': self.dev_distance, 'confidence': self.dev_confidence}
+        # self.update(self.messages['es_distance_simple'])
+        # return {'distance': self.dev_distance, 'confidence': self.dev_confidence}
+        return 0
+
 
     def getDistance():
-        self.update(self.messages['es_distance'])
-        data = {}
-        return data
+        # self.update(self.messages['es_distance'])
+        # data = {}
+        # return data
+        return 0
+
 
     def getProfile():
-        self.update(self.messages['es_profile'])
-        data = {}
-        return data
+        # self.update(self.messages['es_profile'])
+        # data = {}
+        # return data
+        return 0
 
     def getRange():
-        self.update(self.messages['es_range'])
         return 0
 
     def getMode():
-        self.update(self.messages['es_mode'])
         return 0
 
     def getRate():
-        self.update(self.messages['es_rate'])
         return 0
 
     def getGain():
-        self.update(self.messages['es_gain'])
         return 0
 
     def getPulseLength():
-        self.update(self.messages['es_pulse'])
         return 0
 
 
@@ -339,119 +346,119 @@ class Ping1D:
     #Message Handling
     #################
 
-    def unpack_payload(self, msg, payload):
+    def handle_payload(self, msg, payload):
         for i,attr in enumerate(msg.payload_fields):
-            self.__settattr__(attr,payload[i])
+            print(payload[i])
+            #self.__settattr__(attr,payload[i])
 
 
     #General Messages
-    def p_goto_bootloader(self, payload):
-        print("Received Goto Bootloader Message")
-
-    def p_gen_version(self, payload):
-        self.dev_type             = payload[0]
-        self.dev_model            = payload[1]
-        self.dev_fw_version_major = payload[2]
-        self.dev_fw_version_minor = payload[3]
-
-    def p_gen_reset(self, payload):
-        #TODO Figure out what this should do
-        print("Received Reset Message")
-
-    def p_gen_device_id(self, payload):
-        self.dev_id               = payload[0]
-
-    def p_gen_new_data(self, payload):
-        #TODO Implement this
-        print("Received New Data Message")
-
-    def p_gen_cmd_request(self, payload):
-        print("Received Request Message")
-
-    def p_gen_voltage(self, payload):
-        self.dev_voltage          = payload[0]
-
-    #Sonar Messages
-    def p_sonar_velocity(self, payload):
-        self.dev_c_water          = payload[0]
-
-    #EchoSounder Messages
-    def p_es_distance_simple(self, payload):
-        self.dev_distance         = payload[0]
-        self.dev_confidence       = payload[1]
-    def p_es_distance(self, payload):
-        self.dev_distance         = payload[0]
-        self.dev_confidence       = payload[1]
-        self.dev_pulse            = payload[2]
-        self.dev_ping_number      = payload[3]
-        self.dev_start_mm         = payload[4]
-        self.dev_length_mm        = payload[5]
-        self.dev_gain_index       = payload[6]
-    def p_es_profile(self, payload):
-        self.dev_distance         = payload[0]
-        self.dev_confidence       = payload[1]
-        self.dev_pulse_usec       = payload[2]
-        self.dev_ping_number      = payload[3]
-        self.dev_start_mm         = payload[4]
-        self.dev_length_mm        = payload[5]
-        self.dev_gain_index       = payload[6]
-        self.dev_num_points       = payload[7]
-        #TODO Store the profile data
-    def p_range(self, payload):
-        self.dev_start_mm         = payload[0]
-        self.dev_length_mm        = payload[1]
-    def p_mode(self, payload):
-        self.dev_auto_manual      = payload[0]
-    def p_rate(self, payload):
-        self.dev_msec_per_ping    = payload[0]
-    def p_gain(self, payload):
-        self.dev_gain_index       = payload[0]
-    def p_pulse(self, payload):
-        self.dev_pulse_usec       = payload[0]
-
+    # def p_goto_bootloader(self, payload):
+    #     print("Received Goto Bootloader Message")
+    #
+    # def p_gen_version(self, payload):
+    #     self.dev_type             = payload[0]
+    #     self.dev_model            = payload[1]
+    #     self.dev_fw_version_major = payload[2]
+    #     self.dev_fw_version_minor = payload[3]
+    #
+    # def p_gen_reset(self, payload):
+    #     #TODO Figure out what this should do
+    #     print("Received Reset Message")
+    #
+    # def p_gen_device_id(self, payload):
+    #     self.dev_id               = payload[0]
+    #
+    # def p_gen_new_data(self, payload):
+    #     print("Received New Data Message")
+    #
+    # def p_gen_cmd_request(self, payload):
+    #     print("Received Request Message")
+    #
+    # def p_gen_voltage(self, payload):
+    #     self.dev_voltage          = payload[0]
+    #
+    # #Sonar Messages
+    # def p_sonar_velocity(self, payload):
+    #     self.dev_c_water          = payload[0]
+    #
+    # #EchoSounder Messages
+    # def p_es_distance_simple(self, payload):
+    #     self.dev_distance         = payload[0]
+    #     self.dev_confidence       = payload[1]
+    # def p_es_distance(self, payload):
+    #     self.dev_distance         = payload[0]
+    #     self.dev_confidence       = payload[1]
+    #     self.dev_pulse_usec       = payload[2]
+    #     self.dev_ping_number      = payload[3]
+    #     self.dev_start_mm         = payload[4]
+    #     self.dev_length_mm        = payload[5]
+    #     self.dev_gain_index       = payload[6]
+    # def p_es_profile(self, payload):
+    #     self.dev_distance         = payload[0]
+    #     self.dev_confidence       = payload[1]
+    #     self.dev_pulse_usec       = payload[2]
+    #     self.dev_ping_number      = payload[3]
+    #     self.dev_start_mm         = payload[4]
+    #     self.dev_length_mm        = payload[5]
+    #     self.dev_gain_index       = payload[6]
+    #     self.dev_num_points       = payload[7]
+    #     #TODO Store the profile data
+    # def p_range(self, payload):
+    #     self.dev_start_mm         = payload[0]
+    #     self.dev_length_mm        = payload[1]
+    # def p_mode(self, payload):
+    #     self.dev_auto_manual      = payload[0]
+    # def p_rate(self, payload):
+    #     self.dev_msec_per_ping    = payload[0]
+    # def p_gain(self, payload):
+    #     self.dev_gain_index       = payload[0]
+    # def p_pulse(self, payload):
+    #     self.dev_pulse_usec       = payload[0]
+    #
 
     #Metadata Format
     msg_header   = '<ccHHBB'
     msg_checksum = '<H'
 
     #General Messages
-    #gen_goto_bootloader     = {'id': 100, 'format': '<'}
-    #gen_version             = {'id': 101, 'format': '<BBHH', 'processor': p_gen_version}
-    gen_reset               = {'id': 102, 'format': '<'}
-    gen_device_id           = {'id': 110, 'format': '<B', 'processor': p_gen_device_id}
-    gen_new_data            = {'id': 112, 'format': '<B'}
-    gen_cmd_request         = {'id': 120, 'format': '<H'}
-    gen_voltage             = {'id': 130, 'format': '<H', 'processor': p_gen_voltage}
-
-    #Sonar Messages
-    sonar_velocity          = {'id': 1000, 'format': '<I'}
-
-    #EchoSounder Messages
-    es_distance_simple      = {'id': 1100, 'format': '<IB', 'processor': p_es_distance_simple}
-    es_distance             = {'id': 1101, 'format': '<IBH4I'}
-    es_profile              = {'id': 1102, 'format': '<IBH4IH200B'}
-    es_range                = {'id': 1110, 'format': '<II'}
-    es_mode                 = {'id': 1111, 'format': '<B'}
-    es_rate                 = {'id': 1112, 'format': '<H'}
-    es_gain                 = {'id': 1113, 'format': '<I'}
-    es_pulse                = {'id': 1114, 'format': '<H'}
+    # gen_goto_bootloader     = {'id': 100, 'format': '<'}
+    # gen_version             = {'id': 101, 'format': '<BBHH', 'processor': p_gen_version}
+    # gen_reset               = {'id': 102, 'format': '<'}
+    # gen_device_id           = {'id': 110, 'format': '<B', 'processor': p_gen_device_id}
+    # gen_new_data            = {'id': 112, 'format': '<B'}
+    # gen_cmd_request         = {'id': 120, 'format': '<H'}
+    # gen_voltage             = {'id': 130, 'format': '<H', 'processor': p_gen_voltage}
+    #
+    # #Sonar Messages
+    # sonar_velocity          = {'id': 1000, 'format': '<I'}
+    #
+    # #EchoSounder Messages
+    # es_distance_simple      = {'id': 1100, 'format': '<IB', 'processor': p_es_distance_simple}
+    # es_distance             = {'id': 1101, 'format': '<IBH4I'}
+    # es_profile              = {'id': 1102, 'format': '<IBH4IH200B'}
+    # es_range                = {'id': 1110, 'format': '<II'}
+    # es_mode                 = {'id': 1111, 'format': '<B'}
+    # es_rate                 = {'id': 1112, 'format': '<H'}
+    # es_gain                 = {'id': 1113, 'format': '<I'}
+    # es_pulse                = {'id': 1114, 'format': '<H'}
 
     #Message Dictionary
     messages = {
-        'gen_goto_bootloader': gen_goto_bootloader,
-        'gen_version': gen_version,
-        'gen_reset': gen_reset,
-        'gen_device_id': gen_device_id,
-        'gen_new_data': gen_new_data,
-        'gen_cmd_request': gen_cmd_request,
-        'gen_voltage': gen_voltage,
-        'sonar_velocity': sonar_velocity,
-        'es_distance_simple': es_distance_simple,
-        'es_distance': es_distance,
-        'es_profile': es_profile,
-        'es_range': es_range,
-        'es_mode': es_mode,
-        'es_rate': es_rate,
-        'es_gain': es_gain,
-        'es_pulse': es_pulse
+        100: Message.gen_goto_bootloader,
+        101: Message.gen_version,
+        102: Message.gen_reset,
+        110: Message.gen_device_id,
+        112: Message.gen_new_data,
+        120: Message.gen_cmd_request,
+        130: Message.gen_voltage,
+        1000: Message.sonar_velocity,
+        1100: Message.es_distance_simple,
+        1101: Message.es_distance,
+        1102: Message.es_profile,
+        1110: Message.es_range,
+        1111: Message.es_mode,
+        1112: Message.es_rate,
+        1113: Message.es_gain,
+        1114: Message.es_pulse,
     }
