@@ -74,15 +74,11 @@ class Ping1D:
         payloadPacked = sonarData[1]
 
         new_message = self.messages[messageID]
-        print(new_message)
+        payload = struct.unpack(new_message.format, payloadPacked)
 
-        # for messageID,message in self.messages.iteritems():
-        #     if (messageID == message.id):
-        #         payload = struct.unpack(message.format, payloadPacked)
-        #         print(payload)
-                #unpack_payload
-                # processor = message['processor']
-                # processor(self, payload)
+        for i,attr in enumerate(new_message.payload_fields):
+            #print("Setting " + str(attr) + " to " + str(payload[i]))
+            setattr(self, attr, payload[i])
 
     def readSonar(self):
         timeout = 10000
@@ -215,59 +211,84 @@ class Ping1D:
 
     #Returns a string of the version number
     def getVersion(self):
-        # self.update(self.messages['gen_version'])
-        # data = {
-        #     'device_type':self.dev_type,
-        #     'device_model': self.dev_model,
-        #     'fw_version_major': self.dev_fw_version_major,
-        #     'fw_version_minor': self.dev_fw_version_minor
-        # }
+        self.update(Message.gen_version)
+        data = {
+            'device_type':self.dev_type,
+            'device_model': self.dev_model,
+            'fw_version_major': self.dev_fw_version_major,
+            'fw_version_minor': self.dev_fw_version_minor
+        }
 
-        return ""
+        return data
 
     def getDeviceID(self):
-        # self.update(self.messages['gen_device_id'])
-        # return self.dev_id
-        return None
+        self.update(Message.gen_device_id)
+        return self.dev_id
 
     def getVoltage():
-        # self.update(self.messages['gen_voltage'])
-        # return self.dev_voltage
-        return None
+        self.update(Message.gen_voltage)
+        return self.dev_voltage
 
     def getSimpleDistance():
-        # self.update(self.messages['es_distance_simple'])
-        # return {'distance': self.dev_distance, 'confidence': self.dev_confidence}
-        return 0
+        self.update(Message.es_distance_simple)
+        data = {
+            'distance': self.dev_distance,
+            'confidence': self.dev_confidence
+        }
+        return data
 
 
     def getDistance():
-        # self.update(self.messages['es_distance'])
-        # data = {}
-        # return data
-        return 0
+        self.update(Message.es_distance)
+        data = {
+                'distance': self.dev_distance,
+                'confidence': self.dev_confidence,
+                'pulse_usec': self.dev_pulse_usec,,
+                'ping_number': self.dev_ping_number,
+                'start_mm': self.dev_start_mm,
+                'length_mm': self.dev_length_mm,
+                'gain_index': self.dev_gain_index
+        }
+        return data
 
-
+    #TODO Add returning of points
     def getProfile():
-        # self.update(self.messages['es_profile'])
-        # data = {}
-        # return data
-        return 0
+        self.update(Message.es_profile)
+        data = {
+                'distance': self.dev_distance,
+                'confidence': self.dev_confidence,
+                'pulse_usec': self.dev_pulse_usec,,
+                'ping_number': self.dev_ping_number,
+                'start_mm': self.dev_start_mm,
+                'length_mm': self.dev_length_mm,
+                'gain_index': self.dev_gain_index,
+                'num_points': self.dev_num_points,
+        }
+        return data
 
     def getRange():
-        return 0
+        self.update(Message.es_range)
+        data = {
+            'start_mm':self.start_mm,
+            'length_mm': self.length_mm
+        }
+        return data
 
     def getMode():
-        return 0
+        self.update(Message.es_mode)
+        return self.dev_auto_manual
 
     def getRate():
-        return 0
+        self.update(Message.es_rate)
+        return self.dev_pulse_usec
 
     def getGain():
-        return 0
+        self.update(Message.es_gain)
+        return self.dev_gain_index
 
     def getPulseLength():
-        return 0
+        self.update(Message.es_pulse)
+        return self.dev_pulse_usec
 
 
     #Internal
@@ -346,9 +367,8 @@ class Ping1D:
     #Message Handling
     #################
 
-    def handle_payload(self, msg, payload):
-        for i,attr in enumerate(msg.payload_fields):
-            print(payload[i])
+    #def handle_payload(self, msg, payload):
+
             #self.__settattr__(attr,payload[i])
 
 
