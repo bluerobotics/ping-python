@@ -11,11 +11,20 @@ def foo_action(ping,msg):
     pass
 
 #General Messages
+
+##Example:
+#message_name = Message(
+#  id,
+#  message_name,
+#  struct_format_string,
+#  ('field_1', 'field_2'),
+#  None
+#)
+
 gen_bootloader = Message(
     100,
     'gen_version'
 )
-
 
 gen_version = Message(
     101,
@@ -27,7 +36,7 @@ gen_version = Message(
 #TODO add a reset action here
 gen_reset = Message(
     102,
-    'gen_reset',
+k    'gen_reset',
     '<',
     (,)
 )
@@ -36,26 +45,35 @@ gen_device_id = Message(
     110,
     'gen_device_id',
     '<B',
-    ('dev_id')
+    ('dev_id',)
 )
 
 gen_new_data = Message(
     112,
     'gen_new_data',
     '<B',
-    ('dev_is_new_data')
+    ('dev_is_new_data',)
 )
 
-gen_cmd_request
-gen_voltage
+gen_cmd_request = Message(
+    120,
+    'gen_cmd_request',
+    '<H'
+)
+
+gen_voltage = Message(
+    130,
+    'gen_voltage',
+    '<H',
+    ('dev_voltage',)
+)
 
 #Sonar Messages
 sonar_velocity = Message(
     999,
     'sonar_velocity',
-    ''<I',
-    ('dev_c_water',),
-    None
+    '<I',
+    ('dev_c_water',)
 )
 
 #Message Dictionary
