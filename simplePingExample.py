@@ -41,5 +41,5 @@ raw_input("Press Enter to continue...")
 
 # Read and print distance measurements with confidence
 while True:
-    myPing.getDistance()
+    myPing.getProfile()
     print("Distance: " + str(myPing.distance) + " Confidence: " + str(myPing.confidence))
