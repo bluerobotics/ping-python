@@ -3,6 +3,7 @@
 from Ping import Ping1D
 import sys
 import getopt
+import Message
 
 device = ''
 instructions = "Usage: python simplePingExample.py -d <device_name>"
@@ -38,7 +39,7 @@ print("------------------------------------")
 
 raw_input("Press Enter to continue...")
 
-#Read and print distance measurements with confidence
+# Read and print distance measurements with confidence
 while True:
-    deviceID = myPing.getDeviceID()
-    print(deviceID)
+    myPing.getSimpleDistance()
+    print("Distance: " + str(myPing.distance) + " Confidence: " + str(myPing.confidence))
