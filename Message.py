@@ -21,24 +21,40 @@ gen_version = Message(
     101,
     'gen_version',
     '<BBHH',
-
+    ('dev_type', 'dev_model', 'dev_fw_version_major', 'dev_fw_version_minor')
 )
 
+#TODO add a reset action here
 gen_reset = Message(
     102,
-    ''
+    'gen_reset',
+    '<',
+    (,)
 )
-gen_device_id
-gen_new_data
+
+gen_device_id = Message(
+    110,
+    'gen_device_id',
+    '<B',
+    ('dev_id')
+)
+
+gen_new_data = Message(
+    112,
+    'gen_new_data',
+    '<B',
+    ('dev_is_new_data')
+)
+
 gen_cmd_request
 gen_voltage
 
 #Sonar Messages
 sonar_velocity = Message(
     999,
-    "sonar_velocity",
-    "<I",
-    ("dev_c_water",),
+    'sonar_velocity',
+    ''<I',
+    ('dev_c_water',),
     None
 )
 
