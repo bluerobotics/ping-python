@@ -1,3 +1,4 @@
+#!/usr/bin/python -u
 #Messages.py
 
 class Message:
