@@ -362,27 +362,26 @@ class Ping1D:
     def packChecksum(self, c):
         return struct.pack(self.msg_checksum, c)
 
-
     #Metadata Format
     msg_header   = '<ccHHBB'
     msg_checksum = '<H'
 
     #Message Dictionary
     messages = {
-        100: Message.gen_goto_bootloader,
-        101: Message.gen_version,
-        102: Message.gen_reset,
-        110: Message.gen_device_id,
-        112: Message.gen_new_data,
-        120: Message.gen_cmd_request,
-        130: Message.gen_voltage,
-        1000: Message.sonar_velocity,
-        1100: Message.es_distance_simple,
-        1101: Message.es_distance,
-        1102: Message.es_profile,
-        1110: Message.es_range,
-        1111: Message.es_mode,
-        1112: Message.es_rate,
-        1113: Message.es_gain,
-        1114: Message.es_pulse
+        Message.gen_goto_bootloader.id: Message.gen_goto_bootloader,
+        Message.gen_version.id: Message.gen_version,
+        Message.gen_reset.id: Message.gen_reset,
+        Message.gen_device_id.id: Message.gen_device_id,
+        Message.gen_new_data.id: Message.gen_new_data,
+        Message.gen_cmd_request.id: Message.gen_cmd_request,
+        Message.gen_voltage.id: Message.gen_voltage,
+        Message.sonar_velocity.id: Message.sonar_velocity,
+        Message.es_distance_simple.id: Message.es_distance_simple,
+        Message.es_distance.id: Message.es_distance,
+        Message.es_profile.id: Message.es_profile,
+        Message.es_range.id: Message.es_range,
+        Message.es_mode.id: Message.es_mode,
+        Message.es_rate.id: Message.es_rate,
+        Message.es_gain.id: Message.es_gain,
+        Message.es_pulse.id: Message.es_pulse
     }
