@@ -77,7 +77,7 @@ class Ping1D:
         payload = struct.unpack(new_message.format, payloadPacked)
 
         for i,attr in enumerate(new_message.payload_fields):
-            #Have to have a separate line for lists / arrays
+            #Have to have a separate handling for lists / arrays
             if (attr == "points"):
                 self.points = (payload[((len(payload) - self.num_points)):(len(payloadPacked))])
             else:
@@ -294,14 +294,6 @@ class Ping1D:
     #Internal
     #########
 
-    # def initUDP(self, ip, port):
-    #     UDP_IP="0.0.0.0"
-    #     UDP_PORT="5009"
-    #     self.sock = socket.socket( socket.AF_INET, # Internet
-    #                   socket.SOCK_DGRAM ) # UDP
-    #
-    #     self.sock.bind( (UDP_IP,UDP_PORT) )
-
     #This will create a CRC of the message and check it against the sent one
     def validateChecksum(self, message, claimedChecksum):
         checksum = evaluateChecksum(message)
@@ -331,12 +323,10 @@ class Ping1D:
         pFormat = '<' + (len(p) * 'B')
         pUnpacked = struct.unpack(pFormat, p)
 
-        hSize = len(h)
-        pSize = len(p)
         sumOfBytes = 0
-        for i in range(0, hSize):
+        for i in range(0, len(h)):
             sumOfBytes += hUnpacked[i]
-        for i in range(0, pSize):
+        for i in range(0, len(p)):
             sumOfBytes += pUnpacked[i]
 
         checksum = sumOfBytes & 0xffff
