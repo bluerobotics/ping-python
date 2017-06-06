@@ -20,16 +20,6 @@ def foo_action(ping,msg):
     pass
 
 #General Messages
-
-##Example:
-#message_name = Message(
-#  id,
-#  message_name,
-#  struct_format_string,
-#  ('field_1', 'field_2'),
-#  None
-#)
-
 gen_goto_bootloader = Message(
     100,
     'gen_version'
