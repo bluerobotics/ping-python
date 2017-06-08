@@ -229,7 +229,7 @@ class Ping1D:
         self.update(Message.gen_voltage)
         return self.voltage
 
-    def getSimpleDistance(self):
+    def getSimpleDistanceData(self):
         self.update(Message.es_distance_simple)
         data = {
             'distance': self.distance,
@@ -238,7 +238,7 @@ class Ping1D:
         return data
 
 
-    def getDistance(self):
+    def getDistanceData(self):
         self.update(Message.es_distance)
         data = {
                 'distance': self.distance,
