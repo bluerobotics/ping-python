@@ -311,9 +311,12 @@ class Ping1D:
         self.sendMessage[Message.es_rate, payload, self.device_id]
 
     def setGain(self, gain):
+        payload = [gain]
+        self.sendMessage(Message.es_gain, payload, self.device_id)
 
-
-    def setPulseLength():
+    def setPulseLength(self, pulse_usec):
+        payload = [pulse_usec]
+        self.sendMessage(Message.es_pulse, payload, self.device_id)
 
     #Internal
     #########
