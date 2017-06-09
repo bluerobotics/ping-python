@@ -298,7 +298,7 @@ class Ping1D:
         mode = -1
         if (modeString == 'auto'):
             mode = 0
-        else if (modeString == 'manual'):
+        elif (modeString == 'manual'):
             mode = 1
         else:
             print("Error. Mode must be 'auto' or 'manual'")
