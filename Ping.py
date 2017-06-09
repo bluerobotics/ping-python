@@ -290,9 +290,26 @@ class Ping1D:
 
     #Control Methods
     ###################
-    def setRange(self, start, length, device_id = 255):
+    def setRange(self, start, length):
         payload = [start, length]
+        sendMessage(Message.es_range, payload, self.device_id)
 
+    def setMode(self, modeString):
+        mode = -1
+        if (modeString == 'auto'):
+            mode = 0
+        else if (modeString == 'manual'):
+            mode = 1
+        else:
+            print("Error. Mode must be 'auto' or 'manual'")
+
+        payload = [mode]
+        
+    def setRate():
+
+    def setGain():
+
+    def setPulseLength():
 
     #Internal
     #########
