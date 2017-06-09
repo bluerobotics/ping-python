@@ -292,7 +292,7 @@ class Ping1D:
     ###################
     def setRange(self, start, length):
         payload = [start, length]
-        sendMessage(Message.es_range, payload, self.device_id)
+        self.sendMessage(Message.es_range, payload, self.device_id)
 
     def setMode(self, modeString):
         mode = -1
@@ -304,10 +304,14 @@ class Ping1D:
             print("Error. Mode must be 'auto' or 'manual'")
 
         payload = [mode]
-        
-    def setRate():
+        self.sendMessage(Message.es_mode, payload, self.device_id)
 
-    def setGain():
+    def setRate(self, rate):
+        payload = [rate]
+        self.sendMessage[Message.es_rate, payload, self.device_id]
+
+    def setGain(self, gain):
+
 
     def setPulseLength():
 
