@@ -167,8 +167,6 @@ class Ping1D:
             print "Error: "+str(e)
             pass
 
-    #Control Methods
-    ###################
 
     #Request the given message ID
     def request(self, m_id):
@@ -289,6 +287,11 @@ class Ping1D:
     def getPulseLength(self):
         self.update(Message.es_pulse)
         return self.pulse_usec
+
+    #Control Methods
+    ###################
+    def setRange(self, start, length, device_id = 255):
+        payload = [start, length]
 
 
     #Internal
