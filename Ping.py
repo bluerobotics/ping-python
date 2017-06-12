@@ -287,9 +287,9 @@ class Ping1D:
     def setMode(self, modeString):
         mode = -1
         if (modeString == 'auto'):
-            mode = 0
-        elif (modeString == 'manual'):
             mode = 1
+        elif (modeString == 'manual'):
+            mode = 0
         else:
             print("Error. Mode must be 'auto' or 'manual'")
 
