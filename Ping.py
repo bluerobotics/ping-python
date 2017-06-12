@@ -173,16 +173,6 @@ class Ping1D:
         payloadData = [m_id]
         self.sendMessage(Message.gen_cmd_request, payloadData, self.device_id)
 
-    #Manually set the scanning range
-    def setRange(self, auto, start, range):
-        #TODO implement
-        return false
-
-    #Set special debug options
-    def setDebugOptions(self, raw, auto, gain, c):
-        #TODO implement
-        return false
-
     #Used for sending of all messages
     def sendMessage(self, m_message, m_payload, m_destination):
         #Pack payload first, because metadata is required for the header
