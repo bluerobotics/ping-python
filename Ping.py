@@ -7,6 +7,7 @@ import serial
 import getopt
 import socket
 import Message
+import time
 
 class Ping1D:
     instructions = "Usage: python simplePingExample.py -d <device_name>"
@@ -52,14 +53,19 @@ class Ping1D:
             exit(1)
         try:
             self.ser = serial.Serial(deviceName, 115200)
+            self.ser.timeout = 1
         except:
             print("Failed to open the given serial port")
             exit(1)
 
     def initialize(self):
-        self.update(Message.gen_device_id)
-        self.update(Message.gen_version)
-        self.update(Message.gen_voltage)
+        if self.update(Message.gen_device_id) is None:
+            return False
+        if self.update(Message.gen_version) is None:
+            return False
+        if self.update(Message.gen_voltage) is None:
+            return False
+        return True
 
     #Read and Update
     def update(self, message):
@@ -67,6 +73,7 @@ class Ping1D:
         sonarData = self.readSonar()
         if (sonarData != None):
            self.handleMessage(sonarData)
+        return sonarData
 
     #Update values from new sonar report
     def handleMessage(self, sonarData):
@@ -85,8 +92,7 @@ class Ping1D:
 
 
     def readSonar(self):
-        timeout = 10000
-        readCount = 0
+        tStart = time.time()
 
         headerRaw = ""
         payloadRaw = ""
@@ -99,19 +105,21 @@ class Ping1D:
             while(not start_signal_found):
                 #Put new byte in second index
                 self.test_2 = self.ser.read()
-
+                if len(self.test_2) < 1:
+                    print("Read timed out!")
+                    return None
                 #Check if start signal
                 if((self.test_1 == self.validation_1) and (self.test_2 == self.validation_2)):
                     start_signal_found = True
+                    break
                 else:
                     #Move second byte to first byte
                     self.test_1 = self.test_2
 
-                    #Check if timeout has been reached
-                    readCount += 1
-                    if (readCount > timeout):
-                        print("Serial Read Timeout. Check device and connections")
-                        return None
+                #Check if timeout has been reached (3 seconds)
+                if (time.time() > tStart + 3):
+                    print("Timed out looking for start condition!")
+                    return None
 
             #Add start signal to buffer, since we have a valid message
             headerRaw += struct.pack('<c', self.validation_1)
@@ -120,6 +128,10 @@ class Ping1D:
             #Get the header
             for i in range(2, 8):
                 byte = self.ser.read()
+                if len(byte) < 1:
+                    print("Read timed out!")
+                    return None
+                
                 headerRaw += struct.pack("<c", byte)
 
             #Decode Header
@@ -141,11 +153,19 @@ class Ping1D:
             #Get the message body
             for i in range(0, payloadLength):
                 byte = self.ser.read()
+                if len(byte) < 1:
+                    print("Read timed out!")
+                    return None
+                
                 payloadRaw += struct.pack("<c", byte)
 
             #Get the Checksum
             for i in range(0, 2):
                 byte = self.ser.read()
+                if len(byte) < 1:
+                    print("Read timed out!")
+                    return None
+                
                 checksumRaw += struct.pack("<c", byte)
 
             #Ignore message if it was not directed at the host
