@@ -51,16 +51,18 @@ class Ping1D:
     test_1 = ''
     test_2 = ''
 
-    def __init__(self, deviceName):
-        #Open the serial port
-        if not deviceName:
-            print(self.instructions)
-            exit(1)
+    def __init__(self, deviceName, baudrate=115200):
+        if deviceName is None:
+            print("Device name is required")
+            return
+
         try:
-            self.ser = serial.Serial(deviceName, 115200, timeout=1)
+            print("Opening %s at %d bps") % (deviceName, baudrate)
+            self.ser = serial.Serial(deviceName, baudrate)
+            self.ser.timeout = 1
 
         except Exception as e:
-            print("Failed to open the given serial port:")
+            print("Failed to open the given serial port")
             print("\t", e)
             exit(1)
 

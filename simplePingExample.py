@@ -12,10 +12,11 @@ import argparse
 
 parser = argparse.ArgumentParser(description="Driver for the Water Linked Underwater GPS system.")
 parser.add_argument('--device', action="store", required=True, type=str, help="Ping device port.")
+parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate.")
 args = parser.parse_args()
 
 #Make a new Ping
-myPing = Ping1D(device)
+myPing = Ping1D(args.device, args.baudrate)
 if myPing.initialize() is False:
     print "Failed to initialize Ping!"
     exit(1)
