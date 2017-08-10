@@ -51,7 +51,7 @@ class Ping1D:
             print(self.instructions)
             exit(1)
         try:
-            self.ser = serial.Serial(deviceName, 115200)
+            self.ser = serial.Serial(deviceName, 921600)
         except:
             print("Failed to open the given serial port")
             exit(1)
@@ -71,6 +71,13 @@ class Ping1D:
     #Update values from new sonar report
     def handleMessage(self, sonarData):
         messageID = sonarData[0]
+
+        #TEMPORARY!!!
+        #I don't know the format of this message so I have to ignore it
+        #TODO implement this message properly
+        if (messageID == 7):
+            return
+
         payloadPacked = sonarData[1]
 
         new_message = self.messages[messageID]
