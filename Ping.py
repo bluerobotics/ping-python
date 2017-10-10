@@ -52,7 +52,7 @@ class Ping1D:
             print(self.instructions)
             exit(1)
         try:
-            self.ser = serial.Serial(deviceName, 115200)
+            self.ser = serial.Serial(deviceName, 921600)
             self.ser.timeout = 1
         except:
             print("Failed to open the given serial port")
@@ -79,6 +79,10 @@ class Ping1D:
     def handleMessage(self, sonarData):
         messageID = sonarData[0]
         payloadPacked = sonarData[1]
+
+	#Ignore these messages for now
+	if (messageID == 7 or messageID == 4):
+		return
 
         new_message = self.messages[messageID]
         payload = struct.unpack(new_message.format, payloadPacked)
