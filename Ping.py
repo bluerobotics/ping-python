@@ -40,6 +40,11 @@ class Ping1D:
     msec_per_ping                         = 0
     gain_index                            = 0
 
+    #Dev
+    ascii_text                            = ""
+    raw_header                            = '\x13\0\0\0\x08\0'
+    raw_data                              = '\x13\0\0\0\x08\0'
+    raw_checksum                          = '\x13\0\0\0\x08\0'
     #Start Signal
     validation_1 = b'B'
     validation_2 = b'R'
@@ -52,8 +57,8 @@ class Ping1D:
             print(self.instructions)
             exit(1)
         try:
-            self.ser = serial.Serial(deviceName, 921600)
-            self.ser.timeout = 1
+            self.ser = serial.Serial(deviceName, 921600, timeout=1)
+
         except:
             print("Failed to open the given serial port")
             exit(1)
@@ -78,6 +83,7 @@ class Ping1D:
     #Update values from new sonar report
     def handleMessage(self, sonarData):
         messageID = sonarData[0]
+
         payloadPacked = sonarData[1]
 
 	#Ignore these messages for now
@@ -85,14 +91,28 @@ class Ping1D:
 		return
 
         new_message = self.messages[messageID]
-        payload = struct.unpack(new_message.format, payloadPacked)
 
-        for i,attr in enumerate(new_message.payload_fields):
-            #Have to have a separate handling for lists / arrays
-            if (attr == "points"):
-                self.points = (payload[((len(payload) - self.num_points)):(len(payloadPacked))])
-            else:
-                setattr(self, attr, payload[i])
+	#Must filter out things that don't need to be unpacked
+	#if (messageID == 7)
+        #print(new_message.format)
+        #print(payloadPacked)
+
+        if (new_message.format == 'string'):
+            for i,attr in enumerate(new_message.payload_fields):
+                setattr(self, attr, payloadPacked)
+            print(payloadPacked)
+	elif (new_message.format == 'raw'):
+            self.raw_data = payloadPacked
+            #print(payloadPacked)
+            #print("Got Raw Data")
+	elif (new_message.format[0] == '<'):
+            payload = struct.unpack(new_message.format, payloadPacked)
+            for i,attr in enumerate(new_message.payload_fields):
+                #Have to have a separate handling for lists / arrays
+                if (attr == "points"):
+                    self.points = (payload[((len(payload) - self.num_points)):(len(payloadPacked))])
+                else:
+                    setattr(self, attr, payload[i])
 
 
     def readSonar(self):
@@ -138,6 +158,9 @@ class Ping1D:
                 
                 headerRaw += struct.pack("<c", byte)
 
+            #Store the header
+            self.raw_header = headerRaw
+
             #Decode Header
             header = struct.unpack(self.msg_header, headerRaw)
 
@@ -172,6 +195,9 @@ class Ping1D:
                 
                 checksumRaw += struct.pack("<c", byte)
 
+            #Store the checksum
+            self.raw_checksum = checksumRaw
+
             #Ignore message if it was not directed at the host
             if (not messageForHost):
                 return None
@@ -197,6 +223,10 @@ class Ping1D:
         payloadData = [m_id]
         self.sendMessage(Message.gen_cmd_request, payloadData, self.device_id)
 
+    def legacyRequest(self, m_id):
+        payloadData = [m_id, 0x1]
+        self.sendMessage(Message.dev_legacy_request, payloadData, self.device_id)
+
     #Used for sending of all messages
     def sendMessage(self, m_message, m_payload, m_destination):
         #Pack payload first, because metadata is required for the header
@@ -221,6 +251,11 @@ class Ping1D:
     #Accessor Methods
     ################
 
+    def getRawData(self):
+        self.legacyRequest(Message.dev_alt_raw_data.id)
+        sonarData = self.readSonar()
+        if (sonarData != None):
+           self.handleMessage(sonarData)
     #Returns a string of the version number
     def getVersion(self):
         self.update(Message.gen_version)
@@ -414,5 +449,9 @@ class Ping1D:
         Message.es_mode.id: Message.es_mode,
         Message.es_rate.id: Message.es_rate,
         Message.es_gain.id: Message.es_gain,
-        Message.es_pulse.id: Message.es_pulse
+        Message.es_pulse.id: Message.es_pulse,
+        Message.dev_alt_raw_data.id: Message.dev_alt_raw_data,
+        Message.dev_ascii_text.id: Message.dev_ascii_text,
+        Message.dev_nack.id: Message.dev_nack,
+        Message.dev_legacy_request.id: Message.dev_legacy_request
     }
