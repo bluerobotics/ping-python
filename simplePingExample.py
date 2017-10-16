@@ -29,9 +29,10 @@ for opt, arg in options:
 
 #Make a new Ping
 myPing = Ping1D(device)
-myPing.initialize()
+if myPing.initialize() is False:
+    print "Failed to initialize Ping!"
+    exit(1)
 
-print()
 print("------------------------------------")
 print("Starting Ping..")
 print("Press CTRL+Z to exit")
