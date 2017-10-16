@@ -13,7 +13,7 @@ import csv
 #vehicle = connect('udpout:'+address+':'+str(port),wait_ready=False)
 
 device = ''
-instructions = "Usage: python simplePingExample.py -d <device_name>"
+instructions = "Usage: python rawSurvey.py -d <device_name>"
 
 ##Parse Command line options
 ############################
@@ -40,7 +40,7 @@ for opt, arg in options:
         exit(1)
 
 if (file is ''):
-    file = "/home/pi/sonar-logs/raw-"+time.strftime("%Y-%m-%d-%H-%M-%S")+".csv"
+    file = "/home/pi/sonar-logs/raw-"+time.strftime("%Y-%m-%d-%H-%M-%S")+".ping_packets1"
 
 fout = open(str(file),'wb')
 writer = csv.writer(fout,delimiter=',')
@@ -78,6 +78,6 @@ while True:
     #writer.writerow([str(myPing.distance),str(myPing.confidence),str(vehicle.location.global_frame.lat),str(vehicle.location.global_frame.lon)])
     #writer.writerow([rawData])
     fout.close()
-    time.sleep(0.2)
+    time.sleep(1)
 
 
