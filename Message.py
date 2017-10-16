@@ -23,7 +23,7 @@ def foo_action(ping,msg):
 #General Messages
 gen_goto_bootloader = Message(
     100,
-    'gen_version'
+    'gen_goto_bootloader'
 )
 
 gen_version = Message(
@@ -147,4 +147,31 @@ es_pulse = Message(
     'es_pulse',
     '<H',
     ('pulse_usec',)
+)
+
+#Dev Messages
+
+dev_alt_raw_data = Message(
+    0x8,
+    'dev_alt_raw_data',
+    'raw'
+)
+
+dev_ascii_text = Message(
+    7,
+    'ascii_text',
+    'string',
+    ('ascii_text',)
+)
+
+dev_nack = Message(
+    2,
+    'nack',
+    'string',
+    ('nack_text',)
+)
+dev_legacy_request = Message(
+    0x101,
+    'dev_legacy_request',
+    '<HH'
 )
