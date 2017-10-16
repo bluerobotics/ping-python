@@ -83,19 +83,8 @@ class Ping1D:
     #Update values from new sonar report
     def handleMessage(self, sonarData):
         messageID = sonarData[0]
-
         payloadPacked = sonarData[1]
-
-	#Ignore these messages for now
-	if (messageID == 7 or messageID == 4):
-		return
-
         new_message = self.messages[messageID]
-
-	#Must filter out things that don't need to be unpacked
-	#if (messageID == 7)
-        #print(new_message.format)
-        #print(payloadPacked)
 
         if (new_message.format == 'string'):
             for i,attr in enumerate(new_message.payload_fields):
@@ -103,8 +92,6 @@ class Ping1D:
             print(payloadPacked)
 	elif (new_message.format == 'raw'):
             self.raw_data = payloadPacked
-            #print(payloadPacked)
-            #print("Got Raw Data")
 	elif (new_message.format[0] == '<'):
             payload = struct.unpack(new_message.format, payloadPacked)
             for i,attr in enumerate(new_message.payload_fields):
