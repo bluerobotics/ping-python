@@ -90,9 +90,9 @@ class Ping1D:
             for i,attr in enumerate(new_message.payload_fields):
                 setattr(self, attr, payloadPacked)
             print(payloadPacked)
-	elif (new_message.format == 'raw'):
+        elif (new_message.format == 'raw'):
             self.raw_data = payloadPacked
-	elif (new_message.format[0] == '<'):
+        elif (new_message.format[0] == '<'):
             payload = struct.unpack(new_message.format, payloadPacked)
             for i,attr in enumerate(new_message.payload_fields):
                 #Have to have a separate handling for lists / arrays
