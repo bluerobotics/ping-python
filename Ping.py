@@ -201,7 +201,7 @@ class Ping1D:
             return (messageID, payloadRaw)
 
         except Exception as e:
-            print "Error: "+str(e)
+            print("Error: "+str(e))
             pass
 
 
