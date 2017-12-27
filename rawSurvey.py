@@ -8,6 +8,12 @@ import getopt
 import time
 import csv
 
+import os
+from os.path import expanduser
+
+#2to3
+from builtins import bytes
+
 #address = 'localhost'
 #port = 9000
 #vehicle = connect('udpout:'+address+':'+str(port),wait_ready=False)
@@ -30,17 +36,22 @@ for opt, arg in options:
         print(instructions)
         exit(1)
     elif opt in ('-d', '--device'):
-        if (arg != ''):
+        if arg:
             device = arg
     elif opt in ('-f', '--file'):
-	if (arg != ''):
-	    file = arg
+        if arg:
+            file = arg
     else:
         print(instructions)
         exit(1)
 
-if (file is ''):
-    file = "/home/pi/sonar-logs/raw-"+time.strftime("%Y-%m-%d-%H-%M-%S")+".ping_packets1"
+if not file:
+    path = "{0}/sonar-logs/".format(expanduser("~"))
+    filename = "raw-{0}.ping_packets1".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
+    #Check if path exist and create it
+    if not os.path.exists(path):
+        os.makedirs(path)
+    file = path + filename
 
 fout = open(str(file),'wb')
 writer = csv.writer(fout,delimiter=',')

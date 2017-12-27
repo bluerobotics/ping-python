@@ -42,9 +42,9 @@ class Ping1D:
 
     #Dev
     ascii_text                            = ""
-    raw_header                            = '\x13\0\0\0\x08\0'
-    raw_data                              = '\x13\0\0\0\x08\0'
-    raw_checksum                          = '\x13\0\0\0\x08\0'
+    raw_header                            = b'\x13\0\0\0\x08\0'
+    raw_data                              = b'\x13\0\0\0\x08\0'
+    raw_checksum                          = b'\x13\0\0\0\x08\0'
     #Start Signal
     validation_1 = b'B'
     validation_2 = b'R'
@@ -53,14 +53,15 @@ class Ping1D:
 
     def __init__(self, deviceName):
         #Open the serial port
-        if (deviceName == ''):
+        if not deviceName:
             print(self.instructions)
             exit(1)
         try:
             self.ser = serial.Serial(deviceName, 921600, timeout=1)
 
-        except:
-            print("Failed to open the given serial port")
+        except Exception as e:
+            print("Failed to open the given serial port:")
+            print("\t", e)
             exit(1)
 
     def initialize(self):
@@ -90,9 +91,9 @@ class Ping1D:
             for i,attr in enumerate(new_message.payload_fields):
                 setattr(self, attr, payloadPacked)
             print(payloadPacked)
-	elif (new_message.format == 'raw'):
+        elif (new_message.format == 'raw'):
             self.raw_data = payloadPacked
-	elif (new_message.format[0] == '<'):
+        elif (new_message.format[0] == '<'):
             payload = struct.unpack(new_message.format, payloadPacked)
             for i,attr in enumerate(new_message.payload_fields):
                 #Have to have a separate handling for lists / arrays
@@ -105,9 +106,9 @@ class Ping1D:
     def readSonar(self):
         tStart = time.time()
 
-        headerRaw = ""
-        payloadRaw = ""
-        checksumRaw = ""
+        headerRaw = b''
+        payloadRaw = b''
+        checksumRaw = b''
 
         start_signal_found = False
 
@@ -133,8 +134,7 @@ class Ping1D:
                     return None
 
             #Add start signal to buffer, since we have a valid message
-            headerRaw += struct.pack('<c', self.validation_1)
-            headerRaw += struct.pack('<c', self.validation_2)
+            headerRaw += struct.pack('<cc', self.validation_1, self.validation_2)
 
             #Get the header
             for i in range(2, 8):
@@ -201,7 +201,7 @@ class Ping1D:
             return (messageID, payloadRaw)
 
         except Exception as e:
-            print "Error: "+str(e)
+            print("Error: "+str(e))
             pass
 
 
@@ -241,7 +241,7 @@ class Ping1D:
     def getRawData(self):
         self.legacyRequest(Message.dev_alt_raw_data.id)
         sonarData = self.readSonar()
-        if (sonarData != None):
+        if sonarData:
            self.handleMessage(sonarData)
     #Returns a string of the version number
     def getVersion(self):
@@ -374,7 +374,7 @@ class Ping1D:
 
     #Pack the payload so it can be sent
     def packPayload(self, payloadFormat, payloadRaw):
-        if (payloadRaw == []):
+        if not payloadRaw:
             return
         payloadPacked = struct.pack(payloadFormat, *payloadRaw)
         return payloadPacked
