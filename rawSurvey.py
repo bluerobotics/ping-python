@@ -8,6 +8,9 @@ import getopt
 import time
 import csv
 
+#2to3
+from builtins import bytes
+
 #address = 'localhost'
 #port = 9000
 #vehicle = connect('udpout:'+address+':'+str(port),wait_ready=False)

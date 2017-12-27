@@ -42,9 +42,9 @@ class Ping1D:
 
     #Dev
     ascii_text                            = ""
-    raw_header                            = '\x13\0\0\0\x08\0'
-    raw_data                              = '\x13\0\0\0\x08\0'
-    raw_checksum                          = '\x13\0\0\0\x08\0'
+    raw_header                            = b'\x13\0\0\0\x08\0'
+    raw_data                              = b'\x13\0\0\0\x08\0'
+    raw_checksum                          = b'\x13\0\0\0\x08\0'
     #Start Signal
     validation_1 = b'B'
     validation_2 = b'R'
@@ -53,7 +53,7 @@ class Ping1D:
 
     def __init__(self, deviceName):
         #Open the serial port
-        if (deviceName == ''):
+        if not deviceName:
             print(self.instructions)
             exit(1)
         try:
@@ -105,9 +105,9 @@ class Ping1D:
     def readSonar(self):
         tStart = time.time()
 
-        headerRaw = ""
-        payloadRaw = ""
-        checksumRaw = ""
+        headerRaw = b''
+        payloadRaw = b''
+        checksumRaw = b''
 
         start_signal_found = False
 
@@ -133,8 +133,7 @@ class Ping1D:
                     return None
 
             #Add start signal to buffer, since we have a valid message
-            headerRaw += struct.pack('<c', self.validation_1)
-            headerRaw += struct.pack('<c', self.validation_2)
+            headerRaw += struct.pack('<cc', self.validation_1, self.validation_2)
 
             #Get the header
             for i in range(2, 8):
