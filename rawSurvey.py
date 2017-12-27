@@ -36,16 +36,16 @@ for opt, arg in options:
         print(instructions)
         exit(1)
     elif opt in ('-d', '--device'):
-        if (arg != ''):
+        if arg:
             device = arg
     elif opt in ('-f', '--file'):
-	if (arg != ''):
-	    file = arg
+        if arg:
+            file = arg
     else:
         print(instructions)
         exit(1)
 
-if (file is ''):
+if not file:
     path = "{0}/sonar-logs/".format(expanduser("~"))
     filename = "raw-{0}.ping_packets1".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
     #Check if path exist and create it

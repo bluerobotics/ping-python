@@ -241,7 +241,7 @@ class Ping1D:
     def getRawData(self):
         self.legacyRequest(Message.dev_alt_raw_data.id)
         sonarData = self.readSonar()
-        if (sonarData != None):
+        if sonarData:
            self.handleMessage(sonarData)
     #Returns a string of the version number
     def getVersion(self):
@@ -374,7 +374,7 @@ class Ping1D:
 
     #Pack the payload so it can be sent
     def packPayload(self, payloadFormat, payloadRaw):
-        if (payloadRaw == []):
+        if not payloadRaw:
             return
         payloadPacked = struct.pack(payloadFormat, *payloadRaw)
         return payloadPacked
