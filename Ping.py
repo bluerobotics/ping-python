@@ -65,11 +65,11 @@ class Ping1D:
             exit(1)
 
     def initialize(self):
-        if self.update(Message.gen_device_id) is None:
+        if self.update(Message.ping1D_device_id) is None:
             return False
-        if self.update(Message.gen_version) is None:
+        if self.update(Message.ping1D_fw_version) is None:
             return False
-        if self.update(Message.gen_voltage) is None:
+        if self.update(Message.ping1D_voltage_5) is None:
             return False
         return True
 
@@ -207,12 +207,9 @@ class Ping1D:
 
     #Request the given message ID
     def request(self, m_id):
-        payloadData = [m_id]
-        self.sendMessage(Message.gen_cmd_request, payloadData, self.device_id)
-
-    def legacyRequest(self, m_id):
-        payloadData = [m_id, 0x1]
-        self.sendMessage(Message.dev_legacy_request, payloadData, self.device_id)
+        msg = Message.ping1D_empty
+        msg.id = m_id
+        self.sendMessage(msg, [], self.device_id)
 
     #Used for sending of all messages
     def sendMessage(self, m_message, m_payload, m_destination):
@@ -245,7 +242,7 @@ class Ping1D:
            self.handleMessage(sonarData)
     #Returns a string of the version number
     def getVersion(self):
-        self.update(Message.gen_version)
+        self.update(Message.ping1D_fw_version)
         data = {
             'device_type':self.device_type,
             'device_model': self.device_model,
@@ -256,15 +253,15 @@ class Ping1D:
         return data
 
     def getDeviceID(self):
-        self.update(Message.gen_device_id)
+        self.update(Message.ping1D_device_id)
         return self.device_id
 
     def getVoltage(self):
-        self.update(Message.gen_voltage)
+        self.update(Message.ping1D_voltage_5)
         return self.voltage
 
     def getSimpleDistanceData(self):
-        self.update(Message.es_distance_simple)
+        self.update(Message.ping1D_distance_simple)
         data = {
             'distance': self.distance,
             'confidence': self.confidence
@@ -273,7 +270,7 @@ class Ping1D:
 
 
     def getDistanceData(self):
-        self.update(Message.es_distance)
+        self.update(Message.ping1D_distance)
         data = {
                 'distance': self.distance,
                 'confidence': self.confidence,
@@ -286,7 +283,7 @@ class Ping1D:
         return data
 
     def getProfile(self):
-        self.update(Message.es_profile)
+        self.update(Message.ping1D_profile)
         data = {
                 'distance': self.distance,
                 'confidence': self.confidence,
@@ -301,7 +298,7 @@ class Ping1D:
         return data
 
     def getRange(self):
-        self.update(Message.es_range)
+        self.update(Message.ping1D_range)
         data = {
             'start_mm':self.start_mm,
             'length_mm': self.length_mm
@@ -309,19 +306,19 @@ class Ping1D:
         return data
 
     def getMode(self):
-        self.update(Message.es_mode)
+        self.update(Message.ping1D_mode)
         return self.auto_manual
 
     def getRate(self):
-        self.update(Message.es_rate)
+        self.update(Message.ping1D_ping_rate_msec)
         return self.pulse_usec
 
     def getGain(self):
-        self.update(Message.es_gain)
+        self.update(Message.ping1D_gain)
         return self.gain_index
 
     def getPulseLength(self):
-        self.update(Message.es_pulse)
+        self.update(Message.ping1D_pulse_usec)
         return self.pulse_usec
 
     #Control Methods
