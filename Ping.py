@@ -57,7 +57,7 @@ class Ping1D:
             print(self.instructions)
             exit(1)
         try:
-            self.ser = serial.Serial(deviceName, 921600, timeout=1)
+            self.ser = serial.Serial(deviceName, 115200, timeout=1)
 
         except Exception as e:
             print("Failed to open the given serial port:")
