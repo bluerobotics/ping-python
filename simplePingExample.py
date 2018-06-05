@@ -3,7 +3,7 @@
 from Ping import Ping1D
 import sys
 import getopt
-import Message
+import time
 
 device = ''
 instructions = "Usage: python simplePingExample.py -d <device_name>"
@@ -44,3 +44,4 @@ raw_input("Press Enter to continue...")
 while True:
     myPing.getDistanceData()
     print("Distance: " + str(myPing.distance) + " Confidence: " + str(myPing.confidence))
+    time.sleep(0.1)
