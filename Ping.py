@@ -57,7 +57,7 @@ class Ping1D:
             print(self.instructions)
             exit(1)
         try:
-            self.ser = serial.Serial(deviceName, 921600, timeout=1)
+            self.ser = serial.Serial(deviceName, 115200, timeout=1)
 
         except Exception as e:
             print("Failed to open the given serial port:")
@@ -65,11 +65,11 @@ class Ping1D:
             exit(1)
 
     def initialize(self):
-        if self.update(Message.gen_device_id) is None:
+        if self.update(Message.ping1D_device_id) is None:
             return False
-        if self.update(Message.gen_version) is None:
+        if self.update(Message.ping1D_fw_version) is None:
             return False
-        if self.update(Message.gen_voltage) is None:
+        if self.update(Message.ping1D_voltage_5) is None:
             return False
         return True
 
@@ -87,13 +87,11 @@ class Ping1D:
         payloadPacked = sonarData[1]
         new_message = self.messages[messageID]
 
-        if (new_message.format == 'string'):
+        if new_message.id == Message.ping1D_ascii_text.id:
             for i,attr in enumerate(new_message.payload_fields):
                 setattr(self, attr, payloadPacked)
             print(payloadPacked)
-        elif (new_message.format == 'raw'):
-            self.raw_data = payloadPacked
-        elif (new_message.format[0] == '<'):
+        elif new_message.format:
             payload = struct.unpack(new_message.format, payloadPacked)
             for i,attr in enumerate(new_message.payload_fields):
                 #Have to have a separate handling for lists / arrays
@@ -207,12 +205,9 @@ class Ping1D:
 
     #Request the given message ID
     def request(self, m_id):
-        payloadData = [m_id]
-        self.sendMessage(Message.gen_cmd_request, payloadData, self.device_id)
-
-    def legacyRequest(self, m_id):
-        payloadData = [m_id, 0x1]
-        self.sendMessage(Message.dev_legacy_request, payloadData, self.device_id)
+        msg = Message.ping1D_empty
+        msg.id = m_id
+        self.sendMessage(msg, [], self.device_id)
 
     #Used for sending of all messages
     def sendMessage(self, m_message, m_payload, m_destination):
@@ -245,7 +240,7 @@ class Ping1D:
            self.handleMessage(sonarData)
     #Returns a string of the version number
     def getVersion(self):
-        self.update(Message.gen_version)
+        self.update(Message.ping1D_fw_version)
         data = {
             'device_type':self.device_type,
             'device_model': self.device_model,
@@ -256,15 +251,15 @@ class Ping1D:
         return data
 
     def getDeviceID(self):
-        self.update(Message.gen_device_id)
+        self.update(Message.ping1D_device_id)
         return self.device_id
 
     def getVoltage(self):
-        self.update(Message.gen_voltage)
+        self.update(Message.ping1D_voltage_5)
         return self.voltage
 
     def getSimpleDistanceData(self):
-        self.update(Message.es_distance_simple)
+        self.update(Message.ping1D_distance_simple)
         data = {
             'distance': self.distance,
             'confidence': self.confidence
@@ -273,7 +268,7 @@ class Ping1D:
 
 
     def getDistanceData(self):
-        self.update(Message.es_distance)
+        self.update(Message.ping1D_distance)
         data = {
                 'distance': self.distance,
                 'confidence': self.confidence,
@@ -286,7 +281,7 @@ class Ping1D:
         return data
 
     def getProfile(self):
-        self.update(Message.es_profile)
+        self.update(Message.ping1D_profile)
         data = {
                 'distance': self.distance,
                 'confidence': self.confidence,
@@ -301,7 +296,7 @@ class Ping1D:
         return data
 
     def getRange(self):
-        self.update(Message.es_range)
+        self.update(Message.ping1D_range)
         data = {
             'start_mm':self.start_mm,
             'length_mm': self.length_mm
@@ -309,19 +304,19 @@ class Ping1D:
         return data
 
     def getMode(self):
-        self.update(Message.es_mode)
+        self.update(Message.ping1D_mode)
         return self.auto_manual
 
     def getRate(self):
-        self.update(Message.es_rate)
+        self.update(Message.ping1D_ping_rate_msec)
         return self.pulse_usec
 
     def getGain(self):
-        self.update(Message.es_gain)
+        self.update(Message.ping1D_gain)
         return self.gain_index
 
     def getPulseLength(self):
-        self.update(Message.es_pulse)
+        self.update(Message.ping1D_pulse_usec)
         return self.pulse_usec
 
     #Control Methods
@@ -375,7 +370,7 @@ class Ping1D:
     #Pack the payload so it can be sent
     def packPayload(self, payloadFormat, payloadRaw):
         if not payloadRaw:
-            return
+            return []
         payloadPacked = struct.pack(payloadFormat, *payloadRaw)
         return payloadPacked
 
@@ -383,8 +378,11 @@ class Ping1D:
     #Returns true if checksum match
     def evaluateChecksum(self, h, p, c):
         hUnpacked = struct.unpack("<BBBBBBBB", h)
-        pFormat = '<' + (len(p) * 'B')
-        pUnpacked = struct.unpack(pFormat, p)
+        if len(p) > 0:
+            pFormat = '<' + (len(p) * 'B')
+            pUnpacked = struct.unpack(pFormat, p)
+        else:
+            pUnpacked = ()
 
         sumOfBytes = 0
         for i in range(0, len(h)):
@@ -398,8 +396,13 @@ class Ping1D:
     #Checksum = sum(0 -> n) & 0xffff
     def buildChecksum(self, h, p):
         hUnpacked = struct.unpack("<BBBBBBBB", h)
+        if p is None:
+            p = ()
         pFormat = '<' + (len(p) * 'B')
-        pUnpacked = struct.unpack(pFormat, p)
+        try:
+            pUnpacked = struct.unpack(pFormat, p)
+        except:
+            pUnpacked = ()
 
         hSize = len(h)
         pSize = len(p)
@@ -421,24 +424,36 @@ class Ping1D:
 
     #Message Dictionary
     messages = {
-        Message.gen_goto_bootloader.id: Message.gen_goto_bootloader,
-        Message.gen_version.id: Message.gen_version,
-        Message.gen_reset.id: Message.gen_reset,
-        Message.gen_device_id.id: Message.gen_device_id,
-        Message.gen_new_data.id: Message.gen_new_data,
-        Message.gen_cmd_request.id: Message.gen_cmd_request,
-        Message.gen_voltage.id: Message.gen_voltage,
-        Message.sonar_velocity.id: Message.sonar_velocity,
-        Message.es_distance_simple.id: Message.es_distance_simple,
-        Message.es_distance.id: Message.es_distance,
-        Message.es_profile.id: Message.es_profile,
-        Message.es_range.id: Message.es_range,
-        Message.es_mode.id: Message.es_mode,
-        Message.es_rate.id: Message.es_rate,
-        Message.es_gain.id: Message.es_gain,
-        Message.es_pulse.id: Message.es_pulse,
-        Message.dev_alt_raw_data.id: Message.dev_alt_raw_data,
-        Message.dev_ascii_text.id: Message.dev_ascii_text,
-        Message.dev_nack.id: Message.dev_nack,
-        Message.dev_legacy_request.id: Message.dev_legacy_request
+        Message.ping1D_undefined.id: Message.ping1D_undefined,
+        Message.ping1D_ack.id: Message.ping1D_ack,
+        Message.ping1D_nack.id: Message.ping1D_nack,
+        Message.ping1D_ascii_text.id: Message.ping1D_ascii_text,
+        Message.ping1D_set_device_id.id: Message.ping1D_set_device_id,
+        Message.ping1D_set_range.id: Message.ping1D_set_range,
+        Message.ping1D_set_speed_of_sound.id: Message.ping1D_set_speed_of_sound,
+        Message.ping1D_set_auto_manual.id: Message.ping1D_set_auto_manual,
+        Message.ping1D_set_ping_rate_msec.id: Message.ping1D_set_ping_rate_msec,
+        Message.ping1D_set_gain_index.id: Message.ping1D_set_gain_index,
+        Message.ping1D_set_ping_enable.id: Message.ping1D_set_ping_enable,
+        Message.ping1D_goto_bootloader.id: Message.ping1D_goto_bootloader,
+        Message.ping1D_fw_version.id: Message.ping1D_fw_version,
+        Message.ping1D_device_id.id: Message.ping1D_device_id,
+        Message.ping1D_voltage_5.id: Message.ping1D_voltage_5,
+        Message.ping1D_speed_of_sound.id: Message.ping1D_speed_of_sound,
+        Message.ping1D_range.id: Message.ping1D_range,
+        Message.ping1D_mode.id: Message.ping1D_mode,
+        Message.ping1D_ping_rate_msec.id: Message.ping1D_ping_rate_msec,
+        Message.ping1D_gain_index.id: Message.ping1D_gain_index,
+        Message.ping1D_pulse_usec.id: Message.ping1D_pulse_usec,
+        Message.ping1D_background_data.id: Message.ping1D_background_data,
+        Message.ping1D_general_info.id: Message.ping1D_general_info,
+        Message.ping1D_distance_simple.id: Message.ping1D_distance_simple,
+        Message.ping1D_distance.id: Message.ping1D_distance,
+        Message.ping1D_processor_temperature.id: Message.ping1D_processor_temperature,
+        Message.ping1D_pcb_temperature.id: Message.ping1D_pcb_temperature,
+        Message.ping1D_profile.id: Message.ping1D_profile,
+        Message.ping1D_full_profile.id: Message.ping1D_full_profile,
+        Message.ping1D_raw_data.id: Message.ping1D_raw_data,
+        Message.ping1D_continuous_start.id: Message.ping1D_continuous_start,
+        Message.ping1D_continuous_stop.id: Message.ping1D_continuous_stop,
     }
