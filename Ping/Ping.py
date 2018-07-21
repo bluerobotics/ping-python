@@ -6,8 +6,9 @@ import struct
 import serial
 import getopt
 import socket
-import Message
 import time
+
+from . import Message
 
 class Ping1D:
     instructions = "Usage: python simplePingExample.py -d <device_name>"
