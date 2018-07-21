@@ -10,7 +10,7 @@ from builtins import input
 ##Parse Command line options
 ############################
 
-parser = argparse.ArgumentParser(description="Driver for the Water Linked Underwater GPS system.")
+parser = argparse.ArgumentParser(description="Ping python library example.")
 parser.add_argument('--device', action="store", required=True, type=str, help="Ping device port.")
 parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate.")
 args = parser.parse_args()
