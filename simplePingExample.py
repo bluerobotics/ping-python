@@ -18,7 +18,7 @@ args = parser.parse_args()
 #Make a new Ping
 myPing = Ping1D(args.device, args.baudrate)
 if myPing.initialize() is False:
-    print "Failed to initialize Ping!"
+    print("Failed to initialize Ping!")
     exit(1)
 
 print("------------------------------------")
