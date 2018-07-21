@@ -1,9 +1,7 @@
 #!/usr/bin/python -u
 
 #simplePingExample.py
-from Ping import Ping1D
-import sys
-import getopt
+from Ping.Ping import Ping1D
 import time
 import argparse
 
