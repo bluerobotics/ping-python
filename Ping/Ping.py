@@ -58,7 +58,7 @@ class Ping1D:
             return
 
         try:
-            print("Opening %s at %d bps") % (deviceName, baudrate)
+            print("Opening %s at %d bps" % (deviceName, baudrate))
             self.ser = serial.Serial(deviceName, baudrate)
             self.ser.timeout = 1
 
