@@ -5,6 +5,8 @@ from Ping.Ping import Ping1D
 import time
 import argparse
 
+from builtins import input
+
 ##Parse Command line options
 ############################
 
@@ -24,7 +26,7 @@ print("Starting Ping..")
 print("Press CTRL+Z to exit")
 print("------------------------------------")
 
-raw_input("Press Enter to continue...")
+input("Press Enter to continue...")
 
 # Read and print distance measurements with confidence
 while True:
