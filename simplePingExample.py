@@ -1,7 +1,7 @@
 #!/usr/bin/python -u
 
 #simplePingExample.py
-from Ping.Ping import Ping1D
+from Ping.Ping1D import Ping1D
 import time
 import argparse
 
@@ -30,6 +30,9 @@ input("Press Enter to continue...")
 
 # Read and print distance measurements with confidence
 while True:
-    myPing.getDistanceData()
-    print("Distance: " + str(myPing.distance) + " Confidence: " + str(myPing.confidence))
+    data = myPing.get_distance()
+    if data:
+        print("Distance: %s\tConfidence: %s%%" % (data["distance"], data["confidence"]))
+    else:
+        print("Failed to get distance data")
     time.sleep(0.1)
