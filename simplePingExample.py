@@ -23,7 +23,7 @@ if myPing.initialize() is False:
 
 print("------------------------------------")
 print("Starting Ping..")
-print("Press CTRL+Z to exit")
+print("Press CTRL+C to exit")
 print("------------------------------------")
 
 input("Press Enter to continue...")
