@@ -3,7 +3,7 @@
 # PingProxy.py
 # Connect multiple udp clients to a single serial device
 
-import PingMessage
+from Ping import PingMessage
 import serial
 import socket
 import time
