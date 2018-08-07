@@ -298,7 +298,7 @@ class PingMessage(object):
 
     ## Messge constructor
     #
-    # @parEx request:
+    # @par Ex request:
     # @code
     # m = PingMessage()
     # m.request_id = m_id

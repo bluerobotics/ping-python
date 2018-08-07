@@ -8,7 +8,7 @@
 # DO NOT EDIT
 #~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
 
-from . import PingMessage
+import PingMessage
 import serial
 import time
 
@@ -297,7 +297,7 @@ class Ping1D(object):
         })
         return data
 
-    ## A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region defined the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.
+    ## A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region is defined as the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.
     #  Returns a dictionary of the reply payload
     #  @return distance: Units: mm; The current return distance determined for the most recent acoustic measurement.
     #  @return confidence: Units: %; Confidence in the most recent range measurement.
