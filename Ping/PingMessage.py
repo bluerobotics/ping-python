@@ -21,41 +21,141 @@ I = u32
 char[] = s
 '''
 
-PING1D_PROFILE = 1300
-PING1D_VOLTAGE_5 = 1202
-PING1D_SET_MODE_AUTO = 1003
-PING1D_GOTO_BOOTLOADER = 1100
-PING1D_UNDEFINED = 0
 PING1D_FW_VERSION = 1200
-PING1D_PCB_TEMPERATURE = 1214
-PING1D_ASCII_TEXT = 3
-PING1D_PING_RATE = 1206
-PING1D_SET_SPEED_OF_SOUND = 1002
-PING1D_SET_DEVICE_ID = 1000
-PING1D_CONTINUOUS_START = 1400
-PING1D_GAIN_INDEX = 1207
-PING1D_GENERAL_INFO = 1210
 PING1D_DEVICE_ID = 1201
-PING1D_DISTANCE = 1212
-PING1D_DISTANCE_SIMPLE = 1211
-PING1D_SET_RANGE = 1001
-PING1D_MODE_AUTO = 1205
+PING1D_VOLTAGE_5 = 1202
 PING1D_SPEED_OF_SOUND = 1203
-PING1D_NACK = 2
-PING1D_ACK = 1
-PING1D_PULSE_USEC = 1208
 PING1D_RANGE = 1204
-PING1D_SET_PING_RATE = 1004
+PING1D_MODE_AUTO = 1205
+PING1D_PING_RATE = 1206
+PING1D_GAIN_INDEX = 1207
+PING1D_PULSE_USEC = 1208
+PING1D_GENERAL_INFO = 1210
+PING1D_DISTANCE_SIMPLE = 1211
+PING1D_DISTANCE = 1212
 PING1D_PROCESSOR_TEMPERATURE = 1213
-PING1D_SET_GAIN_INDEX = 1005
+PING1D_PCB_TEMPERATURE = 1214
+PING1D_PROFILE = 1300
 PING1D_PROTOCOL_VERSION = 5
-PING1D_CONTINUOUS_STOP = 1401
+PING1D_SET_DEVICE_ID = 1000
+PING1D_SET_RANGE = 1001
+PING1D_SET_SPEED_OF_SOUND = 1002
+PING1D_SET_MODE_AUTO = 1003
+PING1D_SET_PING_RATE = 1004
+PING1D_SET_GAIN_INDEX = 1005
 PING1D_SET_PING_ENABLE = 1006
+PING1D_GOTO_BOOTLOADER = 1100
+PING1D_CONTINUOUS_START = 1400
+PING1D_CONTINUOUS_STOP = 1401
+PING1D_UNDEFINED = 0
+PING1D_ACK = 1
+PING1D_NACK = 2
+PING1D_ASCII_TEXT = 3
 
 # variable length fields are formatted with 's', and always occur at the end of the payload
 # the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
 # see PingMessage.getPayloadFormat()
 payloadDict = {
+    PING1D_FW_VERSION: {"name": "fw_version",
+                       "format": "BBHH",
+                       "field_names": (
+                         "device_type",
+                         "device_model",
+                         "fw_version_major",
+                         "fw_version_minor",
+                       ),
+                       "payload_length": 6},
+    PING1D_DEVICE_ID: {"name": "device_id",
+                       "format": "B",
+                       "field_names": (
+                         "device_id",
+                       ),
+                       "payload_length": 1},
+    PING1D_VOLTAGE_5: {"name": "voltage_5",
+                       "format": "H",
+                       "field_names": (
+                         "mvolts",
+                       ),
+                       "payload_length": 2},
+    PING1D_SPEED_OF_SOUND: {"name": "speed_of_sound",
+                       "format": "I",
+                       "field_names": (
+                         "speed_of_sound",
+                       ),
+                       "payload_length": 4},
+    PING1D_RANGE: {"name": "range",
+                       "format": "II",
+                       "field_names": (
+                         "scan_start",
+                         "scan_length",
+                       ),
+                       "payload_length": 8},
+    PING1D_MODE_AUTO: {"name": "mode_auto",
+                       "format": "B",
+                       "field_names": (
+                         "mode_auto",
+                       ),
+                       "payload_length": 1},
+    PING1D_PING_RATE: {"name": "ping_rate",
+                       "format": "H",
+                       "field_names": (
+                         "ping_rate",
+                       ),
+                       "payload_length": 2},
+    PING1D_GAIN_INDEX: {"name": "gain_index",
+                       "format": "I",
+                       "field_names": (
+                         "gain_index",
+                       ),
+                       "payload_length": 4},
+    PING1D_PULSE_USEC: {"name": "pulse_usec",
+                       "format": "H",
+                       "field_names": (
+                         "pulse_usec",
+                       ),
+                       "payload_length": 2},
+    PING1D_GENERAL_INFO: {"name": "general_info",
+                       "format": "HHHHBB",
+                       "field_names": (
+                         "fw_version_major",
+                         "fw_version_minor",
+                         "mvolts",
+                         "ping_rate",
+                         "gain_index",
+                         "mode_auto",
+                       ),
+                       "payload_length": 10},
+    PING1D_DISTANCE_SIMPLE: {"name": "distance_simple",
+                       "format": "IB",
+                       "field_names": (
+                         "distance",
+                         "confidence",
+                       ),
+                       "payload_length": 5},
+    PING1D_DISTANCE: {"name": "distance",
+                       "format": "IHHIIII",
+                       "field_names": (
+                         "distance",
+                         "confidence",
+                         "pulse_usec",
+                         "ping_number",
+                         "scan_start",
+                         "scan_length",
+                         "gain_index",
+                       ),
+                       "payload_length": 24},
+    PING1D_PROCESSOR_TEMPERATURE: {"name": "processor_temperature",
+                       "format": "H",
+                       "field_names": (
+                         "temp",
+                       ),
+                       "payload_length": 2},
+    PING1D_PCB_TEMPERATURE: {"name": "pcb_temperature",
+                       "format": "H",
+                       "field_names": (
+                         "temp",
+                       ),
+                       "payload_length": 2},
     PING1D_PROFILE: {"name": "profile",
                        "format": "IHHIIIIH",
                        "field_names": (
@@ -70,59 +170,10 @@ payloadDict = {
                          "data",
                        ),
                        "payload_length": 26},
-    PING1D_VOLTAGE_5: {"name": "voltage_5",
-                       "format": "H",
-                       "field_names": (
-                         "mvolts",
-                       ),
-                       "payload_length": 2},
-    PING1D_SET_MODE_AUTO: {"name": "set_mode_auto",
-                       "format": "B",
-                       "field_names": (
-                         "mode_auto",
-                       ),
-                       "payload_length": 1},
-    PING1D_GOTO_BOOTLOADER: {"name": "goto_bootloader",
-                       "format": "",
-                       "field_names": (
-                       ),
-                       "payload_length": 0},
-    PING1D_UNDEFINED: {"name": "undefined",
-                       "format": "",
-                       "field_names": (
-                       ),
-                       "payload_length": 0},
-    PING1D_FW_VERSION: {"name": "fw_version",
-                       "format": "BBHH",
-                       "field_names": (
-                         "device_type",
-                         "device_model",
-                         "fw_version_major",
-                         "fw_version_minor",
-                       ),
-                       "payload_length": 6},
-    PING1D_PCB_TEMPERATURE: {"name": "pcb_temperature",
-                       "format": "H",
-                       "field_names": (
-                         "temp",
-                       ),
-                       "payload_length": 2},
-    PING1D_ASCII_TEXT: {"name": "ascii_text",
-                       "format": "",
-                       "field_names": (
-                         "msg",
-                       ),
-                       "payload_length": 0},
-    PING1D_PING_RATE: {"name": "ping_rate",
-                       "format": "H",
-                       "field_names": (
-                         "ping_rate",
-                       ),
-                       "payload_length": 2},
-    PING1D_SET_SPEED_OF_SOUND: {"name": "set_speed_of_sound",
+    PING1D_PROTOCOL_VERSION: {"name": "protocol_version",
                        "format": "I",
                        "field_names": (
-                         "speed_of_sound",
+                         "protocol_version",
                        ),
                        "payload_length": 4},
     PING1D_SET_DEVICE_ID: {"name": "set_device_id",
@@ -131,54 +182,6 @@ payloadDict = {
                          "device_id",
                        ),
                        "payload_length": 1},
-    PING1D_CONTINUOUS_START: {"name": "continuous_start",
-                       "format": "H",
-                       "field_names": (
-                         "id",
-                       ),
-                       "payload_length": 2},
-    PING1D_GAIN_INDEX: {"name": "gain_index",
-                       "format": "I",
-                       "field_names": (
-                         "gain_index",
-                       ),
-                       "payload_length": 4},
-    PING1D_GENERAL_INFO: {"name": "general_info",
-                       "format": "HHHHBB",
-                       "field_names": (
-                         "fw_version_major",
-                         "fw_version_minor",
-                         "mvolts",
-                         "ping_rate",
-                         "gain_index",
-                         "mode_auto",
-                       ),
-                       "payload_length": 10},
-    PING1D_DEVICE_ID: {"name": "device_id",
-                       "format": "B",
-                       "field_names": (
-                         "device_id",
-                       ),
-                       "payload_length": 1},
-    PING1D_DISTANCE: {"name": "distance",
-                       "format": "IHHIIII",
-                       "field_names": (
-                         "distance",
-                         "confidence",
-                         "pulse_usec",
-                         "ping_number",
-                         "scan_start",
-                         "scan_length",
-                         "gain_index",
-                       ),
-                       "payload_length": 24},
-    PING1D_DISTANCE_SIMPLE: {"name": "distance_simple",
-                       "format": "IB",
-                       "field_names": (
-                         "distance",
-                         "confidence",
-                       ),
-                       "payload_length": 5},
     PING1D_SET_RANGE: {"name": "set_range",
                        "format": "II",
                        "field_names": (
@@ -186,54 +189,22 @@ payloadDict = {
                          "scan_length",
                        ),
                        "payload_length": 8},
-    PING1D_MODE_AUTO: {"name": "mode_auto",
-                       "format": "B",
-                       "field_names": (
-                         "mode_auto",
-                       ),
-                       "payload_length": 1},
-    PING1D_SPEED_OF_SOUND: {"name": "speed_of_sound",
+    PING1D_SET_SPEED_OF_SOUND: {"name": "set_speed_of_sound",
                        "format": "I",
                        "field_names": (
                          "speed_of_sound",
                        ),
                        "payload_length": 4},
-    PING1D_NACK: {"name": "nack",
-                       "format": "H",
+    PING1D_SET_MODE_AUTO: {"name": "set_mode_auto",
+                       "format": "B",
                        "field_names": (
-                         "nacked_id",
-                         "nack_msg",
+                         "mode_auto",
                        ),
-                       "payload_length": 2},
-    PING1D_ACK: {"name": "ack",
-                       "format": "H",
-                       "field_names": (
-                         "acked_id",
-                       ),
-                       "payload_length": 2},
-    PING1D_PULSE_USEC: {"name": "pulse_usec",
-                       "format": "H",
-                       "field_names": (
-                         "pulse_usec",
-                       ),
-                       "payload_length": 2},
-    PING1D_RANGE: {"name": "range",
-                       "format": "II",
-                       "field_names": (
-                         "scan_start",
-                         "scan_length",
-                       ),
-                       "payload_length": 8},
+                       "payload_length": 1},
     PING1D_SET_PING_RATE: {"name": "set_ping_rate",
                        "format": "H",
                        "field_names": (
                          "ping_rate",
-                       ),
-                       "payload_length": 2},
-    PING1D_PROCESSOR_TEMPERATURE: {"name": "processor_temperature",
-                       "format": "H",
-                       "field_names": (
-                         "temp",
                        ),
                        "payload_length": 2},
     PING1D_SET_GAIN_INDEX: {"name": "set_gain_index",
@@ -242,24 +213,53 @@ payloadDict = {
                          "gain_index",
                        ),
                        "payload_length": 1},
-    PING1D_PROTOCOL_VERSION: {"name": "protocol_version",
-                       "format": "I",
-                       "field_names": (
-                         "protocol_version",
-                       ),
-                       "payload_length": 4},
-    PING1D_CONTINUOUS_STOP: {"name": "continuous_stop",
-                       "format": "H",
-                       "field_names": (
-                         "id",
-                       ),
-                       "payload_length": 2},
     PING1D_SET_PING_ENABLE: {"name": "set_ping_enable",
                        "format": "B",
                        "field_names": (
                          "enable",
                        ),
                        "payload_length": 1},
+    PING1D_GOTO_BOOTLOADER: {"name": "goto_bootloader",
+                       "format": "",
+                       "field_names": (
+                       ),
+                       "payload_length": 0},
+    PING1D_CONTINUOUS_START: {"name": "continuous_start",
+                       "format": "H",
+                       "field_names": (
+                         "id",
+                       ),
+                       "payload_length": 2},
+    PING1D_CONTINUOUS_STOP: {"name": "continuous_stop",
+                       "format": "H",
+                       "field_names": (
+                         "id",
+                       ),
+                       "payload_length": 2},
+    PING1D_UNDEFINED: {"name": "undefined",
+                       "format": "",
+                       "field_names": (
+                       ),
+                       "payload_length": 0},
+    PING1D_ACK: {"name": "ack",
+                       "format": "H",
+                       "field_names": (
+                         "acked_id",
+                       ),
+                       "payload_length": 2},
+    PING1D_NACK: {"name": "nack",
+                       "format": "H",
+                       "field_names": (
+                         "nacked_id",
+                         "nack_msg",
+                       ),
+                       "payload_length": 2},
+    PING1D_ASCII_TEXT: {"name": "ascii_text",
+                       "format": "",
+                       "field_names": (
+                         "msg",
+                       ),
+                       "payload_length": 0},
 }
 
 asciiMsgs = [PING1D_NACK, PING1D_ASCII_TEXT]
