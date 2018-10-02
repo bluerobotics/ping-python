@@ -4,73 +4,82 @@ import socket
 import time
 from collections import deque
 import errno
+import math
 
-client = None
+class Ping1DSimulation(object):
 
-parser = PingMessage.PingParser()
 
-## Socket to serve on
-sockit = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-sockit.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-sockit.setblocking(False)
-sockit.bind(('0.0.0.0', 6676))
 
-def distance():
-    return 1000 * sin(time.time())
+    def __init__(self):
+        self.client = None
 
-def confidence():
-    return 100 * cos(time.time())
+        self.parser = PingMessage.PingParser()
 
-def profile():
-    return range(0,200)
+        ## Socket to serve on
+        self.sockit = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-def temperature():
-    return 3500 * sin(time.time())
+        self.sockit.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.sockit.setblocking(False)
+        self.sockit.bind(('0.0.0.0', 6676))
+    def distance(self):
+        return 1000 * sin(time.time())
 
-def handleMessage(message):
-    print("handling message: %s" % message)
-    print("payload length: %s" % message.payload_length)
+    def confidence(self):
+        return 100 * cos(time.time())
 
-    if message.payload_length == 0:
-        print("sending message: %s" % message.message_id)
+    def profile(self):
+        return range(0,200)
 
-        if message.message_id == PingMessage.PING1D_FIRMWARE_VERSION:
-            msg = PingMessage.PingMessage(PingMessage.PING1D_FIRMWARE_VERSION)
-            msg.firmware_version_minor = 6
-            msg.firmware_version_major = 76
-            msg.packMsgData()
-            write(msg.msgData)
-        if message.message_id == PingMessage.PING1D_VOLTAGE_5:
-            msg = PingMessage.PingMessage(PingMessage.PING1D_VOLTAGE_5)
-            msg.voltage_5 = 685
-            msg.packMsgData()
-            write(msg.msgData)
+    def temperature(self):
+        return 3500 * math.sin(time.time())
 
-def read():
-        try:
-            global client
-            data, client = sockit.recvfrom(4096)
+    def voltage(self):
+        print(time.time())
+        return int(3500 + 50 * math.sin(time.time()))
 
-            # digest data coming in from client
-            for byte in data:
-                if parser.parseByte(byte) == PingMessage.PingParser.NEW_MESSAGE:
-                    print("got message from %s: %s" % (client, parser.rxMsg))
-                    handleMessage(parser.rxMsg)
+    def handleMessage(self, message):
+        print("handling message: %s" % message)
+        print("payload length: %s" % message.payload_length)
 
-        except Exception as e:
-            if e.errno == errno.EAGAIN:
-              pass # waiting for data
-            else:
-              print("Error reading data", e)
+        if message.payload_length == 0:
+            print("sending message: %s" % message.message_id)
 
-def write(data):
-    global client
-    print("client: %s" % str(client))
+            if message.message_id == PingMessage.PING1D_FIRMWARE_VERSION:
+                msg = PingMessage.PingMessage(PingMessage.PING1D_FIRMWARE_VERSION)
+                msg.firmware_version_minor = 6
+                msg.firmware_version_major = 76
+                msg.packMsgData()
+                self.write(msg.msgData)
+            if message.message_id == PingMessage.PING1D_VOLTAGE_5:
+                msg = PingMessage.PingMessage(PingMessage.PING1D_VOLTAGE_5)
+                msg.voltage_5 = self.voltage()
+                msg.packMsgData()
+                self.write(msg.msgData)
 
-    if client is not None:
-        print("sending message: %s" % parser.rxMsg)
-        sockit.sendto(data, client)
+    def read(self):
+            try:
+                data, self.client = self.sockit.recvfrom(4096)
 
+                # digest data coming in from client
+                for byte in data:
+                    if self.parser.parseByte(byte) == PingMessage.PingParser.NEW_MESSAGE:
+                        print("got message from %s: %s" % (self.client, self.parser.rxMsg))
+                        self.handleMessage(self.parser.rxMsg)
+
+            except Exception as e:
+                if e.errno == errno.EAGAIN:
+                    pass # waiting for data
+                else:
+                    print("Error reading data", e)
+
+    def write(self, data):
+        print("client: %s" % str(self.client))
+
+        if self.client is not None:
+            print("sending message: %s" % self.parser.rxMsg)
+            self.sockit.sendto(data, self.client)
+
+sim = Ping1DSimulation()
 while True:
-    read()
+    sim.read()
