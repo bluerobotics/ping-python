@@ -7,10 +7,6 @@ import errno
 import math
 
 class Ping1DSimulation(object):
-
-
-
-
     def __init__(self):
         self.client = None
 
@@ -22,40 +18,43 @@ class Ping1DSimulation(object):
         self.sockit.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sockit.setblocking(False)
         self.sockit.bind(('0.0.0.0', 6676))
+
+    def periodicFn(self, amplitude = 0, offset = 0, frequency = 1.0, shift = 0):
+        return amplitude * math.sin(time.time() + shift) + offset
+
+    def periodicFnInt(self, amplitude = 0, offset = 0, frequency = 1.0, shift = 0):
+        return int(self.periodicFn(amplitude, offset, frequency, shift))
+
     def distance(self):
-        return 1000 * sin(time.time())
+        return self.periodicFnInt(500, 15000)
 
     def confidence(self):
-        return 100 * cos(time.time())
+        return self.periodicFnInt(500, 15000)
 
     def profile(self):
         return range(0,200)
 
-    def temperature(self):
-        return 3500 * math.sin(time.time())
+    def pcb_temperature(self):
+        return self.periodicFnInt(250, 3870, 3)
 
-    def voltage(self):
-        print(time.time())
-        return int(3500 + 50 * math.sin(time.time()))
+    def processor_temperature(self):
+        return self.periodicFnInt(340, 3400)
+
+    def voltage_5(self):
+        return self.periodicFnInt(100, 3500)
 
     def handleMessage(self, message):
-        print("handling message: %s" % message)
-        print("payload length: %s" % message.payload_length)
-
         if message.payload_length == 0:
-            print("sending message: %s" % message.message_id)
-
-            if message.message_id == PingMessage.PING1D_FIRMWARE_VERSION:
-                msg = PingMessage.PingMessage(PingMessage.PING1D_FIRMWARE_VERSION)
-                msg.firmware_version_minor = 6
-                msg.firmware_version_major = 76
-                msg.packMsgData()
-                self.write(msg.msgData)
-            if message.message_id == PingMessage.PING1D_VOLTAGE_5:
-                msg = PingMessage.PingMessage(PingMessage.PING1D_VOLTAGE_5)
-                msg.voltage_5 = self.voltage()
-                msg.packMsgData()
-                self.write(msg.msgData)
+            msg = PingMessage.PingMessage(message.message_id)
+            for attr in PingMessage.payloadDict[message.message_id]["field_names"]:
+                try:
+                    setattr(msg, attr, getattr(self, attr)())
+                except Exception as e:
+                    print(e)
+                    setattr(msg, attr, self.periodicFnInt(120, 128))
+            msg.packMsgData()
+            print("sent message: %s" % msg)
+            self.write(msg.msgData)
 
     def read(self):
             try:
