@@ -9,7 +9,7 @@ import math
 class Ping1DSimulation(object):
     def __init__(self):
         self.client = None
-
+        self._profile_data_length = 200
         self.parser = PingMessage.PingParser()
 
         ## Socket to serve on
@@ -31,8 +31,8 @@ class Ping1DSimulation(object):
     def confidence(self):
         return self.periodicFnInt(500, 15000)
 
-    def profile(self):
-        return range(0,200)
+    def profile_data(self):
+        return bytearray(range(0,200))
 
     def pcb_temperature(self):
         return self.periodicFnInt(250, 3870, 3)
@@ -43,10 +43,17 @@ class Ping1DSimulation(object):
     def voltage_5(self):
         return self.periodicFnInt(100, 3500)
 
-    def handleMessage(self, message):
-        if message.payload_length == 0:
-            msg = PingMessage.PingMessage(message.message_id)
-            for attr in PingMessage.payloadDict[message.message_id]["field_names"]:
+    def profile_data_length(self):
+        return self._profile_data_length
+
+    def profile_data_length(self):
+        return self._profile_data_length
+
+
+
+    def sendMessage(self, message_id):
+            msg = PingMessage.PingMessage(message_id)
+            for attr in PingMessage.payloadDict[message_id]["field_names"]:
                 try:
                     setattr(msg, attr, getattr(self, attr)())
                 except Exception as e:
@@ -55,7 +62,9 @@ class Ping1DSimulation(object):
             msg.packMsgData()
             print("sent message: %s" % msg)
             self.write(msg.msgData)
-
+    def handleMessage(self, message):
+        if message.payload_length == 0:
+            self.sendMessage(message.message_id)
     def read(self):
             try:
                 data, self.client = self.sockit.recvfrom(4096)
@@ -82,3 +91,4 @@ class Ping1DSimulation(object):
 sim = Ping1DSimulation()
 while True:
     sim.read()
+    sim.sendMessage(PingMessage.PING1D_PROFILE)

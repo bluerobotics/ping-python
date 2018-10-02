@@ -10,6 +10,7 @@
 
 import struct
 import sys
+import os
 
 '''
 A reminder for struct formatting:
@@ -356,9 +357,17 @@ class PingMessage(object):
         ## The field names of this message
         self.payload_field_names = payloadDict[id]["field_names"]
 
+    def updateMessageDataLength(self):
+        self.payload_length = payloadDict[self.message_id]["payload_length"]
+        if self.message_id in varMsgs:
+            self.payload_length += getattr(self, payloadDict[self.message_id]["field_names"][-2])
+        elif self.message_id in asciiMsgs:
+            self.payloadlenght += len(getattr(self, payloadDict[self.message_id]["field_names"][-1]))
+
     ## Pack object attributes into self.msgData (bytearray)
     # @return self.msgData
     def packMsgData(self):
+        self.updateMessageDataLength()
         # Prepare struct packing format string
         format = PingMessage.endianess + PingMessage.header_format + self.getPayloadFormat()
 
@@ -381,14 +390,19 @@ class PingMessage(object):
         # Pack message contents into bytearray
         try:
             self.msgData = bytearray(struct.pack(format, *values))
+            print("msgdata: %s" % self.msgData)
+            print("msgdata: %s" % struct.pack(format, *values))
+
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
+            print(e)
             print("format: %s, values: %s" % (format, str([*values])))
-            print(__LINE__,e)
+            print()
 
         # Update and append checksum
+        print("msgdata: %s" % self.msgData)
         self.msgData += bytearray(struct.pack(PingMessage.endianess + PingMessage.checksum_format, self.updateChecksum()))
 
         return self.msgData
@@ -400,6 +414,7 @@ class PingMessage(object):
         # Extract header
         header = struct.unpack(PingMessage.endianess + PingMessage.header_format, self.msgData[0:PingMessage.headerLength])
 
+        # TODO is the order of header_field_names guaranteed here? 
         for i, attr in enumerate(PingMessage.header_field_names):
             setattr(self, attr, header[i])
 
@@ -440,7 +455,9 @@ class PingMessage(object):
         if self.message_id in varMsgs or self.message_id in asciiMsgs:
             varLength = self.payload_length - payloadDict[self.message_id]["payload_length"] # Subtract static length portion from payload length
             if varLength <= 0:
-                return "" # variable data portion is empty
+                return payloadDict[self.message_id]["format"]
+
+            #    return "" # variable data portion is empty
 
             return payloadDict[self.message_id]["format"] + str(varLength) + "s"
         else:
@@ -473,8 +490,9 @@ class PingMessage(object):
                 attr = payloadDict[self.message_id]["field_names"][-1:][0]
 
                 try:
+                    print("ATTR: %s" % getattr(self, attr))
                      # format this field as a list of hex values (rather than a string if we did not perform this handling)
-                    payloadString += "\n  - " + attr + ": " + str([hex(ord(item)) for item in getattr(self, attr)])
+                    payloadString += "\n  - " + attr + ": " + str([hex(item) for item in getattr(self, attr)])
                 except AttributeError:
                     pass
 

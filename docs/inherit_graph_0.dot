@@ -1,0 +1,19 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="object",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node1 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="Ping.ping1d-simulation.Ping1\lDSimulation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPing_1_1ping1d-simulation_1_1Ping1DSimulation.html"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Ping.Ping1D.Ping1D",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPing_1_1Ping1D_1_1Ping1D.html"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Ping.PingMessage.PingMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPing_1_1PingMessage_1_1PingMessage.html"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Ping.PingMessage.PingParser",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPing_1_1PingMessage_1_1PingParser.html"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Ping.PingProxy.PingClient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPing_1_1PingProxy_1_1PingClient.html"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Ping.PingProxy.PingProxy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPing_1_1PingProxy_1_1PingProxy.html"];
+}
