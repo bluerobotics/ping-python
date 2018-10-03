@@ -63,12 +63,6 @@ class Ping1DSimulation(object):
     def gain_index(self):
         return 2
     
-    def ping_number(self):
-        return self._ping_number
-
-    def pulse_duration(self):
-        return self._pulse_duration
-
     def sendMessage(self, message_id):
             msg = PingMessage.PingMessage(message_id)
             for attr in PingMessage.payloadDict[message_id]["field_names"]:
@@ -85,8 +79,6 @@ class Ping1DSimulation(object):
             self.write(msg.msgData)
 
     def handleMessage(self, message):
-        if message.message_id == PingMessage.PING1D_SET_MODE_AUTO:
-            print(message)
         if message.payload_length == 0:
             self.sendMessage(message.message_id)
         #TODO mechanism to filter by "set"
