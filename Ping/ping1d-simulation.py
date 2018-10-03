@@ -15,7 +15,7 @@ class Ping1DSimulation(object):
         self._ping_interval = 100
         self._mode_auto = True
         self._pulse_duration = 100
-
+        self._mode_continuous = True
         ## Socket to serve on
         self.sockit = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -71,7 +71,6 @@ class Ping1DSimulation(object):
 
     def sendMessage(self, message_id):
             msg = PingMessage.PingMessage(message_id)
-            print(self._mode_auto)
             for attr in PingMessage.payloadDict[message_id]["field_names"]:
                 try:
                     setattr(msg, attr, getattr(self, attr)())
@@ -123,8 +122,9 @@ sim = Ping1DSimulation()
 lastUpdate = 0
 while True:
     sim.read()
-    #sim.sendMessage(PingMessage.PING1D_PROFILE)
     if time.time() > lastUpdate + sim._ping_interval / 1000.0:
         lastUpdate = time.time()
         sim._ping_number += 1
+        if sim._mode_continuous:
+            sim.sendMessage(PingMessage.PING1D_PROFILE)
 
