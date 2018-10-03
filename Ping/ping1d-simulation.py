@@ -11,6 +11,10 @@ class Ping1DSimulation(object):
         self.client = None
         self._profile_data_length = 200
         self.parser = PingMessage.PingParser()
+        self._ping_number = 0
+        self._ping_interval = 100
+        self._mode_auto = True
+        self._pulse_duration = 100
 
         ## Socket to serve on
         self.sockit = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -20,16 +24,26 @@ class Ping1DSimulation(object):
         self.sockit.bind(('0.0.0.0', 6676))
 
     def periodicFn(self, amplitude = 0, offset = 0, frequency = 1.0, shift = 0):
-        return amplitude * math.sin(time.time() + shift) + offset
+        return amplitude * math.sin(frequency * time.time() + shift) + offset
 
     def periodicFnInt(self, amplitude = 0, offset = 0, frequency = 1.0, shift = 0):
         return int(self.periodicFn(amplitude, offset, frequency, shift))
 
     def distance(self):
-        return self.periodicFnInt(500, 15000)
+        return self.periodicFnInt(self.scan_length() / 2, self.scan_start() + self.scan_length() / 2, 5)
 
     def confidence(self):
-        return self.periodicFnInt(500, 15000)
+        return self.periodicFnInt(40, 50)
+
+    def scan_start(self):
+        if self._mode_auto:
+            return 0
+        return self._scan_start
+
+    def scan_length(self):
+        if self._mode_auto:
+            self._scan_length = self.periodicFnInt(20000, 30000, 0.5)
+        return self._scan_length
 
     def profile_data(self):
         return bytearray(range(0,200))
@@ -45,26 +59,46 @@ class Ping1DSimulation(object):
 
     def profile_data_length(self):
         return self._profile_data_length
+    
+    def gain_index(self):
+        return 2
+    
+    def ping_number(self):
+        return self._ping_number
 
-    def profile_data_length(self):
-        return self._profile_data_length
-
-
+    def pulse_duration(self):
+        return self._pulse_duration
 
     def sendMessage(self, message_id):
             msg = PingMessage.PingMessage(message_id)
+            print(self._mode_auto)
             for attr in PingMessage.payloadDict[message_id]["field_names"]:
                 try:
                     setattr(msg, attr, getattr(self, attr)())
                 except Exception as e:
-                    print(e)
-                    setattr(msg, attr, self.periodicFnInt(120, 128))
+                    try:
+                        setattr(msg, attr, getattr(self, "_" + attr))
+                    except AttributeError as e:
+                        setattr(msg, attr, self.periodicFnInt(20, 120))
+
             msg.packMsgData()
-            print("sent message: %s" % msg)
+            #print("sent message: %s" % msg)
             self.write(msg.msgData)
+
     def handleMessage(self, message):
+        if message.message_id == PingMessage.PING1D_SET_MODE_AUTO:
+            print(message)
         if message.payload_length == 0:
             self.sendMessage(message.message_id)
+        #TODO mechanism to filter by "set"
+        else:
+            self.setParameters(message)
+
+    def setParameters(self, message):
+        for attr in PingMessage.payloadDict[message.message_id]["field_names"]:
+            setattr(self, "_" + attr, getattr(message, attr))
+
+
     def read(self):
             try:
                 data, self.client = self.sockit.recvfrom(4096)
@@ -72,7 +106,7 @@ class Ping1DSimulation(object):
                 # digest data coming in from client
                 for byte in data:
                     if self.parser.parseByte(byte) == PingMessage.PingParser.NEW_MESSAGE:
-                        print("got message from %s: %s" % (self.client, self.parser.rxMsg))
+                        #print("got message from %s: %s" % (self.client, self.parser.rxMsg))
                         self.handleMessage(self.parser.rxMsg)
 
             except Exception as e:
@@ -82,13 +116,15 @@ class Ping1DSimulation(object):
                     print("Error reading data", e)
 
     def write(self, data):
-        print("client: %s" % str(self.client))
-
         if self.client is not None:
-            print("sending message: %s" % self.parser.rxMsg)
             self.sockit.sendto(data, self.client)
 
 sim = Ping1DSimulation()
+lastUpdate = 0
 while True:
     sim.read()
-    sim.sendMessage(PingMessage.PING1D_PROFILE)
+    #sim.sendMessage(PingMessage.PING1D_PROFILE)
+    if time.time() > lastUpdate + sim._ping_interval / 1000.0:
+        lastUpdate = time.time()
+        sim._ping_number += 1
+

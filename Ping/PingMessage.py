@@ -390,8 +390,6 @@ class PingMessage(object):
         # Pack message contents into bytearray
         try:
             self.msgData = bytearray(struct.pack(format, *values))
-            print("msgdata: %s" % self.msgData)
-            print("msgdata: %s" % struct.pack(format, *values))
 
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -402,7 +400,6 @@ class PingMessage(object):
             print()
 
         # Update and append checksum
-        print("msgdata: %s" % self.msgData)
         self.msgData += bytearray(struct.pack(PingMessage.endianess + PingMessage.checksum_format, self.updateChecksum()))
 
         return self.msgData
