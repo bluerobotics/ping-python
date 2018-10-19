@@ -21,27 +21,28 @@ I = u32
 char[] = s
 '''
 
-PING1D_FW_VERSION = 1200
+PING1D_FIRMWARE_VERSION = 1200
 PING1D_DEVICE_ID = 1201
 PING1D_VOLTAGE_5 = 1202
 PING1D_SPEED_OF_SOUND = 1203
 PING1D_RANGE = 1204
 PING1D_MODE_AUTO = 1205
-PING1D_PING_RATE = 1206
+PING1D_PING_INTERVAL = 1206
 PING1D_GAIN_INDEX = 1207
-PING1D_PULSE_USEC = 1208
+PING1D_PULSE_DURATION = 1208
 PING1D_GENERAL_INFO = 1210
 PING1D_DISTANCE_SIMPLE = 1211
 PING1D_DISTANCE = 1212
 PING1D_PROCESSOR_TEMPERATURE = 1213
 PING1D_PCB_TEMPERATURE = 1214
+PING1D_PING_ENABLE = 1215
 PING1D_PROFILE = 1300
 PING1D_PROTOCOL_VERSION = 5
 PING1D_SET_DEVICE_ID = 1000
 PING1D_SET_RANGE = 1001
 PING1D_SET_SPEED_OF_SOUND = 1002
 PING1D_SET_MODE_AUTO = 1003
-PING1D_SET_PING_RATE = 1004
+PING1D_SET_PING_INTERVAL = 1004
 PING1D_SET_GAIN_INDEX = 1005
 PING1D_SET_PING_ENABLE = 1006
 PING1D_GOTO_BOOTLOADER = 1100
@@ -56,13 +57,13 @@ PING1D_ASCII_TEXT = 3
 # the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
 # see PingMessage.getPayloadFormat()
 payloadDict = {
-    PING1D_FW_VERSION: {"name": "fw_version",
+    PING1D_FIRMWARE_VERSION: {"name": "firmware_version",
                        "format": "BBHH",
                        "field_names": (
                          "device_type",
                          "device_model",
-                         "fw_version_major",
-                         "fw_version_minor",
+                         "firmware_version_major",
+                         "firmware_version_minor",
                        ),
                        "payload_length": 6},
     PING1D_DEVICE_ID: {"name": "device_id",
@@ -74,7 +75,7 @@ payloadDict = {
     PING1D_VOLTAGE_5: {"name": "voltage_5",
                        "format": "H",
                        "field_names": (
-                         "mvolts",
+                         "voltage_5",
                        ),
                        "payload_length": 2},
     PING1D_SPEED_OF_SOUND: {"name": "speed_of_sound",
@@ -96,10 +97,10 @@ payloadDict = {
                          "mode_auto",
                        ),
                        "payload_length": 1},
-    PING1D_PING_RATE: {"name": "ping_rate",
+    PING1D_PING_INTERVAL: {"name": "ping_interval",
                        "format": "H",
                        "field_names": (
-                         "ping_rate",
+                         "ping_interval",
                        ),
                        "payload_length": 2},
     PING1D_GAIN_INDEX: {"name": "gain_index",
@@ -108,19 +109,19 @@ payloadDict = {
                          "gain_index",
                        ),
                        "payload_length": 4},
-    PING1D_PULSE_USEC: {"name": "pulse_usec",
+    PING1D_PULSE_DURATION: {"name": "pulse_duration",
                        "format": "H",
                        "field_names": (
-                         "pulse_usec",
+                         "pulse_duration",
                        ),
                        "payload_length": 2},
     PING1D_GENERAL_INFO: {"name": "general_info",
                        "format": "HHHHBB",
                        "field_names": (
-                         "fw_version_major",
-                         "fw_version_minor",
-                         "mvolts",
-                         "ping_rate",
+                         "firmware_version_major",
+                         "firmware_version_minor",
+                         "voltage_5",
+                         "ping_interval",
                          "gain_index",
                          "mode_auto",
                        ),
@@ -137,7 +138,7 @@ payloadDict = {
                        "field_names": (
                          "distance",
                          "confidence",
-                         "pulse_usec",
+                         "pulse_duration",
                          "ping_number",
                          "scan_start",
                          "scan_length",
@@ -147,27 +148,33 @@ payloadDict = {
     PING1D_PROCESSOR_TEMPERATURE: {"name": "processor_temperature",
                        "format": "H",
                        "field_names": (
-                         "temp",
+                         "processor_temperature",
                        ),
                        "payload_length": 2},
     PING1D_PCB_TEMPERATURE: {"name": "pcb_temperature",
                        "format": "H",
                        "field_names": (
-                         "temp",
+                         "pcb_temperature",
                        ),
                        "payload_length": 2},
+    PING1D_PING_ENABLE: {"name": "ping_enable",
+                       "format": "B",
+                       "field_names": (
+                         "ping_enabled",
+                       ),
+                       "payload_length": 1},
     PING1D_PROFILE: {"name": "profile",
                        "format": "IHHIIIIH",
                        "field_names": (
                          "distance",
                          "confidence",
-                         "pulse_usec",
+                         "pulse_duration",
                          "ping_number",
                          "scan_start",
                          "scan_length",
                          "gain_index",
-                         "num_points",
-                         "data",
+                         "profile_data_length",
+                         "profile_data",
                        ),
                        "payload_length": 26},
     PING1D_PROTOCOL_VERSION: {"name": "protocol_version",
@@ -201,10 +208,10 @@ payloadDict = {
                          "mode_auto",
                        ),
                        "payload_length": 1},
-    PING1D_SET_PING_RATE: {"name": "set_ping_rate",
+    PING1D_SET_PING_INTERVAL: {"name": "set_ping_interval",
                        "format": "H",
                        "field_names": (
-                         "ping_rate",
+                         "ping_interval",
                        ),
                        "payload_length": 2},
     PING1D_SET_GAIN_INDEX: {"name": "set_gain_index",
@@ -216,7 +223,7 @@ payloadDict = {
     PING1D_SET_PING_ENABLE: {"name": "set_ping_enable",
                        "format": "B",
                        "field_names": (
-                         "enable",
+                         "ping_enabled",
                        ),
                        "payload_length": 1},
     PING1D_GOTO_BOOTLOADER: {"name": "goto_bootloader",
@@ -251,13 +258,11 @@ payloadDict = {
                        "format": "H",
                        "field_names": (
                          "nacked_id",
-                         "nack_msg",
                        ),
                        "payload_length": 2},
     PING1D_ASCII_TEXT: {"name": "ascii_text",
                        "format": "",
                        "field_names": (
-                         "msg",
                        ),
                        "payload_length": 0},
 }
@@ -607,8 +612,8 @@ if __name__ == "__main__":
     # Connect to a device
     s = serial.Serial(args.device, args.baudrate)
     while True:
-        m = PingMessage(PING1D_SET_PING_RATE)
-        m.ping_rate = 40
+        m = PingMessage(PING1D_SET_PING_INTERVAL)
+        m.ping_interval = 40
         m.packMsgData()
         s.write(m.msgData)
         time.sleep(0.01)
