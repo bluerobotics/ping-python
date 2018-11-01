@@ -1,7 +1,7 @@
 #!/usr/bin/python -u
 
 #simplePingExample.py
-from Ping.Ping1D import Ping1D
+from brping import Ping1D
 import time
 import argparse
 
