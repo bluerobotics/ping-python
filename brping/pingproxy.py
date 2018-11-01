@@ -14,28 +14,29 @@ import errno
 class PingClient(object):
     def __init__(self):
         ## Queued messages received from client
-        self.rxMsgs = deque([])
+        self.rx_msgs = deque([])
 
         ## Parser to verify client comms
-        self.parser = PingMessage.PingParser()
+        self.parser = PingParser()
 
     ## Digest incoming client data
     # @return None
     def parse(self, data):
         for b in bytearray(data):
-            if self.parser.parseByte(b) == PingMessage.PingParser.NEW_MESSAGE:
-                self.rxMsgs.append(self.parser.rxMsg)
+            if self.parser.parse_byte(b) == PingParser.NEW_MESSAGE:
+                self.rx_msgs.append(self.parser.rx_msg)
 
     ## Dequeue a message received from client
     # @return None: if there are no comms in the queue
     # @return PingMessage: the next ping message in the queue
     def dequeue(self):
-        if len(self.rxMsgs) == 0:
+        if len(self.rx_msgs) == 0:
             return None
-        return self.rxMsgs.popleft()
+        return self.rx_msgs.popleft()
+
 
 class PingProxy(object):
-    def __init__(self, device = None, port = None):
+    def __init__(self, device=None, port=None):
         ## A serial object for ping device comms
         self.device = device
 
@@ -73,18 +74,18 @@ class PingProxy(object):
 
         except Exception as e:
             if e.errno == errno.EAGAIN:
-              pass # waiting for data
+                pass  # waiting for data
             else:
-              print("Error reading data", e)
+                print("Error reading data", e)
 
         # read ping device
         deviceData = self.device.read(self.device.in_waiting)
 
         # send ping device data to all clients
-        if deviceData: # don't write empty data
-          for client in self.clients:
-              #print("writing to client", client)
-              self.socket.sendto(deviceData, client)
+        if deviceData:  # don't write empty data
+            for client in self.clients:
+                # print("writing to client", client)
+                self.socket.sendto(deviceData, client)
 
         # send all client comms to ping device
         for client in self.clients:
