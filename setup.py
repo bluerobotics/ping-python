@@ -7,5 +7,5 @@ setup(name='ping-python',
       description='A python module for the Blue Robotics Ping1D echosounder',
       author='Blue Robotics',
       url='https://www.bluerobotics.com',
-      packages=find_packages()
-)
+      packages=find_packages(), install_requires=['pyserial']
+      )
