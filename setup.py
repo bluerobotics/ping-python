@@ -11,6 +11,7 @@ setup(name='ping-python',
       long_description=long_description,
       long_description_content_type='text/markdown',
       author='Blue Robotics',
+      author_email='support@bluerobotics.com',
       url='https://www.bluerobotics.com',
       packages=find_packages(), install_requires=['pyserial'],
       classifiers=[
