@@ -26,9 +26,17 @@ This library exposes all functionality of the device, such as getting profiles, 
 
 ## Installing
 
-* `git clone --recursive http://github.com/bluerobotics/ping-python.git`
-* `cd ping-python`
+ - From source:
+```sh
+$ git clone --recursive http://github.com/bluerobotics/ping-python.git
+$ cd ping-python
+$ python setup.py install
+```
+ - Using 'pip'
 
+```sh
+$ pip install bluerobotics-ping
+```
 
 ## Quick Start
 
