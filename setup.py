@@ -12,5 +12,10 @@ setup(name='ping-python',
       long_description_content_type='text/markdown',
       author='Blue Robotics',
       url='https://www.bluerobotics.com',
-      packages=find_packages(), install_requires=['pyserial']
+      packages=find_packages(), install_requires=['pyserial'],
+      classifiers=[
+          "Programming Language :: Python",
+          "License :: OSI Approved :: MIT License",
+          "Operating System :: OS Independent",
+      ]
       )
