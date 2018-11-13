@@ -14,32 +14,32 @@ import time
 
 
 class Ping1D(object):
-    _mode_auto = None
-    _speed_of_sound = None
-    _ping_interval = None
-    _firmware_version_minor = None
-    _nack_message = None
-    _pcb_temperature = None
-    _scan_start = None
-    _id = None
     _protocol_version = None
-    _distance = None
-    _device_type = None
+    _mode_auto = None
     _pulse_duration = None
-    _ping_number = None
+    _voltage_5 = None
+    _acked_id = None
+    _gain_index = None
+    _device_type = None
+    _nack_message = None
+    _id = None
+    _profile_data = None
     _confidence = None
     _scan_length = None
-    _nacked_id = None
-    _profile_data = None
-    _firmware_version_major = None
+    _ping_interval = None
+    _scan_start = None
     _device_model = None
-    _voltage_5 = None
-    _ascii_message = None
-    _gain_index = None
-    _processor_temperature = None
     _ping_enabled = None
+    _distance = None
+    _firmware_version_major = None
+    _firmware_version_minor = None
+    _processor_temperature = None
+    _speed_of_sound = None
+    _ascii_message = None
     _device_id = None
-    _acked_id = None
+    _ping_number = None
+    _nacked_id = None
+    _pcb_temperature = None
 
     def __init__(self, device_name, baudrate=115200):
         if device_name is None:
