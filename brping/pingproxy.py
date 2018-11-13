@@ -79,20 +79,20 @@ class PingProxy(object):
                 print("Error reading data", e)
 
         # read ping device
-        deviceData = self.device.read(self.device.in_waiting)
+        device_data = self.device.read(self.device.in_waiting)
 
         # send ping device data to all clients
-        if deviceData:  # don't write empty data
+        if device_data:  # don't write empty data
             for client in self.clients:
                 # print("writing to client", client)
-                self.socket.sendto(deviceData, client)
+                self.socket.sendto(device_data, client)
 
         # send all client comms to ping device
         for client in self.clients:
             c = self.clients[client]
             msg = c.dequeue()
             while msg is not None:
-                self.device.write(msg.msgData)
+                self.device.write(msg.msg_data)
                 msg = c.dequeue()
 
 
