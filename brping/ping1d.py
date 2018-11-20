@@ -14,32 +14,32 @@ import time
 
 
 class Ping1D(object):
-    _protocol_version = None
-    _mode_auto = None
-    _pulse_duration = None
-    _voltage_5 = None
     _acked_id = None
-    _gain_index = None
-    _device_type = None
-    _nack_message = None
-    _id = None
-    _profile_data = None
+    _ascii_message = None
     _confidence = None
-    _scan_length = None
-    _ping_interval = None
-    _scan_start = None
+    _device_id = None
     _device_model = None
-    _ping_enabled = None
+    _device_type = None
     _distance = None
     _firmware_version_major = None
     _firmware_version_minor = None
-    _processor_temperature = None
-    _speed_of_sound = None
-    _ascii_message = None
-    _device_id = None
-    _ping_number = None
+    _gain_index = None
+    _id = None
+    _mode_auto = None
+    _nack_message = None
     _nacked_id = None
     _pcb_temperature = None
+    _ping_enabled = None
+    _ping_interval = None
+    _ping_number = None
+    _processor_temperature = None
+    _profile_data = None
+    _protocol_version = None
+    _pulse_duration = None
+    _scan_length = None
+    _scan_start = None
+    _speed_of_sound = None
+    _voltage_5 = None
 
     def __init__(self, device_name, baudrate=115200):
         if device_name is None:
@@ -161,27 +161,6 @@ class Ping1D(object):
         return representation
 
     ##
-    # @brief Get a firmware_version message from the device\n
-    # Message description:\n
-    # Device information
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # device_type: Device type. 0: 1D Echosounder\n
-    # device_model: Device model. 0: Ping1D\n
-    # firmware_version_major: Firmware version major number.\n
-    # firmware_version_minor: Firmware version minor number.\n
-    def get_firmware_version(self):
-        if self.request(pingmessage.PING1D_FIRMWARE_VERSION) is None:
-            return None
-        data = ({
-            "device_type": self._device_type,  # Device type. 0: 1D Echosounder
-            "device_model": self._device_model,  # Device model. 0: Ping1D
-            "firmware_version_major": self._firmware_version_major,  # Firmware version major number.
-            "firmware_version_minor": self._firmware_version_minor,  # Firmware version minor number.
-        })
-        return data
-
-    ##
     # @brief Get a device_id message from the device\n
     # Message description:\n
     # The device ID.
@@ -193,155 +172,6 @@ class Ping1D(object):
             return None
         data = ({
             "device_id": self._device_id,  # The device ID (0-254). 255 is reserved for broadcast messages.
-        })
-        return data
-
-    ##
-    # @brief Get a voltage_5 message from the device\n
-    # Message description:\n
-    # The 5V rail voltage.
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # voltage_5: Units: mV; The 5V rail voltage.\n
-    def get_voltage_5(self):
-        if self.request(pingmessage.PING1D_VOLTAGE_5) is None:
-            return None
-        data = ({
-            "voltage_5": self._voltage_5,  # Units: mV; The 5V rail voltage.
-        })
-        return data
-
-    ##
-    # @brief Get a speed_of_sound message from the device\n
-    # Message description:\n
-    # The speed of sound used for distance calculations.
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # speed_of_sound: Units: mm/s; The speed of sound in the measurement medium. ~1,500,000 mm/s for water.\n
-    def get_speed_of_sound(self):
-        if self.request(pingmessage.PING1D_SPEED_OF_SOUND) is None:
-            return None
-        data = ({
-            "speed_of_sound": self._speed_of_sound,  # Units: mm/s; The speed of sound in the measurement medium. ~1,500,000 mm/s for water.
-        })
-        return data
-
-    ##
-    # @brief Get a range message from the device\n
-    # Message description:\n
-    # The scan range for acoustic measurements. Measurements returned by the device will lie in the range (scan_start, scan_start + scan_length).
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # scan_start: Units: mm; The beginning of the scan range in mm from the transducer.\n
-    # scan_length: Units: mm; The length of the scan range.\n
-    def get_range(self):
-        if self.request(pingmessage.PING1D_RANGE) is None:
-            return None
-        data = ({
-            "scan_start": self._scan_start,  # Units: mm; The beginning of the scan range in mm from the transducer.
-            "scan_length": self._scan_length,  # Units: mm; The length of the scan range.
-        })
-        return data
-
-    ##
-    # @brief Get a mode_auto message from the device\n
-    # Message description:\n
-    # The current operating mode of the device. Manual mode allows for manual selection of the gain and scan range.
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # mode_auto: 0: manual mode, 1: auto mode\n
-    def get_mode_auto(self):
-        if self.request(pingmessage.PING1D_MODE_AUTO) is None:
-            return None
-        data = ({
-            "mode_auto": self._mode_auto,  # 0: manual mode, 1: auto mode
-        })
-        return data
-
-    ##
-    # @brief Get a ping_interval message from the device\n
-    # Message description:\n
-    # The interval between acoustic measurements.
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # ping_interval: Units: ms; The interval between acoustic measurements.\n
-    def get_ping_interval(self):
-        if self.request(pingmessage.PING1D_PING_INTERVAL) is None:
-            return None
-        data = ({
-            "ping_interval": self._ping_interval,  # Units: ms; The interval between acoustic measurements.
-        })
-        return data
-
-    ##
-    # @brief Get a gain_index message from the device\n
-    # Message description:\n
-    # The current gain setting.
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # gain_index: 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB\n
-    def get_gain_index(self):
-        if self.request(pingmessage.PING1D_GAIN_INDEX) is None:
-            return None
-        data = ({
-            "gain_index": self._gain_index,  # 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
-        })
-        return data
-
-    ##
-    # @brief Get a pulse_duration message from the device\n
-    # Message description:\n
-    # The duration of the acoustic activation/transmission.
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # pulse_duration: Units: microseconds; Acoustic pulse duration.\n
-    def get_pulse_duration(self):
-        if self.request(pingmessage.PING1D_PULSE_DURATION) is None:
-            return None
-        data = ({
-            "pulse_duration": self._pulse_duration,  # Units: microseconds; Acoustic pulse duration.
-        })
-        return data
-
-    ##
-    # @brief Get a general_info message from the device\n
-    # Message description:\n
-    # General information.
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # firmware_version_major: Firmware major version.\n
-    # firmware_version_minor: Firmware minor version.\n
-    # voltage_5: Units: mV; Device supply voltage.\n
-    # ping_interval: Units: ms; The interval between acoustic measurements.\n
-    # gain_index: The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB\n
-    # mode_auto: The current operating mode of the device. 0: manual mode, 1: auto mode\n
-    def get_general_info(self):
-        if self.request(pingmessage.PING1D_GENERAL_INFO) is None:
-            return None
-        data = ({
-            "firmware_version_major": self._firmware_version_major,  # Firmware major version.
-            "firmware_version_minor": self._firmware_version_minor,  # Firmware minor version.
-            "voltage_5": self._voltage_5,  # Units: mV; Device supply voltage.
-            "ping_interval": self._ping_interval,  # Units: ms; The interval between acoustic measurements.
-            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
-            "mode_auto": self._mode_auto,  # The current operating mode of the device. 0: manual mode, 1: auto mode
-        })
-        return data
-
-    ##
-    # @brief Get a distance_simple message from the device\n
-    # Message description:\n
-    # The distance to target with confidence estimate.
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # distance: Units: mm; Distance to the target.\n
-    # confidence: Units: %; Confidence in the distance measurement.\n
-    def get_distance_simple(self):
-        if self.request(pingmessage.PING1D_DISTANCE_SIMPLE) is None:
-            return None
-        data = ({
-            "distance": self._distance,  # Units: mm; Distance to the target.
-            "confidence": self._confidence,  # Units: %; Confidence in the distance measurement.
         })
         return data
 
@@ -373,17 +203,95 @@ class Ping1D(object):
         return data
 
     ##
-    # @brief Get a processor_temperature message from the device\n
+    # @brief Get a distance_simple message from the device\n
     # Message description:\n
-    # Temperature of the device cpu.
+    # The distance to target with confidence estimate.
     #
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # processor_temperature: Units: cC; The temperature in centi-degrees Centigrade (100 * degrees C).\n
-    def get_processor_temperature(self):
-        if self.request(pingmessage.PING1D_PROCESSOR_TEMPERATURE) is None:
+    # distance: Units: mm; Distance to the target.\n
+    # confidence: Units: %; Confidence in the distance measurement.\n
+    def get_distance_simple(self):
+        if self.request(pingmessage.PING1D_DISTANCE_SIMPLE) is None:
             return None
         data = ({
-            "processor_temperature": self._processor_temperature,  # Units: cC; The temperature in centi-degrees Centigrade (100 * degrees C).
+            "distance": self._distance,  # Units: mm; Distance to the target.
+            "confidence": self._confidence,  # Units: %; Confidence in the distance measurement.
+        })
+        return data
+
+    ##
+    # @brief Get a firmware_version message from the device\n
+    # Message description:\n
+    # Device information
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # device_type: Device type. 0: 1D Echosounder\n
+    # device_model: Device model. 0: Ping1D\n
+    # firmware_version_major: Firmware version major number.\n
+    # firmware_version_minor: Firmware version minor number.\n
+    def get_firmware_version(self):
+        if self.request(pingmessage.PING1D_FIRMWARE_VERSION) is None:
+            return None
+        data = ({
+            "device_type": self._device_type,  # Device type. 0: 1D Echosounder
+            "device_model": self._device_model,  # Device model. 0: Ping1D
+            "firmware_version_major": self._firmware_version_major,  # Firmware version major number.
+            "firmware_version_minor": self._firmware_version_minor,  # Firmware version minor number.
+        })
+        return data
+
+    ##
+    # @brief Get a gain_index message from the device\n
+    # Message description:\n
+    # The current gain setting.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # gain_index: 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB\n
+    def get_gain_index(self):
+        if self.request(pingmessage.PING1D_GAIN_INDEX) is None:
+            return None
+        data = ({
+            "gain_index": self._gain_index,  # 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
+        })
+        return data
+
+    ##
+    # @brief Get a general_info message from the device\n
+    # Message description:\n
+    # General information.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # firmware_version_major: Firmware major version.\n
+    # firmware_version_minor: Firmware minor version.\n
+    # voltage_5: Units: mV; Device supply voltage.\n
+    # ping_interval: Units: ms; The interval between acoustic measurements.\n
+    # gain_index: The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB\n
+    # mode_auto: The current operating mode of the device. 0: manual mode, 1: auto mode\n
+    def get_general_info(self):
+        if self.request(pingmessage.PING1D_GENERAL_INFO) is None:
+            return None
+        data = ({
+            "firmware_version_major": self._firmware_version_major,  # Firmware major version.
+            "firmware_version_minor": self._firmware_version_minor,  # Firmware minor version.
+            "voltage_5": self._voltage_5,  # Units: mV; Device supply voltage.
+            "ping_interval": self._ping_interval,  # Units: ms; The interval between acoustic measurements.
+            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
+            "mode_auto": self._mode_auto,  # The current operating mode of the device. 0: manual mode, 1: auto mode
+        })
+        return data
+
+    ##
+    # @brief Get a mode_auto message from the device\n
+    # Message description:\n
+    # The current operating mode of the device. Manual mode allows for manual selection of the gain and scan range.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # mode_auto: 0: manual mode, 1: auto mode\n
+    def get_mode_auto(self):
+        if self.request(pingmessage.PING1D_MODE_AUTO) is None:
+            return None
+        data = ({
+            "mode_auto": self._mode_auto,  # 0: manual mode, 1: auto mode
         })
         return data
 
@@ -414,6 +322,36 @@ class Ping1D(object):
             return None
         data = ({
             "ping_enabled": self._ping_enabled,  # The state of the acoustic output. 0: disabled, 1:enabled
+        })
+        return data
+
+    ##
+    # @brief Get a ping_interval message from the device\n
+    # Message description:\n
+    # The interval between acoustic measurements.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # ping_interval: Units: ms; The interval between acoustic measurements.\n
+    def get_ping_interval(self):
+        if self.request(pingmessage.PING1D_PING_INTERVAL) is None:
+            return None
+        data = ({
+            "ping_interval": self._ping_interval,  # Units: ms; The interval between acoustic measurements.
+        })
+        return data
+
+    ##
+    # @brief Get a processor_temperature message from the device\n
+    # Message description:\n
+    # Temperature of the device cpu.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # processor_temperature: Units: cC; The temperature in centi-degrees Centigrade (100 * degrees C).\n
+    def get_processor_temperature(self):
+        if self.request(pingmessage.PING1D_PROCESSOR_TEMPERATURE) is None:
+            return None
+        data = ({
+            "processor_temperature": self._processor_temperature,  # Units: cC; The temperature in centi-degrees Centigrade (100 * degrees C).
         })
         return data
 
@@ -462,6 +400,68 @@ class Ping1D(object):
         return data
 
     ##
+    # @brief Get a pulse_duration message from the device\n
+    # Message description:\n
+    # The duration of the acoustic activation/transmission.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # pulse_duration: Units: microseconds; Acoustic pulse duration.\n
+    def get_pulse_duration(self):
+        if self.request(pingmessage.PING1D_PULSE_DURATION) is None:
+            return None
+        data = ({
+            "pulse_duration": self._pulse_duration,  # Units: microseconds; Acoustic pulse duration.
+        })
+        return data
+
+    ##
+    # @brief Get a range message from the device\n
+    # Message description:\n
+    # The scan range for acoustic measurements. Measurements returned by the device will lie in the range (scan_start, scan_start + scan_length).
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # scan_start: Units: mm; The beginning of the scan range in mm from the transducer.\n
+    # scan_length: Units: mm; The length of the scan range.\n
+    def get_range(self):
+        if self.request(pingmessage.PING1D_RANGE) is None:
+            return None
+        data = ({
+            "scan_start": self._scan_start,  # Units: mm; The beginning of the scan range in mm from the transducer.
+            "scan_length": self._scan_length,  # Units: mm; The length of the scan range.
+        })
+        return data
+
+    ##
+    # @brief Get a speed_of_sound message from the device\n
+    # Message description:\n
+    # The speed of sound used for distance calculations.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # speed_of_sound: Units: mm/s; The speed of sound in the measurement medium. ~1,500,000 mm/s for water.\n
+    def get_speed_of_sound(self):
+        if self.request(pingmessage.PING1D_SPEED_OF_SOUND) is None:
+            return None
+        data = ({
+            "speed_of_sound": self._speed_of_sound,  # Units: mm/s; The speed of sound in the measurement medium. ~1,500,000 mm/s for water.
+        })
+        return data
+
+    ##
+    # @brief Get a voltage_5 message from the device\n
+    # Message description:\n
+    # The 5V rail voltage.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # voltage_5: Units: mV; The 5V rail voltage.\n
+    def get_voltage_5(self):
+        if self.request(pingmessage.PING1D_VOLTAGE_5) is None:
+            return None
+        data = ({
+            "voltage_5": self._voltage_5,  # Units: mV; The 5V rail voltage.
+        })
+        return data
+
+    ##
     # @brief Send a set_device_id message to the device\n
     # Message description:\n
     # Set the device ID.\n
@@ -480,6 +480,94 @@ class Ping1D(object):
         # Read back the data and check that changes have been applied
         if (verify
                 and (self._device_id != device_id)):
+            return False
+        return True  # success
+
+    ##
+    # @brief Send a set_gain_index message to the device\n
+    # Message description:\n
+    # Set the current gain selection.\n
+    # Send the message to write the device parameters, then read the values back from the device\n
+    #
+    # @param gain_index - 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
+    #
+    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    def set_gain_index(self, gain_index, verify=True):
+        m = pingmessage.PingMessage(pingmessage.PING1D_SET_GAIN_INDEX)
+        m.gain_index = gain_index
+        m.pack_msg_data()
+        self.write(m.msg_data)
+        if self.request(pingmessage.PING1D_GAIN_INDEX) is None:
+            return False
+        # Read back the data and check that changes have been applied
+        if (verify
+                and (self._gain_index != gain_index)):
+            return False
+        return True  # success
+
+    ##
+    # @brief Send a set_mode_auto message to the device\n
+    # Message description:\n
+    # Set automatic or manual mode. Manual mode allows for manual selection of the gain and scan range.\n
+    # Send the message to write the device parameters, then read the values back from the device\n
+    #
+    # @param mode_auto - 0: manual mode. 1: auto mode.
+    #
+    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    def set_mode_auto(self, mode_auto, verify=True):
+        m = pingmessage.PingMessage(pingmessage.PING1D_SET_MODE_AUTO)
+        m.mode_auto = mode_auto
+        m.pack_msg_data()
+        self.write(m.msg_data)
+        if self.request(pingmessage.PING1D_MODE_AUTO) is None:
+            return False
+        # Read back the data and check that changes have been applied
+        if (verify
+                and (self._mode_auto != mode_auto)):
+            return False
+        return True  # success
+
+    ##
+    # @brief Send a set_ping_enable message to the device\n
+    # Message description:\n
+    # Enable or disable acoustic measurements.\n
+    # Send the message to write the device parameters, then read the values back from the device\n
+    #
+    # @param ping_enabled - 0: Disable, 1: Enable.
+    #
+    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    def set_ping_enable(self, ping_enabled, verify=True):
+        m = pingmessage.PingMessage(pingmessage.PING1D_SET_PING_ENABLE)
+        m.ping_enabled = ping_enabled
+        m.pack_msg_data()
+        self.write(m.msg_data)
+        if self.request(pingmessage.PING1D_PING_ENABLE) is None:
+            return False
+        # Read back the data and check that changes have been applied
+        if (verify
+                and (self._ping_enabled != ping_enabled)):
+            return False
+        return True  # success
+
+    ##
+    # @brief Send a set_ping_interval message to the device\n
+    # Message description:\n
+    # The interval between acoustic measurements.\n
+    # Send the message to write the device parameters, then read the values back from the device\n
+    #
+    # @param ping_interval - Units: ms; The interval between acoustic measurements.
+    #
+    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    def set_ping_interval(self, ping_interval, verify=True):
+        m = pingmessage.PingMessage(pingmessage.PING1D_SET_PING_INTERVAL)
+        m.ping_interval = ping_interval
+        m.pack_msg_data()
+        self.write(m.msg_data)
+        if self.request(pingmessage.PING1D_PING_INTERVAL) is None:
+            return False
+        # Read back the data and check that changes have been applied
+        if (verify
+                and (self._ping_interval != ping_interval)):
             return False
         return True  # success
 
@@ -529,94 +617,6 @@ class Ping1D(object):
             return False
         return True  # success
 
-    ##
-    # @brief Send a set_mode_auto message to the device\n
-    # Message description:\n
-    # Set automatic or manual mode. Manual mode allows for manual selection of the gain and scan range.\n
-    # Send the message to write the device parameters, then read the values back from the device\n
-    #
-    # @param mode_auto - 0: manual mode. 1: auto mode.
-    #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
-    def set_mode_auto(self, mode_auto, verify=True):
-        m = pingmessage.PingMessage(pingmessage.PING1D_SET_MODE_AUTO)
-        m.mode_auto = mode_auto
-        m.pack_msg_data()
-        self.write(m.msg_data)
-        if self.request(pingmessage.PING1D_MODE_AUTO) is None:
-            return False
-        # Read back the data and check that changes have been applied
-        if (verify
-                and (self._mode_auto != mode_auto)):
-            return False
-        return True  # success
-
-    ##
-    # @brief Send a set_ping_interval message to the device\n
-    # Message description:\n
-    # The interval between acoustic measurements.\n
-    # Send the message to write the device parameters, then read the values back from the device\n
-    #
-    # @param ping_interval - Units: ms; The interval between acoustic measurements.
-    #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
-    def set_ping_interval(self, ping_interval, verify=True):
-        m = pingmessage.PingMessage(pingmessage.PING1D_SET_PING_INTERVAL)
-        m.ping_interval = ping_interval
-        m.pack_msg_data()
-        self.write(m.msg_data)
-        if self.request(pingmessage.PING1D_PING_INTERVAL) is None:
-            return False
-        # Read back the data and check that changes have been applied
-        if (verify
-                and (self._ping_interval != ping_interval)):
-            return False
-        return True  # success
-
-    ##
-    # @brief Send a set_gain_index message to the device\n
-    # Message description:\n
-    # Set the current gain selection.\n
-    # Send the message to write the device parameters, then read the values back from the device\n
-    #
-    # @param gain_index - 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
-    #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
-    def set_gain_index(self, gain_index, verify=True):
-        m = pingmessage.PingMessage(pingmessage.PING1D_SET_GAIN_INDEX)
-        m.gain_index = gain_index
-        m.pack_msg_data()
-        self.write(m.msg_data)
-        if self.request(pingmessage.PING1D_GAIN_INDEX) is None:
-            return False
-        # Read back the data and check that changes have been applied
-        if (verify
-                and (self._gain_index != gain_index)):
-            return False
-        return True  # success
-
-    ##
-    # @brief Send a set_ping_enable message to the device\n
-    # Message description:\n
-    # Enable or disable acoustic measurements.\n
-    # Send the message to write the device parameters, then read the values back from the device\n
-    #
-    # @param ping_enabled - 0: Disable, 1: Enable.
-    #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
-    def set_ping_enable(self, ping_enabled, verify=True):
-        m = pingmessage.PingMessage(pingmessage.PING1D_SET_PING_ENABLE)
-        m.ping_enabled = ping_enabled
-        m.pack_msg_data()
-        self.write(m.msg_data)
-        if self.request(pingmessage.PING1D_PING_ENABLE) is None:
-            return False
-        # Read back the data and check that changes have been applied
-        if (verify
-                and (self._ping_enabled != ping_enabled)):
-            return False
-        return True  # success
-
 
 if __name__ == "__main__":
     import argparse
@@ -630,58 +630,8 @@ if __name__ == "__main__":
 
     print("Initialized: %s" % p.initialize())
 
-    print("\ntesting get_firmware_version")
-    result = p.get_firmware_version()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
     print("\ntesting get_device_id")
     result = p.get_device_id()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_voltage_5")
-    result = p.get_voltage_5()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_speed_of_sound")
-    result = p.get_speed_of_sound()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_range")
-    result = p.get_range()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_mode_auto")
-    result = p.get_mode_auto()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_ping_interval")
-    result = p.get_ping_interval()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_gain_index")
-    result = p.get_gain_index()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_pulse_duration")
-    result = p.get_pulse_duration()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_general_info")
-    result = p.get_general_info()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_distance_simple")
-    result = p.get_distance_simple()
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 
@@ -690,8 +640,28 @@ if __name__ == "__main__":
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 
-    print("\ntesting get_processor_temperature")
-    result = p.get_processor_temperature()
+    print("\ntesting get_distance_simple")
+    result = p.get_distance_simple()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_firmware_version")
+    result = p.get_firmware_version()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_gain_index")
+    result = p.get_gain_index()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_general_info")
+    result = p.get_general_info()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_mode_auto")
+    result = p.get_mode_auto()
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 
@@ -705,6 +675,16 @@ if __name__ == "__main__":
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 
+    print("\ntesting get_ping_interval")
+    result = p.get_ping_interval()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_processor_temperature")
+    result = p.get_processor_temperature()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
     print("\ntesting get_profile")
     result = p.get_profile()
     print("  " + str(result))
@@ -712,6 +692,26 @@ if __name__ == "__main__":
 
     print("\ntesting get_protocol_version")
     result = p.get_protocol_version()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_pulse_duration")
+    result = p.get_pulse_duration()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_range")
+    result = p.get_range()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_speed_of_sound")
+    result = p.get_speed_of_sound()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_voltage_5")
+    result = p.get_voltage_5()
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 
