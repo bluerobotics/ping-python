@@ -9,3 +9,4 @@ deploy:
     secure: hfzPRQJ03YyKvUrTChgj+CfduDuHf02OU3WREEMDsn35QH3KjHb7d1lGbIryo7+rR+qnoY7EsFAFkFYlTicQ8O0NbQuNhZjq/ls9aF7IFbkHqSVkKMotqtMc2M8kW2hmGs096Au2jZY1iSXHhkqBWvXa+Kyfmdin2hZcGgwzs7muMmSwk9/LwDucgGxsbLz33PgFUXGvMTRXMUPbQI9XDTe1q1GG7eCq1J12e0vZ9+Y0KJVeDtuyiCd0c9Vcf5TVpTdeMLyew/cMiN3xX32f7uyBJ+0KwBflI8qmEyT4xipVJ79c+lrg0CT3osTve+U4blbw5UNooxDgInQuxvXAYYO/7sqcUw+Bc5SRbOkres6KECXSv1p9aJMq+PRVnP6asu+IivwtHS3hw20/BruW6bTMP3HcA82fgLjq0xuL7g6ylPuLhT99PTUwcFzCTCBpg6s768Y2HR/p9q4sxbsde6fO+roldycO1Opsi2EelxuqbG8LCNYTn44xGNDm9WV4xU4m/ZDMD/1TBNcV381wJHoNkxOMQ7+ioqPJLpfbKV8bazaHAYfGhjXjlr7Tg76Qq5o6uma5A72XbcUOO8EUadlAdo2vNnWkbh30ohOj5930OCD63Ptdq5Kz1Te/ethL8yc1M3UEAU+mSfFkEv8deykW0OFbMVo2zAdpbKLsmnc=
   on:
     tags: true
+    condition: $TRAVIS_TAG =~ v[0-9]+.[0-9]+.[0-9]+.* && $(if grep -q "${BASH_REMATCH:1}" "$TRAVIS_BUILD_DIR/setup.py"; then echo 0; fi)
