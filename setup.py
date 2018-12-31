@@ -13,7 +13,7 @@ setup(name='bluerobotics-ping',
       author='Blue Robotics',
       author_email='support@bluerobotics.com',
       url='https://www.bluerobotics.com',
-      packages=find_packages(), install_requires=['pyserial'],
+      packages=find_packages(), install_requires=['pyserial', 'future'],
       classifiers=[
           "Programming Language :: Python",
           "License :: OSI Approved :: MIT License",
