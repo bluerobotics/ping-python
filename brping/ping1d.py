@@ -187,7 +187,7 @@ class Ping1D(object):
     # ping_number: The pulse/measurement count since boot.\n
     # scan_start: Units: mm; The beginning of the scan region in mm from the transducer.\n
     # scan_length: Units: mm; The length of the scan region.\n
-    # gain_index: The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB\n
+    # gain_index: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
     def get_distance(self):
         if self.request(pingmessage.PING1D_DISTANCE) is None:
             return None
@@ -198,7 +198,7 @@ class Ping1D(object):
             "ping_number": self._ping_number,  # The pulse/measurement count since boot.
             "scan_start": self._scan_start,  # Units: mm; The beginning of the scan region in mm from the transducer.
             "scan_length": self._scan_length,  # Units: mm; The length of the scan region.
-            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
+            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
         })
         return data
 
@@ -225,16 +225,16 @@ class Ping1D(object):
     # Device information
     #
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # device_type: Device type. 0: 1D Echosounder\n
-    # device_model: Device model. 0: Ping1D\n
+    # device_type: Device type. 0: Unknown; 1: Echosounder\n
+    # device_model: Device model. 0: Unknown; 1: Ping1D\n
     # firmware_version_major: Firmware version major number.\n
     # firmware_version_minor: Firmware version minor number.\n
     def get_firmware_version(self):
         if self.request(pingmessage.PING1D_FIRMWARE_VERSION) is None:
             return None
         data = ({
-            "device_type": self._device_type,  # Device type. 0: 1D Echosounder
-            "device_model": self._device_model,  # Device model. 0: Ping1D
+            "device_type": self._device_type,  # Device type. 0: Unknown; 1: Echosounder
+            "device_model": self._device_model,  # Device model. 0: Unknown; 1: Ping1D
             "firmware_version_major": self._firmware_version_major,  # Firmware version major number.
             "firmware_version_minor": self._firmware_version_minor,  # Firmware version minor number.
         })
@@ -246,12 +246,12 @@ class Ping1D(object):
     # The current gain setting.
     #
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # gain_index: 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB\n
+    # gain_index: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
     def get_gain_index(self):
         if self.request(pingmessage.PING1D_GAIN_INDEX) is None:
             return None
         data = ({
-            "gain_index": self._gain_index,  # 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
+            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
         })
         return data
 
@@ -265,7 +265,7 @@ class Ping1D(object):
     # firmware_version_minor: Firmware minor version.\n
     # voltage_5: Units: mV; Device supply voltage.\n
     # ping_interval: Units: ms; The interval between acoustic measurements.\n
-    # gain_index: The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB\n
+    # gain_index: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
     # mode_auto: The current operating mode of the device. 0: manual mode, 1: auto mode\n
     def get_general_info(self):
         if self.request(pingmessage.PING1D_GENERAL_INFO) is None:
@@ -275,7 +275,7 @@ class Ping1D(object):
             "firmware_version_minor": self._firmware_version_minor,  # Firmware minor version.
             "voltage_5": self._voltage_5,  # Units: mV; Device supply voltage.
             "ping_interval": self._ping_interval,  # Units: ms; The interval between acoustic measurements.
-            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
+            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
             "mode_auto": self._mode_auto,  # The current operating mode of the device. 0: manual mode, 1: auto mode
         })
         return data
@@ -331,12 +331,12 @@ class Ping1D(object):
     # The interval between acoustic measurements.
     #
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # ping_interval: Units: ms; The interval between acoustic measurements.\n
+    # ping_interval: Units: ms; The minimum interval between acoustic measurements. The actual interval may be longer.\n
     def get_ping_interval(self):
         if self.request(pingmessage.PING1D_PING_INTERVAL) is None:
             return None
         data = ({
-            "ping_interval": self._ping_interval,  # Units: ms; The interval between acoustic measurements.
+            "ping_interval": self._ping_interval,  # Units: ms; The minimum interval between acoustic measurements. The actual interval may be longer.
         })
         return data
 
@@ -367,7 +367,7 @@ class Ping1D(object):
     # ping_number: The pulse/measurement count since boot.\n
     # scan_start: Units: mm; The beginning of the scan region in mm from the transducer.\n
     # scan_length: Units: mm; The length of the scan region.\n
-    # gain_index: The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB\n
+    # gain_index: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
     # profile_data: An array of return strength measurements taken at regular intervals across the scan region.\n
     def get_profile(self):
         if self.request(pingmessage.PING1D_PROFILE) is None:
@@ -379,7 +379,7 @@ class Ping1D(object):
             "ping_number": self._ping_number,  # The pulse/measurement count since boot.
             "scan_start": self._scan_start,  # Units: mm; The beginning of the scan region in mm from the transducer.
             "scan_length": self._scan_length,  # Units: mm; The length of the scan region.
-            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
+            "gain_index": self._gain_index,  # The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
             "profile_data": self._profile_data,  # An array of return strength measurements taken at regular intervals across the scan region.
         })
         return data
@@ -486,10 +486,10 @@ class Ping1D(object):
     ##
     # @brief Send a set_gain_index message to the device\n
     # Message description:\n
-    # Set the current gain selection.\n
+    # Set the current gain setting.\n
     # Send the message to write the device parameters, then read the values back from the device\n
     #
-    # @param gain_index - 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB
+    # @param gain_index - The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
     #
     # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_gain_index(self, gain_index, verify=True):
