@@ -41,6 +41,44 @@ $ python setup.py install
 
 ## Quick Start
 
-You can run a simple example that prints the distance reading repeatedly by executing the command below. Place your device's file descriptor after the --device option. For example, on Linux this will likely be /dev/ttyUSB0.
+The `bluerobotics-ping` package installs a `simplePingExample.py` script to get started. Place your device's file descriptor (eg. `/dev/ttyUSB0`, `COM1`) after the --device option.
 
-`python simplePingExample.py --device <your-device>`
+`$ simplePingExample.py --device <your-device>`
+
+## Usage
+
+The [Ping1D](https://docs.bluerobotics.com/ping-python/classPing_1_1Ping1D_1_1Ping1D.html) class provides an easy interface to configure a Ping device and retrieve data.
+
+A Ping1D object must be initialized with the serial device path and the baudrate.
+
+```py
+myPing = Ping1D("/dev/ttyUSB0", 115200)
+```
+
+Call initialize() to establish communications with the device.
+
+```py
+if myPing.initialize() is False:
+    print("Failed to initialize Ping!")
+    exit(1)
+```
+
+Use [`get_<message_name>`](https://github.com/bluerobotics/ping-protocol#get) to request data from the device. The data is returned as a dictionary with keys matching the names of the message payload fields. The messages you may request are documented in the [ping-protocol](https://github.com/bluerobotics/ping-protocol).
+
+```py
+    data = myPing.get_distance()
+    if data:
+        print("Distance: %s\tConfidence: %s%%" % (data["distance"], data["confidence"]))
+    else:
+        print("Failed to get distance data")
+```
+
+Use the [`set_*`](https://github.com/bluerobotics/ping-protocol#set) messages (eg. [set_speed_of_sound()](https://docs.bluerobotics.com/ping-python/classPing_1_1Ping1D_1_1Ping1D.html#a79a3931e5564644187198ad2063e5ed9)) to change settings on the Ping device.
+
+```py
+    # set the speed of sound to use for distance calculations to
+    # 1450000 mm/s (1450 m/s)
+    myPing.set_speed_of_sound(1450000)
+```
+
+See the [doxygen](https://docs.bluerobotics.com/ping-python/) documentation for complete API documentation.
