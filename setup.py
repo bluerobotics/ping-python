@@ -21,5 +21,6 @@ setup(name='bluerobotics-ping',
       ],
       scripts=[
           "examples/simplePingExample.py",
-          "brping/pingproxy.py"]
+          "brping/pingproxy.py",
+          "brping/ping1d-simulation.py"]
       )
