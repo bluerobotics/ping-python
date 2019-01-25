@@ -18,5 +18,8 @@ setup(name='bluerobotics-ping',
           "Programming Language :: Python",
           "License :: OSI Approved :: MIT License",
           "Operating System :: OS Independent",
-      ]
+      ],
+      scripts=[
+          "examples/simplePingExample.py",
+          "brping/pingproxy.py"]
       )
