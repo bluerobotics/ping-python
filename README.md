@@ -17,10 +17,10 @@ This library exposes all functionality of the device, such as getting profiles, 
 ## Resources
 
 * [API Reference](https://docs.bluerobotics.com/ping-python/)
-* [Device Specifications](http://www.bluerobotics.com/)
+* [Device Specifications](https://www.bluerobotics.com/)
 * [Serial Protocol](https://github.com/bluerobotics/ping-protocol)
-* [Support](http://docs.bluerobotics.com)
-* [License](http://github.com/bluerobotics/ping-python/blob/master/LICENSE)
+* [Support](https://docs.bluerobotics.com)
+* [License](https://github.com/bluerobotics/ping-python/blob/master/LICENSE)
 
 
 ## Installing
@@ -34,7 +34,7 @@ $ pip install bluerobotics-ping
 ### From source
 
 ```sh
-$ git clone http://github.com/bluerobotics/ping-python.git
+$ git clone https://github.com/bluerobotics/ping-python.git
 $ cd ping-python
 $ python setup.py install
 ```
