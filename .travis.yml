@@ -2,6 +2,17 @@ language: python
 
 install: true
 
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      sudo: require
+      addons:
+        apt:
+          packages:
+            - doxygen
+            - graphviz
+
 deploy:
   provider: pypi
   user: bluerobotics
