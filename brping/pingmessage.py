@@ -70,6 +70,7 @@ payload_dict = {
         "name": "ascii_text",
         "format": "",
         "field_names": (
+             "ascii_message",
             ),
         "payload_length": 0
     },
@@ -183,6 +184,7 @@ payload_dict = {
         "format": "H",
         "field_names": (
              "nacked_id",
+             "nack_message",
             ),
         "payload_length": 2
     },
@@ -452,6 +454,10 @@ class PingMessage(object):
     ## Pack object attributes into self.msg_data (bytearray)
     # @return self.msg_data
     def pack_msg_data(self):
+        # necessary for variable length payloads
+        # update using current contents for the variable length field
+        self.payload_length = self.get_payload_length()
+
         # Prepare struct packing format string
         msg_format = PingMessage.endianess + PingMessage.header_format + self.get_payload_format()
 
@@ -517,16 +523,26 @@ class PingMessage(object):
     def verify_checksum(self):
         return self.checksum == self.calculate_checksum()
 
+    ## Get the **current** payload length, including dynamic length fields (if present)
+    # @return the current payload length
+    def get_payload_length(self):
+        if self.message_id in variable_msgs or self.message_id in asciiMsgs:
+            # The last field self.payload_field_names[-1] is always the single dynamic-length field
+            return payload_dict[self.message_id]["payload_length"] + len(getattr(self, self.payload_field_names[-1]))
+        else:
+            return payload_dict[self.message_id]["payload_length"]
+
     ## Get the python struct formatting string for the message payload
     # @return the payload struct format string
     def get_payload_format(self):
+        # messages with variable length fields
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
-            var_length = self.payload_length - payload_dict[self.message_id]["payload_length"]  # Subtract static length portion from payload length
+            var_length = self.get_payload_length() - payload_dict[self.message_id]["payload_length"]  # Subtract static length portion from payload length
             if var_length <= 0:
                 return ""  # variable data portion is empty
 
             return payload_dict[self.message_id]["format"] + str(var_length) + "s"
-        else:
+        else: # messages with a static (constant) length
             return payload_dict[self.message_id]["format"]
 
     ## Dump object into string representation
