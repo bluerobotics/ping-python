@@ -53,9 +53,16 @@ if [[ $(git -C ${repo_path} diff) ]]; then
 From https://github.com/bluerobotics/ping-protocol/tree/"$repository_githash
     git -C ${repo_path} commit -sm "${COMMIT_MESSAGE}"
 
+    echob "Check build type."
+    # Do not build pull requests
+    if [ ${TRAVIS_PULL_REQUEST} != "false" ]; then
+        echo "- Do not deploy PRs."
+        exit 0
+    fi
+
     echob "Check branch."
-    # Don't deploy pull requests or branches other than master
-    if [ ${TRAVIS_PULL_REQUEST} != "false" ] || [ ${TRAVIS_BRANCH} != "master" ]; then
+    # Do only build master branch
+    if [ ${TRAVIS_BRANCH} != "master" ]; then
         echo "- Only master branch will be deployed."
         exit 0
     fi
