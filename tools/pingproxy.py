@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/env python
 
 # PingProxy.py
 # Connect multiple udp clients to a single serial device
