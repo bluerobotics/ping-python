@@ -52,6 +52,7 @@ The [Ping1D](https://docs.bluerobotics.com/ping-python/classPing_1_1Ping1D_1_1Pi
 A Ping1D object must be initialized with the serial device path and the baudrate.
 
 ```py
+from brping import Ping1D
 myPing = Ping1D("/dev/ttyUSB0", 115200)
 ```
 
