@@ -1,4 +1,4 @@
-#!/usr/bin/env python -u
+#!/usr/bin/env python
 
 # This script simulates a Blue Robotics Ping Echosounder device
 # A client may connect to the device simulation on local UDP port 6676
