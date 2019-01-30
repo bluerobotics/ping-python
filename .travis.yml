@@ -25,4 +25,5 @@ deploy:
 
 script:
   - python setup.py install
+  - python test-ci.py || { pip install pyOpenSSL && python test-ci.py; }
   - ./doc/update-gh-pages.sh
