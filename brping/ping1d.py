@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/env python
 
 # Ping1D.py
 # A device API for the Blue Robotics Ping1D echosounder

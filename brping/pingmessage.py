@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/env python
 
 # PingMessage.py
 # Python implementation of the Blue Robotics 'Ping' binary message protocol
