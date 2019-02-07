@@ -456,7 +456,7 @@ class PingMessage(object):
     def pack_msg_data(self):
         # necessary for variable length payloads
         # update using current contents for the variable length field
-        self.payload_length = self.get_payload_length()
+        self.update_payload_length()
 
         # Prepare struct packing format string
         msg_format = PingMessage.endianess + PingMessage.header_format + self.get_payload_format()
@@ -523,21 +523,20 @@ class PingMessage(object):
     def verify_checksum(self):
         return self.checksum == self.calculate_checksum()
 
-    ## Get the **current** payload length, including dynamic length fields (if present)
-    # @return the current payload length
-    def get_payload_length(self):
+    ## Update the payload_length attribute with the **current** payload length, including dynamic length fields (if present)
+    def update_payload_length(self):
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
             # The last field self.payload_field_names[-1] is always the single dynamic-length field
-            return payload_dict[self.message_id]["payload_length"] + len(getattr(self, self.payload_field_names[-1]))
+            self.payload_length = payload_dict[self.message_id]["payload_length"] + len(getattr(self, self.payload_field_names[-1]))
         else:
-            return payload_dict[self.message_id]["payload_length"]
+            self.payload_length = payload_dict[self.message_id]["payload_length"]
 
     ## Get the python struct formatting string for the message payload
     # @return the payload struct format string
     def get_payload_format(self):
         # messages with variable length fields
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
-            var_length = self.get_payload_length() - payload_dict[self.message_id]["payload_length"]  # Subtract static length portion from payload length
+            var_length = self.payload_length - payload_dict[self.message_id]["payload_length"]  # Subtract static length portion from payload length
             if var_length <= 0:
                 return ""  # variable data portion is empty
 
@@ -618,6 +617,7 @@ class PingParser(object):
             msg_byte = ord(msg_byte)
         # print("byte: %d, state: %d, rem: %d, id: %d" % (msg_byte, self.state, self.payload_length, self.message_id))
         if self.state == PingParser.WAIT_START:
+            self.buf = bytearray()
             if msg_byte == ord('B'):
                 self.buf.append(msg_byte)
                 self.state += 1
@@ -665,7 +665,6 @@ class PingParser(object):
 
             # print(self.rx_msg)
 
-            self.buf = bytearray()
             self.state = PingParser.WAIT_START
             self.payload_length = 0
             self.message_id = 0
