@@ -567,7 +567,7 @@ class PingMessage(object):
                 attr = payload_dict[self.message_id]["field_names"][-1:][0]
 
                 # format this field as a list of hex values (rather than a string if we did not perform this handling)
-                payload_string += "\n  - " + attr + ": " + str([hex(ord(item)) for item in getattr(self, attr)])
+                payload_string += "\n  - " + attr + ": " + str([hex(item) for item in getattr(self, attr)])
 
             else:  # handling of static length messages and text messages
                 for attr in payload_dict[self.message_id]["field_names"]:
