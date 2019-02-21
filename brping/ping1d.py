@@ -152,7 +152,7 @@ class Ping1D(object):
         for attr in sorted(attrs):
             try:
                 if attr != 'iodev':
-                    representation += "\n  - " + attr + "(hex): " + str([hex(ord(item)) for item in getattr(self, attr)])
+                    representation += "\n  - " + attr + "(hex): " + str([hex(item) for item in getattr(self, attr)])
                 if attr != 'data':
                     representation += "\n  - " + attr + "(string): " + str(getattr(self, attr))
             # TODO: Better filter this exception
