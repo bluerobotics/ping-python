@@ -36,6 +36,7 @@ class Ping1D(object):
     _profile_data = None
     _protocol_version = None
     _pulse_duration = None
+    _requested_id = None
     _scan_length = None
     _scan_start = None
     _speed_of_sound = None

@@ -31,6 +31,7 @@ PING1D_DISTANCE_SIMPLE = 1211
 PING1D_FIRMWARE_VERSION = 1200
 PING1D_GAIN_INDEX = 1207
 PING1D_GENERAL_INFO = 1210
+PING1D_GENERAL_REQUEST = 6
 PING1D_GOTO_BOOTLOADER = 1100
 PING1D_MODE_AUTO = 1205
 PING1D_NACK = 2
@@ -160,6 +161,15 @@ payload_dict = {
              "mode_auto",
             ),
         "payload_length": 10
+    },
+
+    PING1D_GENERAL_REQUEST: {
+        "name": "general_request",
+        "format": "H",
+        "field_names": (
+             "requested_id",
+            ),
+        "payload_length": 2
     },
 
     PING1D_GOTO_BOOTLOADER: {
