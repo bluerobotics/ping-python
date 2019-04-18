@@ -51,7 +51,6 @@ PING1D_SET_PING_INTERVAL = 1004
 PING1D_SET_RANGE = 1001
 PING1D_SET_SPEED_OF_SOUND = 1002
 PING1D_SPEED_OF_SOUND = 1203
-PING1D_UNDEFINED = 0
 PING1D_VOLTAGE_5 = 1202
 
 # variable length fields are formatted with 's', and always occur at the end of the payload
@@ -351,14 +350,6 @@ payload_dict = {
              "speed_of_sound",
             ),
         "payload_length": 4
-    },
-
-    PING1D_UNDEFINED: {
-        "name": "undefined",
-        "format": "",
-        "field_names": (
-            ),
-        "payload_length": 0
     },
 
     PING1D_VOLTAGE_5: {
