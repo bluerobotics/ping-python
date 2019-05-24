@@ -39,11 +39,16 @@ class Ping1DSimulation(object):
                     # we decoded a message from the client
                     self.handleMessage(self.parser.rx_msg)
 
-        except Exception as e:
+        except EnvironmentError as e:
             if e.errno == errno.EAGAIN:
                 pass # waiting for data
             else:
                 print("Error reading data", e)
+
+        except KeyError as e:
+           print("skipping unrecognized message id: %d" % self.parser.rx_msg.message_id)
+           print("contents: %s" % self.parser.rx_msg.msg_data)
+           pass
 
     # write data to client
     def write(self, data):
