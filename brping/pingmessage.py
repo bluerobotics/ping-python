@@ -430,8 +430,7 @@ class PingMessage(object):
         self.message_id = msg_id
         ## The request id for request messages
         self.request_id = None
-        ## Number of bytes in the message payload
-        self.payload_length = payload_dict[msg_id]["payload_length"]
+
         ## The message destination
         self.dst_device_id = 0
         ## The message source
@@ -445,12 +444,22 @@ class PingMessage(object):
         if msg_data is not None:
             self.unpack_msg_data(msg_data)
 
-        ## The name of this message
-        self.name = payload_dict[self.message_id]["name"]
-        ## The struct formatting string for the message payload
-        self.payload_format = payload_dict[msg_id]["format"]
-        ## The field names of this message
-        self.payload_field_names = payload_dict[msg_id]["field_names"]
+        try:
+            ## Number of bytes in the message payload
+            self.payload_length = payload_dict[self.message_id]["payload_length"]
+
+            ## The name of this message
+            self.name = payload_dict[self.message_id]["name"]
+
+            ## The struct formatting string for the message payload
+            self.payload_format = payload_dict[self.message_id]["format"]
+
+            ## The field names of this message
+            self.payload_field_names = payload_dict[self.message_id]["field_names"]
+
+        except KeyError as e:
+            print("message id not recognized: %d" % self.message_id, msg_data)
+            raise e
 
     ## Pack object attributes into self.msg_data (bytearray)
     # @return self.msg_data
