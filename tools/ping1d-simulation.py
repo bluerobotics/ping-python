@@ -53,7 +53,6 @@ class Ping1DSimulation(object):
     # write data to client
     def write(self, data):
         if self.client is not None:
-            print("sending data to client")
             self.sockit.sendto(data, self.client)
 
     # Send a message to the client, the message fields are populated by the
@@ -61,6 +60,7 @@ class Ping1DSimulation(object):
     # the message field names
     def sendMessage(self, message_id):
         msg = PingMessage(message_id)
+        print("sending message %d\t(%s)" % (msg.message_id, msg.name))
 
         # pull attributes of this class into the message fields (they are named the same)
         for attr in payload_dict[message_id]["field_names"]:
@@ -83,6 +83,7 @@ class Ping1DSimulation(object):
 
     # handle an incoming client message
     def handleMessage(self, message):
+        print("receive message %d\t(%s)" % (message.message_id, message.name))
         if message.message_id == PING1D_GENERAL_REQUEST:
             # the client is requesting a message from us
             self.sendMessage(message.requested_id)
