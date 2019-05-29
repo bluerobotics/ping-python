@@ -29,7 +29,7 @@ PING1D_DEVICE_ID = 1201
 PING1D_DISTANCE = 1212
 PING1D_DISTANCE_SIMPLE = 1211
 PING1D_FIRMWARE_VERSION = 1200
-PING1D_GAIN_INDEX = 1207
+PING1D_GAIN_SETTING = 1207
 PING1D_GENERAL_INFO = 1210
 PING1D_GENERAL_REQUEST = 6
 PING1D_GOTO_BOOTLOADER = 1100
@@ -41,16 +41,16 @@ PING1D_PING_INTERVAL = 1206
 PING1D_PROCESSOR_TEMPERATURE = 1213
 PING1D_PROFILE = 1300
 PING1D_PROTOCOL_VERSION = 5
-PING1D_PULSE_DURATION = 1208
 PING1D_RANGE = 1204
 PING1D_SET_DEVICE_ID = 1000
-PING1D_SET_GAIN_INDEX = 1005
+PING1D_SET_GAIN_SETTING = 1005
 PING1D_SET_MODE_AUTO = 1003
 PING1D_SET_PING_ENABLE = 1006
 PING1D_SET_PING_INTERVAL = 1004
 PING1D_SET_RANGE = 1001
 PING1D_SET_SPEED_OF_SOUND = 1002
 PING1D_SPEED_OF_SOUND = 1203
+PING1D_TRANSMIT_DURATION = 1208
 PING1D_VOLTAGE_5 = 1202
 
 # variable length fields are formatted with 's', and always occur at the end of the payload
@@ -108,11 +108,11 @@ payload_dict = {
         "field_names": (
              "distance",
              "confidence",
-             "pulse_duration",
+             "transmit_duration",
              "ping_number",
              "scan_start",
              "scan_length",
-             "gain_index",
+             "gain_setting",
             ),
         "payload_length": 24
     },
@@ -139,11 +139,11 @@ payload_dict = {
         "payload_length": 6
     },
 
-    PING1D_GAIN_INDEX: {
-        "name": "gain_index",
+    PING1D_GAIN_SETTING: {
+        "name": "gain_setting",
         "format": "I",
         "field_names": (
-             "gain_index",
+             "gain_setting",
             ),
         "payload_length": 4
     },
@@ -156,7 +156,7 @@ payload_dict = {
              "firmware_version_minor",
              "voltage_5",
              "ping_interval",
-             "gain_index",
+             "gain_setting",
              "mode_auto",
             ),
         "payload_length": 10
@@ -240,11 +240,11 @@ payload_dict = {
         "field_names": (
              "distance",
              "confidence",
-             "pulse_duration",
+             "transmit_duration",
              "ping_number",
              "scan_start",
              "scan_length",
-             "gain_index",
+             "gain_setting",
              "profile_data_length",
              "profile_data",
             ),
@@ -258,15 +258,6 @@ payload_dict = {
              "protocol_version",
             ),
         "payload_length": 4
-    },
-
-    PING1D_PULSE_DURATION: {
-        "name": "pulse_duration",
-        "format": "H",
-        "field_names": (
-             "pulse_duration",
-            ),
-        "payload_length": 2
     },
 
     PING1D_RANGE: {
@@ -288,11 +279,11 @@ payload_dict = {
         "payload_length": 1
     },
 
-    PING1D_SET_GAIN_INDEX: {
-        "name": "set_gain_index",
+    PING1D_SET_GAIN_SETTING: {
+        "name": "set_gain_setting",
         "format": "B",
         "field_names": (
-             "gain_index",
+             "gain_setting",
             ),
         "payload_length": 1
     },
@@ -350,6 +341,15 @@ payload_dict = {
              "speed_of_sound",
             ),
         "payload_length": 4
+    },
+
+    PING1D_TRANSMIT_DURATION: {
+        "name": "transmit_duration",
+        "format": "H",
+        "field_names": (
+             "transmit_duration",
+            ),
+        "payload_length": 2
     },
 
     PING1D_VOLTAGE_5: {
