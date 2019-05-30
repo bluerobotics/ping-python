@@ -26,6 +26,7 @@ PING1D_ASCII_TEXT = 3
 PING1D_CONTINUOUS_START = 1400
 PING1D_CONTINUOUS_STOP = 1401
 PING1D_DEVICE_ID = 1201
+PING1D_DEVICE_INFORMATION = 4
 PING1D_DISTANCE = 1212
 PING1D_DISTANCE_SIMPLE = 1211
 PING1D_FIRMWARE_VERSION = 1200
@@ -100,6 +101,19 @@ payload_dict = {
              "device_id",
             ),
         "payload_length": 1
+    },
+
+    PING1D_DEVICE_INFORMATION: {
+        "name": "device_information",
+        "format": "BBBBB",
+        "field_names": (
+             "device_type",
+             "device_revision",
+             "firmware_version_major",
+             "firmware_version_minor",
+             "firmware_version_patch",
+            ),
+        "payload_length": 5
     },
 
     PING1D_DISTANCE: {

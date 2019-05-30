@@ -19,10 +19,12 @@ class Ping1D(object):
     _confidence = None
     _device_id = None
     _device_model = None
+    _device_revision = None
     _device_type = None
     _distance = None
     _firmware_version_major = None
     _firmware_version_minor = None
+    _firmware_version_patch = None
     _gain_setting = None
     _id = None
     _mode_auto = None
@@ -173,6 +175,29 @@ class Ping1D(object):
             return None
         data = ({
             "device_id": self._device_id,  # The device ID (0-254). 255 is reserved for broadcast messages.
+        })
+        return data
+
+    ##
+    # @brief Get a device_information message from the device\n
+    # Message description:\n
+    # Device information
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # device_type: Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360\n
+    # device_revision: device-specific hardware revision\n
+    # firmware_version_major: Firmware version major number.\n
+    # firmware_version_minor: Firmware version minor number.\n
+    # firmware_version_patch: Firmware version patch number.\n
+    def get_device_information(self):
+        if self.request(pingmessage.PING1D_DEVICE_INFORMATION) is None:
+            return None
+        data = ({
+            "device_type": self._device_type,  # Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360
+            "device_revision": self._device_revision,  # device-specific hardware revision
+            "firmware_version_major": self._firmware_version_major,  # Firmware version major number.
+            "firmware_version_minor": self._firmware_version_minor,  # Firmware version minor number.
+            "firmware_version_patch": self._firmware_version_patch,  # Firmware version patch number.
         })
         return data
 
@@ -633,6 +658,11 @@ if __name__ == "__main__":
 
     print("\ntesting get_device_id")
     result = p.get_device_id()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_device_information")
+    result = p.get_device_information()
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 
