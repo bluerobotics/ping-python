@@ -142,6 +142,11 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, de
  Message description:<br />
  The device ID.  <a href="#aff54fad6b6b55472bd09f31da949f9f6">More...</a><br /></td></tr>
 <tr class="separator:aff54fad6b6b55472bd09f31da949f9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f5d877c98c1dea14596174510c8d5f4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a1f5d877c98c1dea14596174510c8d5f4">get_device_information</a> (self)</td></tr>
+<tr class="memdesc:a1f5d877c98c1dea14596174510c8d5f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a device_information message from the device<br />
+ Message description:<br />
+ Device information.  <a href="#a1f5d877c98c1dea14596174510c8d5f4">More...</a><br /></td></tr>
+<tr class="separator:a1f5d877c98c1dea14596174510c8d5f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad8085780ad85f55ab29e6ef5a844684"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#aad8085780ad85f55ab29e6ef5a844684">get_distance</a> (self)</td></tr>
 <tr class="memdesc:aad8085780ad85f55ab29e6ef5a844684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a distance message from the device<br />
  Message description:<br />
@@ -312,6 +317,33 @@ Public Attributes</h2></td></tr>
  The device ID. </p>
 <dl class="section return"><dt>Returns</dt><dd>None if there is no reply from the device, otherwise a dictionary with the following keys:<br />
  device_id: The device ID (0-254). 255 is reserved for broadcast messages.<br />
+ </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1f5d877c98c1dea14596174510c8d5f4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def brping.ping1d.Ping1D.get_device_information </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get a device_information message from the device<br />
+ Message description:<br />
+ Device information. </p>
+<dl class="section return"><dt>Returns</dt><dd>None if there is no reply from the device, otherwise a dictionary with the following keys:<br />
+ device_type: Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360<br />
+ device_revision: device-specific hardware revision<br />
+ firmware_version_major: Firmware version major number.<br />
+ firmware_version_minor: Firmware version minor number.<br />
+ firmware_version_patch: Firmware version patch number.<br />
  </dd></dl>
 
 </div>
