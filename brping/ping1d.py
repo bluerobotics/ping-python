@@ -36,12 +36,15 @@ class Ping1D(object):
     _ping_number = None
     _processor_temperature = None
     _profile_data = None
-    _protocol_version = None
     _requested_id = None
+    _reserved = None
     _scan_length = None
     _scan_start = None
     _speed_of_sound = None
     _transmit_duration = None
+    _version_major = None
+    _version_minor = None
+    _version_patch = None
     _voltage_5 = None
 
     def __init__(self, device_name, baudrate=115200):
@@ -189,6 +192,7 @@ class Ping1D(object):
     # firmware_version_major: Firmware version major number.\n
     # firmware_version_minor: Firmware version minor number.\n
     # firmware_version_patch: Firmware version patch number.\n
+    # reserved: reserved\n
     def get_device_information(self):
         if self.request(pingmessage.PING1D_DEVICE_INFORMATION) is None:
             return None
@@ -198,6 +202,7 @@ class Ping1D(object):
             "firmware_version_major": self._firmware_version_major,  # Firmware version major number.
             "firmware_version_minor": self._firmware_version_minor,  # Firmware version minor number.
             "firmware_version_patch": self._firmware_version_patch,  # Firmware version patch number.
+            "reserved": self._reserved,  # reserved
         })
         return data
 
@@ -416,12 +421,18 @@ class Ping1D(object):
     # The protocol version
     #
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # protocol_version: The protocol version\n
+    # version_major: Protocol version major number.\n
+    # version_minor: Protocol version minor number.\n
+    # version_patch: Protocol version patch number.\n
+    # reserved: reserved\n
     def get_protocol_version(self):
         if self.request(pingmessage.PING1D_PROTOCOL_VERSION) is None:
             return None
         data = ({
-            "protocol_version": self._protocol_version,  # The protocol version
+            "version_major": self._version_major,  # Protocol version major number.
+            "version_minor": self._version_minor,  # Protocol version minor number.
+            "version_patch": self._version_patch,  # Protocol version patch number.
+            "reserved": self._reserved,  # reserved
         })
         return data
 

@@ -105,15 +105,16 @@ payload_dict = {
 
     PING1D_DEVICE_INFORMATION: {
         "name": "device_information",
-        "format": "BBBBB",
+        "format": "BBBBBB",
         "field_names": (
              "device_type",
              "device_revision",
              "firmware_version_major",
              "firmware_version_minor",
              "firmware_version_patch",
+             "reserved",
             ),
-        "payload_length": 5
+        "payload_length": 6
     },
 
     PING1D_DISTANCE: {
@@ -267,9 +268,12 @@ payload_dict = {
 
     PING1D_PROTOCOL_VERSION: {
         "name": "protocol_version",
-        "format": "I",
+        "format": "BBBB",
         "field_names": (
-             "protocol_version",
+             "version_major",
+             "version_minor",
+             "version_patch",
+             "reserved",
             ),
         "payload_length": 4
     },
