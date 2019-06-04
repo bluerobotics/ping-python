@@ -344,6 +344,7 @@ Public Attributes</h2></td></tr>
  firmware_version_major: Firmware version major number.<br />
  firmware_version_minor: Firmware version minor number.<br />
  firmware_version_patch: Firmware version patch number.<br />
+ reserved: reserved<br />
  </dd></dl>
 
 </div>
@@ -644,7 +645,10 @@ Public Attributes</h2></td></tr>
  Message description:<br />
  The protocol version. </p>
 <dl class="section return"><dt>Returns</dt><dd>None if there is no reply from the device, otherwise a dictionary with the following keys:<br />
- protocol_version: The protocol version<br />
+ version_major: Protocol version major number.<br />
+ version_minor: Protocol version minor number.<br />
+ version_patch: Protocol version patch number.<br />
+ reserved: reserved<br />
  </dd></dl>
 
 </div>
