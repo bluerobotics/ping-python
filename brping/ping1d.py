@@ -133,6 +133,7 @@ class Ping1D(object):
             if msg is not None:
                 if msg.message_id == message_id:
                     return msg
+            time.sleep(0.01)
         return None
 
     ##
