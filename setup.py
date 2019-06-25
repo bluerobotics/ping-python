@@ -6,7 +6,7 @@ with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(name='bluerobotics-ping',
-      version='0.0.7',
+      version='0.0.8',
       description='A python module for the Blue Robotics Ping1D echosounder',
       long_description=long_description,
       long_description_content_type='text/markdown',
