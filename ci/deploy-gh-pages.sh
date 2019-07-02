@@ -1,21 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Deploy repository documentation
 
 # Variables
-bold=$(tput bold)
-normal=$(tput sgr0)
-script_path="$( cd "$(dirname "$0")" ; pwd -P )"
-project_path=${script_path}/..
+doc_path="doc"
+project_path=${doc_path}/..
 clone_folder=/tmp/update-repos
 
 repository_name="ping-python"
 repository_githash=$(git -C ${project_path} rev-parse HEAD)
 
 # Functions
-echob() {
-    echo "${bold}${1}${normal}"
-}
+source ci/ci-functions.sh
 
 echob "Check git configuration."
 if [ "${TRAVIS}" = "true" ] || ! git config --list | grep -q "user.name"; then
@@ -28,12 +24,11 @@ else
 fi
 
 echob "Build doxygen documentation."
-if ! ( cd $script_path && doxygen "Doxyfile" ); then
-    echo "- Doxygen generation failed."
-    exit 1
-fi
+test cd $doc_path
+test doxygen Doxyfile
+
 echo "- Check files"
-ls -A "${script_path}/html/"
+ls -A "html/"
 
 repo_path=${clone_folder}/${repository_name}
 echo "- Clone ${repository_name}"
@@ -43,7 +38,7 @@ echo "- Checkout gh-pages"
 git -C ${clone_folder}/${repository_name} checkout gh-pages
 
 echob "Update gh-pages"
-mv ${script_path}/html/* ${repo_path}
+mv html/* ${repo_path}
 
 echo "- Check ${repository_name}"
 if [[ $(git -C ${repo_path} diff) ]]; then
