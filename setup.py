@@ -1,9 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from setuptools import setup, find_packages
 
-with open("README.md", "r") as f:
-    long_description = f.read()
+long_description = """
+Python library for the Ping sonar. Ping is the simple,
+affordable, and compact ultrasonic altimeter for any aquatic project.
+
+This library exposes all functionality of the device, such as getting profiles,
+controlling parameters, switching modes, or just simply reading in the distance measurement."""
 
 setup(name='bluerobotics-ping',
       version='0.0.7',
