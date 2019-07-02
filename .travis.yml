@@ -1,17 +1,12 @@
+dist: xenial
+
 language: python
 
-install: true
-
-matrix:
-  include:
-    - os: linux
-      dist: xenial
-      sudo: require
-      addons:
-        apt:
-          packages:
-            - doxygen
-            - graphviz
+addons:
+  apt:
+    packages:
+      - doxygen
+      - graphviz
 
 deploy:
   provider: pypi
@@ -24,6 +19,4 @@ deploy:
     condition: $TRAVIS_TAG =~ v[0-9]+.[0-9]+.[0-9]+.* && $(if grep -q "${BASH_REMATCH:1}" "$TRAVIS_BUILD_DIR/setup.py"; then echo 0; fi)
 
 script:
-  - python setup.py install
-  - python test-ci.py || { pip install pyOpenSSL && python test-ci.py; }
-  - ./doc/update-gh-pages.sh
+  - ci/travis-ci-script.sh || travis_terminate 1
