@@ -1,0 +1,44 @@
+{% for msg_type in messages %}
+{% for msg in messages[msg_type] %}
+{% set m = messages[msg_type][msg] %}
+{{base|upper}}_{{msg|upper}} = {{m.id}}
+{% endfor %}
+{% endfor %}
+
+# variable length fields are formatted with 's', and always occur at the end of the payload
+# the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
+# see PingMessage.get_payload_format()
+payload_dict_{{base}} = {
+{% for msg_type in messages %}
+{% for msg in messages[msg_type] %}
+{% set m = messages[msg_type][msg] %}
+    {{base|upper}}_{{msg|upper}}: {
+        "name": "{{msg}}",
+        "format": "
+{%- for field in m.payload %}
+{% if generator.is_vector(field) %}
+{% if field.vector.sizetype %}
+{{structToken[field.vector.sizetype]}}
+{%- endif %}
+{% else %}
+{{structToken[field.type]}}
+{%- endif %}
+{% endfor %}{# for each field #}",
+        "field_names": (
+{% for field in m.payload %}
+{% if generator.is_vector(field) %}
+{% if field.vector.sizetype %}
+             "{{field.name}}_length",
+{% endif %}
+{% endif %}
+             "{{field.name}}",
+{% endfor %}{# for each field #}
+            ),
+        "payload_length": {{generator.calc_payload(m.payload)}}
+    },
+
+{% endfor %}
+{% endfor %}
+}
+
+
