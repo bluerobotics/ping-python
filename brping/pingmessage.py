@@ -549,7 +549,9 @@ class PingMessage(object):
 
     ## Verify that the object checksum attribute is equal to the checksum calculated according to the internal bytearray self.msg_data
     def verify_checksum(self):
-        return self.checksum == self.calculate_checksum()
+        valid = (self.checksum == self.calculate_checksum() or self.checksum == sum(self.msg_data[:-2]))
+        #print("checksum: ", self.checksum, self.calculate_checksum(), sum(self.msg_data[:-2]), valid)
+        return valid
 
     ## Update the payload_length attribute with the **current** payload length, including dynamic length fields (if present)
     def update_payload_length(self):
