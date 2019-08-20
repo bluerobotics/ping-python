@@ -3,7 +3,7 @@
 # This script simulates a Blue Robotics Ping Echosounder device
 # A client may connect to the device simulation on local UDP port 6676
  
-from brping import PingMessage, PingParser, PING1D_PROFILE, payload_dict
+from brping import PingMessage, PingParser, PING1D_GENERAL_REQUEST, PING1D_PROFILE, payload_dict
 import socket
 import time
 import errno
@@ -39,16 +39,20 @@ class Ping1DSimulation(object):
                     # we decoded a message from the client
                     self.handleMessage(self.parser.rx_msg)
 
-        except Exception as e:
+        except EnvironmentError as e:
             if e.errno == errno.EAGAIN:
                 pass # waiting for data
             else:
                 print("Error reading data", e)
 
+        except KeyError as e:
+           print("skipping unrecognized message id: %d" % self.parser.rx_msg.message_id)
+           print("contents: %s" % self.parser.rx_msg.msg_data)
+           pass
+
     # write data to client
     def write(self, data):
         if self.client is not None:
-            print("sending data to client")
             self.sockit.sendto(data, self.client)
 
     # Send a message to the client, the message fields are populated by the
@@ -56,6 +60,7 @@ class Ping1DSimulation(object):
     # the message field names
     def sendMessage(self, message_id):
         msg = PingMessage(message_id)
+        print("sending message %d\t(%s)" % (msg.message_id, msg.name))
 
         # pull attributes of this class into the message fields (they are named the same)
         for attr in payload_dict[message_id]["field_names"]:
@@ -78,9 +83,10 @@ class Ping1DSimulation(object):
 
     # handle an incoming client message
     def handleMessage(self, message):
-        if message.payload_length == 0:
+        print("receive message %d\t(%s)" % (message.message_id, message.name))
+        if message.message_id == PING1D_GENERAL_REQUEST:
             # the client is requesting a message from us
-            self.sendMessage(message.message_id)
+            self.sendMessage(message.requested_id)
         else:
             # the client is controlling some parameter of the device
             self.setParameters(message)
