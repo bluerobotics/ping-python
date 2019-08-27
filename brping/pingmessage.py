@@ -7,7 +7,8 @@ import struct
 from brping import definitions
 payload_dict = definitions.payload_dict_all
 asciiMsgs = [definitions.COMMON_NACK, definitions.COMMON_ASCII_TEXT]
-variable_msgs = [definitions.PING1D_PROFILE, ]
+variable_msgs = [definitions.PING1D_PROFILE, definitions.PING360_DEVICE_DATA, ]
+
 
 class PingMessage(object):
     ## header start byte 1
