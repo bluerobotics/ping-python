@@ -65,3 +65,21 @@ for definition in definitions:
     f.write(")\n")
 
 f.close()
+
+definitionFile = "%s/common.json" % definitionPath
+templateFile = "%s/device.py.in" % templatePath
+f = open("%s/device.py" % args.output_directory, "w")
+f.write(g.generate(definitionFile, templateFile, {"structToken": struct_token}))
+f.close()
+
+definitionFile = "%s/ping1d.json" % definitionPath
+templateFile = "%s/ping1d.py.in" % templatePath
+f = open("%s/ping1d.py" % args.output_directory, "w")
+f.write(g.generate(definitionFile, templateFile, {"structToken": struct_token}))
+f.close()
+
+definitionFile = "%s/ping360.json" % definitionPath
+templateFile = "%s/ping360.py.in" % templatePath
+f = open("%s/ping360.py" % args.output_directory, "w")
+f.write(g.generate(definitionFile, templateFile, {"structToken": struct_token}))
+f.close()
