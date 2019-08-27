@@ -95,6 +95,7 @@ class PingMessage(object):
 
             ## The field names of this message
             self.payload_field_names = payload_dict[self.message_id]["field_names"]
+            self.update_payload_length()
 
             ## Number of bytes in the message payload
             self.update_payload_length()
@@ -151,9 +152,15 @@ class PingMessage(object):
                 print("error unpacking payload: %s" % e)
                 print("msg_data: %s, header: %s" % (msg_data, header))
                 print("format: %s, buf: %s" % (PingMessage.endianess + self.get_payload_format(), self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length]))
+                print(self.get_payload_format())
             else:  # only use payload if didn't raise exception
                 for i, attr in enumerate(payload_dict[self.message_id]["field_names"]):
-                    setattr(self, attr, payload[i])
+                    try:
+                        setattr(self, attr, payload[i])
+                    except IndexError as e:
+                        if self.message_id in variable_msgs:
+                            setattr(self, attr, bytearray())
+                            pass
 
         # Extract checksum
         self.checksum = struct.unpack(PingMessage.endianess + PingMessage.checksum_format, self.msg_data[PingMessage.headerLength + self.payload_length: PingMessage.headerLength + self.payload_length + PingMessage.checksumLength])[0]
@@ -190,7 +197,7 @@ class PingMessage(object):
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
             var_length = self.payload_length - payload_dict[self.message_id]["payload_length"]  # Subtract static length portion from payload length
             if var_length <= 0:
-                return ""  # variable data portion is empty
+                return payload_dict[self.message_id]["format"]  # variable data portion is empty
 
             return payload_dict[self.message_id]["format"] + str(var_length) + "s"
         else: # messages with a static (constant) length
@@ -325,6 +332,8 @@ class PingParser(object):
                 self.parsed += 1
                 return PingParser.NEW_MESSAGE
             else:
+                # TODO add/return error state
+                print("parse error")
                 self.errors += 1
 
         return self.state
