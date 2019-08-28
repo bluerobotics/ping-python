@@ -4,7 +4,7 @@
 # Python implementation of the Blue Robotics 'Ping' binary message protocol
 
 import struct
-import definitions
+from brping import definitions
 payload_dict = definitions.payload_dict_all
 asciiMsgs = [definitions.COMMON_NACK, definitions.COMMON_ASCII_TEXT]
 variable_msgs = [definitions.PING1D_PROFILE, ]
