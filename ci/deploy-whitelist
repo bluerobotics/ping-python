@@ -1,3 +1,4 @@
+brping/__init__.py
 brping/definitions.py
 brping/ping1d.py
 brping/pingmessage.py
