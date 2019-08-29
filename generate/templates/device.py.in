@@ -123,6 +123,10 @@ class PingDevice(object):
     #
     # @param msg: the PingMessage to handle.
     def handle_message(self, msg):
+        # TODO is this message for us?
+        setattr(self, "_src_device_id", msg.src_device_id)
+        setattr(self, "_dst_device_id", msg.dst_device_id)
+
         if msg.message_id in pingmessage.payload_dict:
             for attr in pingmessage.payload_dict[msg.message_id]["field_names"]:
                 setattr(self, "_" + attr, getattr(msg, attr))
