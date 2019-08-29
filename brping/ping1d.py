@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-# Ping1D.py
+# ping1d.py
 # A device API for the Blue Robotics Ping1D echosounder
 
 # ~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
@@ -8,165 +8,33 @@
 # DO NOT EDIT
 # ~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
 
-from brping import pingmessage
 from brping import definitions
+from brping import PingDevice
+from brping import pingmessage
 import serial
 import time
 
+class Ping1D(PingDevice):
 
-class Ping1D(object):
-    _hello = None
-    _acked_id = None
-    _ascii_message = None
-    _confidence = None
-    _device_id = None
-    _device_model = None
-    _device_revision = None
-    _device_type = None
-    _distance = None
-    _firmware_version_major = None
-    _firmware_version_minor = None
-    _firmware_version_patch = None
-    _gain_setting = None
-    _id = None
-    _mode_auto = None
-    _nack_message = None
-    _nacked_id = None
-    _pcb_temperature = None
-    _ping_enabled = None
-    _ping_interval = None
-    _ping_number = None
-    _processor_temperature = None
-    _profile_data = None
-    _requested_id = None
-    _reserved = None
-    _scan_length = None
-    _scan_start = None
-    _speed_of_sound = None
-    _transmit_duration = None
-    _version_major = None
-    _version_minor = None
-    _version_patch = None
-    _voltage_5 = None
-
-    def __init__(self, device_name, baudrate=115200):
-        if device_name is None:
-            print("Device name is required")
-            return
-
-        try:
-            print("Opening %s at %d bps" % (device_name, baudrate))
-
-            ## Serial object for device communication
-            self.iodev = serial.Serial(device_name, baudrate)
-            self.iodev.timeout = 1
-
-        except Exception as e:
-            print("Failed to open the given serial port")
-            print("\t", e)
-            exit(1)
-
-        ## A helper class to take care of decoding the input stream
-        self.parser = pingmessage.PingParser()
-
-        ## device id of this Ping1D object, used for dst_device_id in outgoing messages
-        self.my_id = 255
-
-    ##
-    # @brief Consume rx buffer data until a new message is successfully decoded
-    #
-    # @return A new PingMessage: as soon as a message is parsed (there may be data remaining in the buffer to be parsed, thus requiring subsequent calls to read())
-    # @return None: if the buffer is empty and no message has been parsed
-    def read(self):
-        while self.iodev.in_waiting:
-            b = self.iodev.read()
-
-            if self.parser.parse_byte(ord(b)) == pingmessage.PingParser.NEW_MESSAGE:
-                self.handle_message(self.parser.rx_msg)
-                return self.parser.rx_msg
-        return None
-
-    ##
-    # @brief Write data to device
-    #
-    # @param data: bytearray to write to device
-    #
-    # @return Number of bytes written
-    def write(self, data):
-        return self.iodev.write(data)
-
-    ##
-    # @brief Make sure there is a device on and read some initial data
-    #
-    # @return True if the device replies with expected data, False otherwise
-    def initialize(self):
-        if self.request(definitions.PING1D_VOLTAGE_5) is None:
-            return False
-        return True
-
-    ##
-    # @brief Request the given message ID
-    #
-    # @param m_id: The message ID to request from the device
-    # @param timeout: The time in seconds to wait for the device to send
-    # the requested message before timing out and returning
-    #
-    # @return PingMessage: the device reply if it is received within timeout period, None otherwise
-    #
-    # @todo handle nack to exit without blocking
-    def request(self, m_id, timeout=0.5):
+    def legacyRequest(self, m_id, timeout=0.5):
         msg = pingmessage.PingMessage()
-        msg.request_id = m_id
+        # legacy hack logic is in PingMessage
+        # TODO: remove that logic and construct/assemble an arbitrary PingMessage
+        msg.request_id = m_id 
         msg.pack_msg_data()
         self.write(msg.msg_data)
-        return self.wait_message(m_id, timeout)
 
-    ##
-    # @brief Wait until we receive a message from the device with the desired message_id for timeout seconds
-    #
-    # @param message_id: The message id to wait to receive from the device
-    # @param timeout: The timeout period in seconds to wait
-    #
-    # @return PingMessage: the message from the device if it is received within timeout period, None otherwise
-    def wait_message(self, message_id, timeout=0.5):
-        tstart = time.time()
-        while time.time() < tstart + timeout:
-            msg = self.read()
-            if msg is not None:
-                if msg.message_id == message_id:
-                    return msg
-        return None
+        # uncomment to return nacks in addition to m_id
+        # return self.wait_message([m_id, definitions.COMMON_NACK], timeout)
 
-    ##
-    # @brief Handle an incoming messge from the device.
-    # Extract message fields into self attributes.
-    #
-    # @param msg: the PingMessage to handle.
-    def handle_message(self, msg):
-        if msg.message_id in definitions.payload_dict_all:
-            for attr in pingmessage.payload_dict[msg.message_id]["field_names"]:
-                setattr(self, "_" + attr, getattr(msg, attr))
-        else:
-            print("Unrecognized message: %d", msg)
+        return self.wait_message([m_id], timeout)
 
-    ##
-    # @brief Dump object into string representation.
-    #
-    # @return string: a string representation of the object
-    def __repr__(self):
-        representation = "---------------------------------------------------------\n~Ping1D Object~"
-
-        attrs = vars(self)
-        for attr in sorted(attrs):
-            try:
-                if attr != 'iodev':
-                    representation += "\n  - " + attr + "(hex): " + str([hex(item) for item in getattr(self, attr)])
-                if attr != 'data':
-                    representation += "\n  - " + attr + "(string): " + str(getattr(self, attr))
-            # TODO: Better filter this exception
-            except:
-                representation += "\n  - " + attr + ": " + str(getattr(self, attr))
-        return representation
+    def initialize(self):
+        if not PingDevice.initialize(self):
+            return False
+        if self.legacyRequest(definitions.PING1D_GENERAL_INFO) is None:
+            return False
+        return True
 
     ##
     # @brief Get a device_id message from the device\n
@@ -176,35 +44,10 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # device_id: The device ID (0-254). 255 is reserved for broadcast messages.\n
     def get_device_id(self):
-        if self.request(definitions.PING1D_DEVICE_ID) is None:
+        if self.legacyRequest(definitions.PING1D_DEVICE_ID) is None:
             return None
         data = ({
             "device_id": self._device_id,  # The device ID (0-254). 255 is reserved for broadcast messages.
-        })
-        return data
-
-    ##
-    # @brief Get a device_information message from the device\n
-    # Message description:\n
-    # Device information
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # device_type: Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360\n
-    # device_revision: device-specific hardware revision\n
-    # firmware_version_major: Firmware version major number.\n
-    # firmware_version_minor: Firmware version minor number.\n
-    # firmware_version_patch: Firmware version patch number.\n
-    # reserved: reserved\n
-    def get_device_information(self):
-        if self.request(definitions.COMMON_DEVICE_INFORMATION) is None:
-            return None
-        data = ({
-            "device_type": self._device_type,  # Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360
-            "device_revision": self._device_revision,  # device-specific hardware revision
-            "firmware_version_major": self._firmware_version_major,  # Firmware version major number.
-            "firmware_version_minor": self._firmware_version_minor,  # Firmware version minor number.
-            "firmware_version_patch": self._firmware_version_patch,  # Firmware version patch number.
-            "reserved": self._reserved,  # reserved
         })
         return data
 
@@ -222,7 +65,7 @@ class Ping1D(object):
     # scan_length: Units: mm; The length of the scan region.\n
     # gain_setting: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
     def get_distance(self):
-        if self.request(definitions.PING1D_DISTANCE) is None:
+        if self.legacyRequest(definitions.PING1D_DISTANCE) is None:
             return None
         data = ({
             "distance": self._distance,  # Units: mm; The current return distance determined for the most recent acoustic measurement.
@@ -244,7 +87,7 @@ class Ping1D(object):
     # distance: Units: mm; Distance to the target.\n
     # confidence: Units: %; Confidence in the distance measurement.\n
     def get_distance_simple(self):
-        if self.request(definitions.PING1D_DISTANCE_SIMPLE) is None:
+        if self.legacyRequest(definitions.PING1D_DISTANCE_SIMPLE) is None:
             return None
         data = ({
             "distance": self._distance,  # Units: mm; Distance to the target.
@@ -263,7 +106,7 @@ class Ping1D(object):
     # firmware_version_major: Firmware version major number.\n
     # firmware_version_minor: Firmware version minor number.\n
     def get_firmware_version(self):
-        if self.request(definitions.PING1D_FIRMWARE_VERSION) is None:
+        if self.legacyRequest(definitions.PING1D_FIRMWARE_VERSION) is None:
             return None
         data = ({
             "device_type": self._device_type,  # Device type. 0: Unknown; 1: Echosounder
@@ -281,7 +124,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # gain_setting: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
     def get_gain_setting(self):
-        if self.request(definitions.PING1D_GAIN_SETTING) is None:
+        if self.legacyRequest(definitions.PING1D_GAIN_SETTING) is None:
             return None
         data = ({
             "gain_setting": self._gain_setting,  # The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
@@ -301,7 +144,7 @@ class Ping1D(object):
     # gain_setting: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
     # mode_auto: The current operating mode of the device. 0: manual mode, 1: auto mode\n
     def get_general_info(self):
-        if self.request(definitions.PING1D_GENERAL_INFO) is None:
+        if self.legacyRequest(definitions.PING1D_GENERAL_INFO) is None:
             return None
         data = ({
             "firmware_version_major": self._firmware_version_major,  # Firmware major version.
@@ -321,7 +164,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # mode_auto: 0: manual mode, 1: auto mode\n
     def get_mode_auto(self):
-        if self.request(definitions.PING1D_MODE_AUTO) is None:
+        if self.legacyRequest(definitions.PING1D_MODE_AUTO) is None:
             return None
         data = ({
             "mode_auto": self._mode_auto,  # 0: manual mode, 1: auto mode
@@ -336,7 +179,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # pcb_temperature: Units: cC; The temperature in centi-degrees Centigrade (100 * degrees C).\n
     def get_pcb_temperature(self):
-        if self.request(definitions.PING1D_PCB_TEMPERATURE) is None:
+        if self.legacyRequest(definitions.PING1D_PCB_TEMPERATURE) is None:
             return None
         data = ({
             "pcb_temperature": self._pcb_temperature,  # Units: cC; The temperature in centi-degrees Centigrade (100 * degrees C).
@@ -351,7 +194,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # ping_enabled: The state of the acoustic output. 0: disabled, 1:enabled\n
     def get_ping_enable(self):
-        if self.request(definitions.PING1D_PING_ENABLE) is None:
+        if self.legacyRequest(definitions.PING1D_PING_ENABLE) is None:
             return None
         data = ({
             "ping_enabled": self._ping_enabled,  # The state of the acoustic output. 0: disabled, 1:enabled
@@ -366,7 +209,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # ping_interval: Units: ms; The minimum interval between acoustic measurements. The actual interval may be longer.\n
     def get_ping_interval(self):
-        if self.request(definitions.PING1D_PING_INTERVAL) is None:
+        if self.legacyRequest(definitions.PING1D_PING_INTERVAL) is None:
             return None
         data = ({
             "ping_interval": self._ping_interval,  # Units: ms; The minimum interval between acoustic measurements. The actual interval may be longer.
@@ -381,7 +224,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # processor_temperature: Units: cC; The temperature in centi-degrees Centigrade (100 * degrees C).\n
     def get_processor_temperature(self):
-        if self.request(definitions.PING1D_PROCESSOR_TEMPERATURE) is None:
+        if self.legacyRequest(definitions.PING1D_PROCESSOR_TEMPERATURE) is None:
             return None
         data = ({
             "processor_temperature": self._processor_temperature,  # Units: cC; The temperature in centi-degrees Centigrade (100 * degrees C).
@@ -403,7 +246,7 @@ class Ping1D(object):
     # gain_setting: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
     # profile_data: An array of return strength measurements taken at regular intervals across the scan region.\n
     def get_profile(self):
-        if self.request(definitions.PING1D_PROFILE) is None:
+        if self.legacyRequest(definitions.PING1D_PROFILE) is None:
             return None
         data = ({
             "distance": self._distance,  # Units: mm; The current return distance determined for the most recent acoustic measurement.
@@ -418,27 +261,6 @@ class Ping1D(object):
         return data
 
     ##
-    # @brief Get a protocol_version message from the device\n
-    # Message description:\n
-    # The protocol version
-    #
-    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
-    # version_major: Protocol version major number.\n
-    # version_minor: Protocol version minor number.\n
-    # version_patch: Protocol version patch number.\n
-    # reserved: reserved\n
-    def get_protocol_version(self):
-        if self.request(definitions.COMMON_PROTOCOL_VERSION) is None:
-            return None
-        data = ({
-            "version_major": self._version_major,  # Protocol version major number.
-            "version_minor": self._version_minor,  # Protocol version minor number.
-            "version_patch": self._version_patch,  # Protocol version patch number.
-            "reserved": self._reserved,  # reserved
-        })
-        return data
-
-    ##
     # @brief Get a range message from the device\n
     # Message description:\n
     # The scan range for acoustic measurements. Measurements returned by the device will lie in the range (scan_start, scan_start + scan_length).
@@ -447,7 +269,7 @@ class Ping1D(object):
     # scan_start: Units: mm; The beginning of the scan range in mm from the transducer.\n
     # scan_length: Units: mm; The length of the scan range.\n
     def get_range(self):
-        if self.request(definitions.PING1D_RANGE) is None:
+        if self.legacyRequest(definitions.PING1D_RANGE) is None:
             return None
         data = ({
             "scan_start": self._scan_start,  # Units: mm; The beginning of the scan range in mm from the transducer.
@@ -463,7 +285,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # speed_of_sound: Units: mm/s; The speed of sound in the measurement medium. ~1,500,000 mm/s for water.\n
     def get_speed_of_sound(self):
-        if self.request(definitions.PING1D_SPEED_OF_SOUND) is None:
+        if self.legacyRequest(definitions.PING1D_SPEED_OF_SOUND) is None:
             return None
         data = ({
             "speed_of_sound": self._speed_of_sound,  # Units: mm/s; The speed of sound in the measurement medium. ~1,500,000 mm/s for water.
@@ -478,7 +300,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # transmit_duration: Units: microseconds; Acoustic pulse duration.\n
     def get_transmit_duration(self):
-        if self.request(definitions.PING1D_TRANSMIT_DURATION) is None:
+        if self.legacyRequest(definitions.PING1D_TRANSMIT_DURATION) is None:
             return None
         data = ({
             "transmit_duration": self._transmit_duration,  # Units: microseconds; Acoustic pulse duration.
@@ -493,7 +315,7 @@ class Ping1D(object):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # voltage_5: Units: mV; The 5V rail voltage.\n
     def get_voltage_5(self):
-        if self.request(definitions.PING1D_VOLTAGE_5) is None:
+        if self.legacyRequest(definitions.PING1D_VOLTAGE_5) is None:
             return None
         data = ({
             "voltage_5": self._voltage_5,  # Units: mV; The 5V rail voltage.
@@ -514,7 +336,7 @@ class Ping1D(object):
         m.device_id = device_id
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.request(definitions.PING1D_DEVICE_ID) is None:
+        if self.legacyRequest(definitions.PING1D_DEVICE_ID) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
@@ -536,7 +358,7 @@ class Ping1D(object):
         m.gain_setting = gain_setting
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.request(definitions.PING1D_GAIN_SETTING) is None:
+        if self.legacyRequest(definitions.PING1D_GAIN_SETTING) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
@@ -558,7 +380,7 @@ class Ping1D(object):
         m.mode_auto = mode_auto
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.request(definitions.PING1D_MODE_AUTO) is None:
+        if self.legacyRequest(definitions.PING1D_MODE_AUTO) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
@@ -580,7 +402,7 @@ class Ping1D(object):
         m.ping_enabled = ping_enabled
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.request(definitions.PING1D_PING_ENABLE) is None:
+        if self.legacyRequest(definitions.PING1D_PING_ENABLE) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
@@ -602,7 +424,7 @@ class Ping1D(object):
         m.ping_interval = ping_interval
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.request(definitions.PING1D_PING_INTERVAL) is None:
+        if self.legacyRequest(definitions.PING1D_PING_INTERVAL) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
@@ -626,7 +448,7 @@ class Ping1D(object):
         m.scan_length = scan_length
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.request(definitions.PING1D_RANGE) is None:
+        if self.legacyRequest(definitions.PING1D_RANGE) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
@@ -648,7 +470,7 @@ class Ping1D(object):
         m.speed_of_sound = speed_of_sound
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.request(definitions.PING1D_SPEED_OF_SOUND) is None:
+        if self.legacyRequest(definitions.PING1D_SPEED_OF_SOUND) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
@@ -671,11 +493,6 @@ if __name__ == "__main__":
 
     print("\ntesting get_device_id")
     result = p.get_device_id()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_device_information")
-    result = p.get_device_information()
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 
@@ -731,11 +548,6 @@ if __name__ == "__main__":
 
     print("\ntesting get_profile")
     result = p.get_profile()
-    print("  " + str(result))
-    print("  > > pass: %s < <" % (result is not None))
-
-    print("\ntesting get_protocol_version")
-    result = p.get_protocol_version()
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 

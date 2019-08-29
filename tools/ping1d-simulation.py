@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # This script simulates a Blue Robotics Ping Echosounder device
 # A client may connect to the device simulation on local UDP port 6676
@@ -26,7 +26,7 @@ class Ping1DSimulation(object):
         self._ping_number = 0 # count the total measurements taken since boot
         self._ping_interval = 100 # milliseconds between measurements
         self._mode_auto = True # automatic gain and range selection
-        self._mode_continuous = True # automatic continuous output of profile messages
+        self._mode_continuous = False # automatic continuous output of profile messages
 
     # read incoming client data
     def read(self):
