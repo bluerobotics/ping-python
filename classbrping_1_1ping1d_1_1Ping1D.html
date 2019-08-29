@@ -90,7 +90,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classbrping_1_1ping1d_1_1Ping1D-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">brping.ping1d.Ping1D Class Reference</div>  </div>
@@ -113,40 +112,17 @@ Collaboration diagram for brping.ping1d.Ping1D:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a99f6210dd17bd968aa058acebef05227"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99f6210dd17bd968aa058acebef05227"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, device_name, baudrate=115200)</td></tr>
-<tr class="separator:a99f6210dd17bd968aa058acebef05227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98b27fce9e724ab6a8ab4b69dfd86ae9"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a98b27fce9e724ab6a8ab4b69dfd86ae9">read</a> (self)</td></tr>
-<tr class="memdesc:a98b27fce9e724ab6a8ab4b69dfd86ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consume rx buffer data until a new message is successfully decoded.  <a href="#a98b27fce9e724ab6a8ab4b69dfd86ae9">More...</a><br /></td></tr>
-<tr class="separator:a98b27fce9e724ab6a8ab4b69dfd86ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cc1249999a3a3005d24ebf2aea1b42e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a8cc1249999a3a3005d24ebf2aea1b42e">write</a> (self, data)</td></tr>
-<tr class="memdesc:a8cc1249999a3a3005d24ebf2aea1b42e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to device.  <a href="#a8cc1249999a3a3005d24ebf2aea1b42e">More...</a><br /></td></tr>
-<tr class="separator:a8cc1249999a3a3005d24ebf2aea1b42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0bd084b030a45e16a3dbaf7187bb4db"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#ac0bd084b030a45e16a3dbaf7187bb4db">initialize</a> (self)</td></tr>
-<tr class="memdesc:ac0bd084b030a45e16a3dbaf7187bb4db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make sure there is a device on and read some initial data.  <a href="#ac0bd084b030a45e16a3dbaf7187bb4db">More...</a><br /></td></tr>
+<tr class="memitem:aacd98db131b4b40f33f0bd507470e075"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacd98db131b4b40f33f0bd507470e075"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>legacyRequest</b> (self, m_id, timeout=0.5)</td></tr>
+<tr class="separator:aacd98db131b4b40f33f0bd507470e075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0bd084b030a45e16a3dbaf7187bb4db"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0bd084b030a45e16a3dbaf7187bb4db"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (self)</td></tr>
 <tr class="separator:ac0bd084b030a45e16a3dbaf7187bb4db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e6014d72345c73caba5f9225cfc4278"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a8e6014d72345c73caba5f9225cfc4278">request</a> (self, m_id, timeout=0.5)</td></tr>
-<tr class="memdesc:a8e6014d72345c73caba5f9225cfc4278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request the given message ID.  <a href="#a8e6014d72345c73caba5f9225cfc4278">More...</a><br /></td></tr>
-<tr class="separator:a8e6014d72345c73caba5f9225cfc4278"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a044f6f379c51df2aacb7261139db503b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a044f6f379c51df2aacb7261139db503b">wait_message</a> (self, message_id, timeout=0.5)</td></tr>
-<tr class="memdesc:a044f6f379c51df2aacb7261139db503b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait until we receive a message from the device with the desired message_id for timeout seconds.  <a href="#a044f6f379c51df2aacb7261139db503b">More...</a><br /></td></tr>
-<tr class="separator:a044f6f379c51df2aacb7261139db503b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a732cffac327382e48f7ff8a863b84ba8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a732cffac327382e48f7ff8a863b84ba8">handle_message</a> (self, msg)</td></tr>
-<tr class="memdesc:a732cffac327382e48f7ff8a863b84ba8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle an incoming messge from the device.  <a href="#a732cffac327382e48f7ff8a863b84ba8">More...</a><br /></td></tr>
-<tr class="separator:a732cffac327382e48f7ff8a863b84ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac03f6f33e79287c53abbc65f990bc0cd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#ac03f6f33e79287c53abbc65f990bc0cd">__repr__</a> (self)</td></tr>
-<tr class="memdesc:ac03f6f33e79287c53abbc65f990bc0cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump object into string representation.  <a href="#ac03f6f33e79287c53abbc65f990bc0cd">More...</a><br /></td></tr>
-<tr class="separator:ac03f6f33e79287c53abbc65f990bc0cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff54fad6b6b55472bd09f31da949f9f6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#aff54fad6b6b55472bd09f31da949f9f6">get_device_id</a> (self)</td></tr>
 <tr class="memdesc:aff54fad6b6b55472bd09f31da949f9f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a device_id message from the device<br />
  Message description:<br />
  The device ID.  <a href="#aff54fad6b6b55472bd09f31da949f9f6">More...</a><br /></td></tr>
 <tr class="separator:aff54fad6b6b55472bd09f31da949f9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f5d877c98c1dea14596174510c8d5f4"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a1f5d877c98c1dea14596174510c8d5f4">get_device_information</a> (self)</td></tr>
-<tr class="memdesc:a1f5d877c98c1dea14596174510c8d5f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a device_information message from the device<br />
- Message description:<br />
- Device information.  <a href="#a1f5d877c98c1dea14596174510c8d5f4">More...</a><br /></td></tr>
-<tr class="separator:a1f5d877c98c1dea14596174510c8d5f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad8085780ad85f55ab29e6ef5a844684"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#aad8085780ad85f55ab29e6ef5a844684">get_distance</a> (self)</td></tr>
 <tr class="memdesc:aad8085780ad85f55ab29e6ef5a844684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a distance message from the device<br />
  Message description:<br />
@@ -202,11 +178,6 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, de
  Message description:<br />
  A profile produced from a single acoustic measurement.  <a href="#aabc6a0346f50f537a03b9837f54df63e">More...</a><br /></td></tr>
 <tr class="separator:aabc6a0346f50f537a03b9837f54df63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75030858bb0c09b78dd4536c8a20c569"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a75030858bb0c09b78dd4536c8a20c569">get_protocol_version</a> (self)</td></tr>
-<tr class="memdesc:a75030858bb0c09b78dd4536c8a20c569"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a protocol_version message from the device<br />
- Message description:<br />
- The protocol version.  <a href="#a75030858bb0c09b78dd4536c8a20c569">More...</a><br /></td></tr>
-<tr class="separator:a75030858bb0c09b78dd4536c8a20c569"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e8630288e7b29cdf6b2f86843b6ea01"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a2e8630288e7b29cdf6b2f86843b6ea01">get_range</a> (self)</td></tr>
 <tr class="memdesc:a2e8630288e7b29cdf6b2f86843b6ea01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a range message from the device<br />
  Message description:<br />
@@ -262,42 +233,8 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, de
  Message description:<br />
  Set the speed of sound used for distance calculations.  <a href="#a1841f392c80205ccdd82e7f7d92b73d0">More...</a><br /></td></tr>
 <tr class="separator:a1841f392c80205ccdd82e7f7d92b73d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a322bce2c0c420e9fef782bc8d006dd15"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a322bce2c0c420e9fef782bc8d006dd15"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a322bce2c0c420e9fef782bc8d006dd15">iodev</a></td></tr>
-<tr class="memdesc:a322bce2c0c420e9fef782bc8d006dd15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial object for device communication. <br /></td></tr>
-<tr class="separator:a322bce2c0c420e9fef782bc8d006dd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebb4b6c229aca39f62b03cb7abc08a71"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aebb4b6c229aca39f62b03cb7abc08a71"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#aebb4b6c229aca39f62b03cb7abc08a71">parser</a></td></tr>
-<tr class="memdesc:aebb4b6c229aca39f62b03cb7abc08a71"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper class to take care of decoding the input stream. <br /></td></tr>
-<tr class="separator:aebb4b6c229aca39f62b03cb7abc08a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e433cf26665d059c339c86351fec63c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e433cf26665d059c339c86351fec63c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a0e433cf26665d059c339c86351fec63c">my_id</a></td></tr>
-<tr class="memdesc:a0e433cf26665d059c339c86351fec63c"><td class="mdescLeft">&#160;</td><td class="mdescRight">device id of this <a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html">Ping1D</a> object, used for dst_device_id in outgoing messages <br /></td></tr>
-<tr class="separator:a0e433cf26665d059c339c86351fec63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ac03f6f33e79287c53abbc65f990bc0cd"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.__repr__ </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Dump object into string representation. </p>
-<dl class="section return"><dt>Returns</dt><dd>string: a string representation of the object </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="aff54fad6b6b55472bd09f31da949f9f6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -317,34 +254,6 @@ Public Attributes</h2></td></tr>
  The device ID. </p>
 <dl class="section return"><dt>Returns</dt><dd>None if there is no reply from the device, otherwise a dictionary with the following keys:<br />
  device_id: The device ID (0-254). 255 is reserved for broadcast messages.<br />
- </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a1f5d877c98c1dea14596174510c8d5f4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.get_device_information </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get a device_information message from the device<br />
- Message description:<br />
- Device information. </p>
-<dl class="section return"><dt>Returns</dt><dd>None if there is no reply from the device, otherwise a dictionary with the following keys:<br />
- device_type: Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360<br />
- device_revision: device-specific hardware revision<br />
- firmware_version_major: Firmware version major number.<br />
- firmware_version_minor: Firmware version minor number.<br />
- firmware_version_patch: Firmware version patch number.<br />
- reserved: reserved<br />
  </dd></dl>
 
 </div>
@@ -627,32 +536,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a75030858bb0c09b78dd4536c8a20c569"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.get_protocol_version </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get a protocol_version message from the device<br />
- Message description:<br />
- The protocol version. </p>
-<dl class="section return"><dt>Returns</dt><dd>None if there is no reply from the device, otherwise a dictionary with the following keys:<br />
- version_major: Protocol version major number.<br />
- version_minor: Protocol version minor number.<br />
- version_patch: Protocol version patch number.<br />
- reserved: reserved<br />
- </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a2e8630288e7b29cdf6b2f86843b6ea01"></a>
 <div class="memitem">
 <div class="memproto">
@@ -744,124 +627,6 @@ Public Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>None if there is no reply from the device, otherwise a dictionary with the following keys:<br />
  voltage_5: Units: mV; The 5V rail voltage.<br />
  </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a732cffac327382e48f7ff8a863b84ba8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.handle_message </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>msg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Handle an incoming messge from the device. </p>
-<p>Extract message fields into self attributes.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">msg</td><td>the PingMessage to handle. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="ac0bd084b030a45e16a3dbaf7187bb4db"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.initialize </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Make sure there is a device on and read some initial data. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if the device replies with expected data, False otherwise </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a98b27fce9e724ab6a8ab4b69dfd86ae9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.read </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Consume rx buffer data until a new message is successfully decoded. </p>
-<dl class="section return"><dt>Returns</dt><dd>A new PingMessage: as soon as a message is parsed (there may be data remaining in the buffer to be parsed, thus requiring subsequent calls to <a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a98b27fce9e724ab6a8ab4b69dfd86ae9" title="Consume rx buffer data until a new message is successfully decoded. ">read()</a>) </dd>
-<dd>
-None: if the buffer is empty and no message has been parsed </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a8e6014d72345c73caba5f9225cfc4278"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.request </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>m_id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>0.5</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Request the given message ID. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">m_id</td><td>The message ID to request from the device </td></tr>
-    <tr><td class="paramname">timeout</td><td>The time in seconds to wait for the device to send the requested message before timing out and returning</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>PingMessage: the device reply if it is received within timeout period, None otherwise</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>handle nack to exit without blocking </dd></dl>
 
 </div>
 </div>
@@ -1184,83 +949,6 @@ None: if the buffer is empty and no message has been parsed </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure) </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a044f6f379c51df2aacb7261139db503b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.wait_message </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>message_id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>0.5</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Wait until we receive a message from the device with the desired message_id for timeout seconds. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">message_id</td><td>The message id to wait to receive from the device </td></tr>
-    <tr><td class="paramname">timeout</td><td>The timeout period in seconds to wait</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>PingMessage: the message from the device if it is received within timeout period, None otherwise </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a8cc1249999a3a3005d24ebf2aea1b42e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def brping.ping1d.Ping1D.write </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Write data to device. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>bytearray to write to device</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Number of bytes written </dd></dl>
 
 </div>
 </div>
