@@ -14,12 +14,12 @@ echob() {
 
 # run command helper for ci scripts
 test() {
+    echo -en "travis_fold:start:$testN\r                                  \r"
     echob "$@"
-    echo "travis_fold:start:$testN"
     "$@"
-    echo "travis_fold:end:$testN"
-    testN=$(($testN+1))
     exitcode=$?
+    echo -en "travis_fold:end:$testN\r                                    \r"
     echob "$@ exited with $exitcode"
     if [ $exitcode -ne 0 ]; then exit $exitcode; fi
+    testN=$(($testN+1))
 }
