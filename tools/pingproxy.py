@@ -105,7 +105,7 @@ if __name__ == '__main__':
     parser.add_argument('--port', action="store", type=int, default=9090, help="Server udp port.")
     args = parser.parse_args()
 
-    s = serial.Serial(args.device, args.baudrate)
+    s = serial.Serial(args.device, args.baudrate, exclusive=True)
     proxy = PingProxy(s, args.port)
 
     while True:
