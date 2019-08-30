@@ -3,11 +3,13 @@
 # This script simulates a Blue Robotics Ping Echosounder device
 # A client may connect to the device simulation on local UDP port 6676
  
-from brping import PingMessage, PingParser, PING1D_GENERAL_REQUEST, PING1D_PROFILE, payload_dict
+from brping import definitions, PingMessage, PingParser
 import socket
 import time
 import errno
 import math
+
+payload_dict = definitions.payload_dict_all
 
 class Ping1DSimulation(object):
     def __init__(self):
@@ -84,9 +86,12 @@ class Ping1DSimulation(object):
     # handle an incoming client message
     def handleMessage(self, message):
         print("receive message %d\t(%s)" % (message.message_id, message.name))
-        if message.message_id == PING1D_GENERAL_REQUEST:
+        if message.message_id == definitions.COMMON_GENERAL_REQUEST:
             # the client is requesting a message from us
             self.sendMessage(message.requested_id)
+        # hack for legacy requests
+        elif message.payload_length == 0:
+            self.sendMessage(message.message_id)
         else:
             # the client is controlling some parameter of the device
             self.setParameters(message)
@@ -165,7 +170,7 @@ while True:
         lastUpdate = time.time()
         sim._ping_number += 1
         if sim._mode_continuous:
-            sim.sendMessage(PING1D_PROFILE)
+            sim.sendMessage(definitions.PING1D_PROFILE)
 
     # don't max cpu
     time.sleep(0.01)
