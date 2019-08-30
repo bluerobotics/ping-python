@@ -68,9 +68,9 @@ class PingMessage(object):
     #     length_mm = m.length_mm
     # @endcode
     def __init__(self, msg_id=0, msg_data=None):
-
         ## The message id
         self.message_id = msg_id
+
         ## The request id for request messages
         self.request_id = None
 
@@ -84,26 +84,41 @@ class PingMessage(object):
         ## The raw data buffer for this message
         # update with pack_msg_data()
         self.msg_data = None
+
+        # Constructor 1: make a pingmessage object from a binary data buffer
+        # (for receiving + unpacking)
         if msg_data is not None:
             self.unpack_msg_data(msg_data)
+        # Constructor 2: make a pingmessage object cooresponding to a message
+        # id, with field members ready to access and populate
+        # (for packing + transmitting)
+        else:
 
-        try:
-            ## The name of this message
-            self.name = payload_dict[self.message_id]["name"]
+            try:
+                ## The name of this message
+                self.name = payload_dict[self.message_id]["name"]
 
-            ## The struct formatting string for the message payload
-            self.payload_format = payload_dict[self.message_id]["format"]
+                ## The field names of this message
+                self.payload_field_names = payload_dict[self.message_id]["field_names"]
 
-            ## The field names of this message
-            self.payload_field_names = payload_dict[self.message_id]["field_names"]
-            self.update_payload_length()
+                # initialize payload field members
+                for attr in self.payload_field_names:
+                    setattr(self, attr, 0)
 
-            ## Number of bytes in the message payload
-            self.update_payload_length()
+                # initialize vector fields
+                if self.message_id in variable_msgs:
+                    setattr(self, self.payload_field_names[-1], bytearray())
 
-        except KeyError as e:
-            print("message id not recognized: %d" % self.message_id, msg_data)
-            raise e
+                ## Number of bytes in the message payload
+                self.update_payload_length()
+
+                ## The struct formatting string for the message payload
+                self.payload_format = self.get_payload_format()
+
+            # TODO handle better here, and catch Constructor 1 also
+            except KeyError as e:
+                print("message id not recognized: %d" % self.message_id, msg_data)
+                raise e
 
     ## Pack object attributes into self.msg_data (bytearray)
     # @return self.msg_data
@@ -145,19 +160,29 @@ class PingMessage(object):
         for i, attr in enumerate(PingMessage.header_field_names):
             setattr(self, attr, header[i])
 
+        ## The name of this message
+        self.name = payload_dict[self.message_id]["name"]
+
+        ## The field names of this message
+        self.payload_field_names = payload_dict[self.message_id]["field_names"]
+
         if self.payload_length > 0:
+            ## The struct formatting string for the message payload
+            self.payload_format = self.get_payload_format()
+
             # Extract payload
             try:
-                payload = struct.unpack(PingMessage.endianess + self.get_payload_format(), self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length])
+                payload = struct.unpack(PingMessage.endianess + self.payload_format, self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length])
             except Exception as e:
                 print("error unpacking payload: %s" % e)
                 print("msg_data: %s, header: %s" % (msg_data, header))
-                print("format: %s, buf: %s" % (PingMessage.endianess + self.get_payload_format(), self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length]))
-                print(self.get_payload_format())
+                print("format: %s, buf: %s" % (PingMessage.endianess + self.payload_format, self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length]))
+                print(self.payload_format)
             else:  # only use payload if didn't raise exception
-                for i, attr in enumerate(payload_dict[self.message_id]["field_names"]):
+                for i, attr in enumerate(self.payload_field_names):
                     try:
                         setattr(self, attr, payload[i])
+                    # empty trailing variable data field
                     except IndexError as e:
                         if self.message_id in variable_msgs:
                             setattr(self, attr, bytearray())
