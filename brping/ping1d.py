@@ -584,6 +584,6 @@ if __name__ == "__main__":
     print("\ntesting set_gain_setting")
     print("  > > pass: %s < <" % p.set_gain_setting(3))
     print("\ntesting set_ping_enable")
-    print("  > > pass: %s < <" % p.set_ping_enable(False))
+    print("  > > pass: %s < <" % p.set_ping_enable(True))
 
     print(p)
