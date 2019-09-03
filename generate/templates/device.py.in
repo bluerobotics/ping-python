@@ -57,8 +57,11 @@ class PingDevice(object):
             b = self._input_buffer.pop()
 
             if self.parser.parse_byte(b) == pingmessage.PingParser.NEW_MESSAGE:
-                self.handle_message(self.parser.rx_msg)
-                return self.parser.rx_msg
+                # a successful read depends on a successful handling
+                if not self.handle_message(self.parser.rx_msg):
+                    return None
+                else:
+                    return self.parser.rx_msg
         return None
 
     ##
@@ -122,16 +125,24 @@ class PingDevice(object):
     # Extract message fields into self attributes.
     #
     # @param msg: the PingMessage to handle.
+    # @return True if the PingMessage was handled successfully
     def handle_message(self, msg):
         # TODO is this message for us?
         setattr(self, "_src_device_id", msg.src_device_id)
         setattr(self, "_dst_device_id", msg.dst_device_id)
 
         if msg.message_id in pingmessage.payload_dict:
-            for attr in pingmessage.payload_dict[msg.message_id]["field_names"]:
-                setattr(self, "_" + attr, getattr(msg, attr))
+            try:
+                for attr in pingmessage.payload_dict[msg.message_id]["field_names"]:
+                    setattr(self, "_" + attr, getattr(msg, attr))
+            except AttributeError as e:
+                print("attribute error while handling msg %d (%s): %s" % (msg.message_id, msg.name, msg.msg_data))
+                return False
         else:
             print("Unrecognized message: %d", msg)
+            return False
+
+        return True
 
     ##
     # @brief Dump object into string representation.
