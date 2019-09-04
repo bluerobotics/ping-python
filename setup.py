@@ -3,15 +3,15 @@
 from setuptools import setup, find_packages
 
 long_description = """
-Python library for the Ping sonar. Ping is the simple,
-affordable, and compact ultrasonic altimeter for any aquatic project.
+Python library for the Blue Robotics ping-protocol, and devices that implement it.
 
-This library exposes all functionality of the device, such as getting profiles,
-controlling parameters, switching modes, or just simply reading in the distance measurement."""
+This library provides message apis to use the protocol, as well as device apis to use with the
+Blue Robotics Ping Echosounder and Ping360 scanning sonar.
+"""
 
 setup(name='bluerobotics-ping',
-      version='0.0.7',
-      description='A python module for the Blue Robotics Ping1D echosounder',
+      version='0.0.9',
+      description='A python module for the Blue Robotics ping-protocol and products',
       long_description=long_description,
       long_description_content_type='text/markdown',
       author='Blue Robotics',
