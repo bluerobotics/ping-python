@@ -30,10 +30,8 @@ class PingDevice(object):
             self.iodev.send_break()
             self.iodev.write("U".encode("utf-8"))
 
-        except Exception as e:
-            print("Failed to open the given serial port")
-            print("\t", e)
-            exit(1)
+        except Exception as exception:
+            raise Exception("Failed to open the given serial port: {0}".format(exception))
 
         ## A helper class to take care of decoding the input stream
         self.parser = pingmessage.PingParser()
