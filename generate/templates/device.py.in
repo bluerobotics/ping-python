@@ -76,9 +76,7 @@ class PingDevice(object):
     #
     # @return True if the device replies with expected data, False otherwise
     def initialize(self):
-        if (self.request(definitions.COMMON_PROTOCOL_VERSION) is None):
-            return False
-        return True
+        return self.request(definitions.COMMON_PROTOCOL_VERSION) is not None
 
     ##
     # @brief Request the given message ID
