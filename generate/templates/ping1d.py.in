@@ -29,8 +29,8 @@ class Ping1D(PingDevice):
 
         return self.wait_message([m_id], timeout)
 
-    def initialize(self):
-        if not PingDevice.initialize(self):
+    def initialize(self, baudrate=None):
+        if not PingDevice.initialize(self, baudrate):
             return False
         if self.legacyRequest(definitions.PING1D_GENERAL_INFO) is None:
             return False
