@@ -79,6 +79,20 @@ class Ping360(PingDevice):
         self.write(m.msg_data)
 
 
+    def control_auto_transmit(self, start_angle, stop_angle, num_steps, delay):
+        m = pingmessage.PingMessage(definitions.PING360_AUTO_TRANSMIT)
+        m.start_angle = start_angle
+        m.stop_angle = stop_angle
+        m.num_steps = num_steps
+        m.delay = delay
+        m.pack_msg_data()
+        self.write(m.msg_data)
+
+    def control_motor_off(self):
+        m = pingmessage.PingMessage(definitions.PING360_MOTOR_OFF)
+        m.pack_msg_data()
+        self.write(m.msg_data)
+
     def control_reset(self, bootloader, reserved):
         m = pingmessage.PingMessage(definitions.PING360_RESET)
         m.bootloader = bootloader
@@ -241,8 +255,33 @@ if __name__ == "__main__":
         p.transmitAngle(x)
     tend_s = time.time()
 
+    print(p)
+
     print("full scan in %dms, %dHz" % (1000*(tend_s - tstart_s), 400/(tend_s - tstart_s)))
 
-    print(p)
+    # turn on auto-scan with 1 grad steps
+    p.control_auto_transmit(0,399,1,0)
+
+    tstart_s = time.time()
+    # wait for 400 device_data messages to arrive
+    for x in range(400):
+        p.wait_message([definitions.PING360_DEVICE_DATA])
+    tend_s = time.time()
+
+    print("full scan in %dms, %dHz" % (1000*(tend_s - tstart_s), 400/(tend_s - tstart_s)))
+
+    # stop the auto-transmit process
+    p.control_motor_off()
+
+    # turn on auto-transmit with 10 grad steps
+    p.control_auto_transmit(0,399,10,0)
+
+    tstart_s = time.time()
+    # wait for 40 device_data messages to arrive (40 * 10grad steps = 400 grads)
+    for x in range(40):
+        p.wait_message([definitions.PING360_DEVICE_DATA])
+    tend_s = time.time()
+
+    print("full scan in %dms, %dHz" % (1000*(tend_s - tstart_s), 400/(tend_s - tstart_s)))
 
     p.control_reset(0, 0)

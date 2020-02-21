@@ -369,6 +369,8 @@ PING360_DEVICE_ID = 2000
 PING360_DEVICE_DATA = 2300
 PING360_RESET = 2600
 PING360_TRANSDUCER = 2601
+PING360_AUTO_TRANSMIT = 2602
+PING360_MOTOR_OFF = 2903
 
 # variable length fields are formatted with 's', and always occur at the end of the payload
 # the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
@@ -426,6 +428,26 @@ payload_dict_ping360 = {
              "reserved",
             ),
         "payload_length": 14
+    },
+
+    PING360_AUTO_TRANSMIT: {
+        "name": "auto_transmit",
+        "format": "HHBB",
+        "field_names": (
+             "start_angle",
+             "stop_angle",
+             "num_steps",
+             "delay",
+            ),
+        "payload_length": 6
+    },
+
+    PING360_MOTOR_OFF: {
+        "name": "motor_off",
+        "format": "",
+        "field_names": (
+            ),
+        "payload_length": 0
     },
 
 }
