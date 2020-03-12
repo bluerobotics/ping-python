@@ -12,6 +12,7 @@ from brping import definitions
 from brping import pingmessage
 from collections import deque
 import serial
+import socket
 import time
 
 class PingDevice(object):
@@ -20,7 +21,24 @@ class PingDevice(object):
 {% endfor%}
 
     _input_buffer = deque()
-    def __init__(self, device_name, baudrate=115200):
+    def __init__(self):
+        ## A helper class to take care of decoding the input stream
+        self.parser = pingmessage.PingParser()
+
+        ## device id of this Ping1D object, used for dst_device_id in outgoing messages
+        self.my_id = 255
+
+        # IO device
+        self.iodev = None
+        self.server_address = None
+
+    ##
+    # @brief Do the connection via an serial link
+    #
+    # @param device_name: Serial device name. E.g: /dev/ttyUSB0 or COM5
+    # @param baudrate: Connection baudrate used in the serial communication
+    #
+    def connect_serial(self, device_name: str, baudrate: int =115200):
         if device_name is None:
             print("Device name is required")
             return
@@ -31,16 +49,49 @@ class PingDevice(object):
             ## Serial object for device communication
             self.iodev = serial.Serial(device_name, baudrate)
             self.iodev.send_break()
-            self.iodev.write("U".encode("utf-8"))
+            self.iodev.write("U".encode("ascii"))
 
         except Exception as exception:
             raise Exception("Failed to open the given serial port: {0}".format(exception))
 
-        ## A helper class to take care of decoding the input stream
-        self.parser = pingmessage.PingParser()
+    ##
+    # @brief Do the connection via an UDP link
+    #
+    # @param host: UDP server address (IPV4) or name
+    # @param port: port used to connect with server
+    #
+    def connect_udp(self, host: str = None, port: int = 12345):
+        if host is None:
+            host = '0.0.0.0' # Connect to local host
 
-        ## device id of this Ping1D object, used for dst_device_id in outgoing messages
-        self.my_id = 255
+        self.server_address = (host, port)
+        try:
+            print("Opening %s:%d" % self.server_address)
+            ## Serial object for device communication
+            self.iodev = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.iodev.connect(self.server_address)
+            self.iodev.setblocking(0)
+
+        except Exception as exception:
+            raise Exception("Failed to open the given UDP port: {0}".format(exception))
+
+    ##
+    # @brief Read available data from the io device
+    def read_io(self):
+        if self.iodev == None:
+            raise Exception("IO device is null, please configure a connection before using the class.")
+        elif type(self.iodev).__name__ == 'Serial':
+            bytes = self.iodev.read(self.iodev.in_waiting)
+            self._input_buffer.extendleft(bytes)
+        else: # Socket
+            udp_buffer_size = 4096
+            try: # Check if we are reading before closing a connection
+                bytes = self.iodev.recv(udp_buffer_size)
+                self._input_buffer.extendleft(bytes)
+                if len(bytes) == udp_buffer_size:
+                    self.update_input_buffer()
+            except BlockingIOError as exception:
+                pass # Ignore exceptions related to read before connection, a result of UDP nature
 
     ##
     # @brief Consume rx buffer data until a new message is successfully decoded
@@ -48,9 +99,7 @@ class PingDevice(object):
     # @return A new PingMessage: as soon as a message is parsed (there may be data remaining in the buffer to be parsed, thus requiring subsequent calls to read())
     # @return None: if the buffer is empty and no message has been parsed
     def read(self):
-        bytes = self.iodev.read(self.iodev.in_waiting)
-        self._input_buffer.extendleft(bytes)
-
+        self.read_io()
         while len(self._input_buffer):
             b = self._input_buffer.pop()
 
@@ -69,7 +118,12 @@ class PingDevice(object):
     #
     # @return Number of bytes written
     def write(self, data):
-        return self.iodev.write(data)
+        if self.iodev == None:
+            raise Exception("IO device is null, please configure a connection before using the class.")
+        elif type(self.iodev).__name__ == 'Serial':
+            return self.iodev.write(data)
+        else: # Socket
+            return self.iodev.sendto(data, self.server_address)
 
     ##
     # @brief Make sure there is a device on and read some initial data
@@ -185,11 +239,20 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Ping python library example.")
-    parser.add_argument('--device', action="store", required=True, type=str, help="Ping device port.")
-    parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate.")
+    parser.add_argument('--device', action="store", required=False, type=str, help="Ping device port. E.g: /dev/ttyUSB0")
+    parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate. E.g: 115200")
+    parser.add_argument('--server', action="store", required=False, type=str, help="Ping UDP server. E.g: 0.0.0.0:12345")
     args = parser.parse_args()
+    if args.device is None and args.server is None:
+        parser.print_help()
+        exit(1)
 
-    p = PingDevice(args.device, args.baudrate)
+    p = PingDevice()
+    if args.device is not None:
+        p.connect_serial(args.device, args.baudrate)
+    elif args.server is not None:
+        (host, port) = args.server.split(':')
+        p.connect_udp(host, int(port))
 
     print("Initialized: %s" % p.initialize())
 
