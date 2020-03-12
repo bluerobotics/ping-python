@@ -199,7 +199,7 @@ class PingDevice(object):
     #
     # @return string: a string representation of the object
     def __repr__(self):
-        representation = "---------------------------------------------------------\n~Ping1D Object~"
+        representation = "---------------------------------------------------------\n~Ping Object~"
 
         attrs = vars(self)
         for attr in sorted(attrs):
