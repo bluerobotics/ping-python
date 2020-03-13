@@ -6,6 +6,7 @@
 
 [![Travis Build Status](https://travis-ci.org/bluerobotics/ping-python.svg?branch=master)](https://travis-ci.org/bluerobotics/ping-python)
 [![Gitter](https://img.shields.io/badge/gitter-online-green.svg)](https://gitter.im/bluerobotics/discussion/)
+[![PyPI version](https://badge.fury.io/py/bluerobotics-ping.svg)](https://badge.fury.io/py/bluerobotics-ping)
 
 Python library for the Ping sonar. Ping is the simple, affordable, and compact ultrasonic altimeter for any aquatic project.
 
