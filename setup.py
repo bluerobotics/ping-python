@@ -10,7 +10,7 @@ Blue Robotics Ping Echosounder and Ping360 scanning sonar.
 """
 
 setup(name='bluerobotics-ping',
-      version='0.0.10',
+      version='0.1.0',
       description='A python module for the Blue Robotics ping-protocol and products',
       long_description=long_description,
       long_description_content_type='text/markdown',
