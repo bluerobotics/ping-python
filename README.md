@@ -49,6 +49,8 @@ The `bluerobotics-ping` package installs a `simplePingExample.py` script to get 
 
 `$ simplePingExample.py --device <your-device>`
 
+It's also possible to connect via UDP server using the `--udp` option with IP:PORT as input (e.g `192.168.2.2:9090`).
+
 ## Usage
 
 The [Ping1D](https://docs.bluerobotics.com/ping-python/classPing_1_1Ping1D_1_1Ping1D.html) class provides an easy interface to configure a Ping device and retrieve data.
@@ -57,7 +59,10 @@ A Ping1D object must be initialized with the serial device path and the baudrate
 
 ```py
 from brping import Ping1D
-myPing = Ping1D("/dev/ttyUSB0", 115200)
+myPing = Ping1D()
+myPing.connect_serial("/dev/ttyUSB0", 115200)
+# For UDP
+# myPing.connect_udp("192.168.2.2", 9090)
 ```
 
 Call initialize() to establish communications with the device.
