@@ -113,9 +113,19 @@ Collaboration diagram for brping.device.PingDevice:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad0f1dc1181cd53b889f5c3868829ecd6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0f1dc1181cd53b889f5c3868829ecd6"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, device_name, baudrate=115200)</td></tr>
-<tr class="separator:ad0f1dc1181cd53b889f5c3868829ecd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674a7324bb82b537fca8bc0bb5c5117b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a674a7324bb82b537fca8bc0bb5c5117b"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self)</td></tr>
+<tr class="separator:a674a7324bb82b537fca8bc0bb5c5117b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d6639cdac2ad820642608384f0e7b39"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#a4d6639cdac2ad820642608384f0e7b39">connect_serial</a></td></tr>
+<tr class="memdesc:a4d6639cdac2ad820642608384f0e7b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do the connection via an serial link.  <a href="#a4d6639cdac2ad820642608384f0e7b39">More...</a><br /></td></tr>
+<tr class="separator:a4d6639cdac2ad820642608384f0e7b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade7ae7074787bc70ef2fbd55d50db8c5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#ade7ae7074787bc70ef2fbd55d50db8c5">connect_udp</a></td></tr>
+<tr class="memdesc:ade7ae7074787bc70ef2fbd55d50db8c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do the connection via an UDP link.  <a href="#ade7ae7074787bc70ef2fbd55d50db8c5">More...</a><br /></td></tr>
+<tr class="separator:ade7ae7074787bc70ef2fbd55d50db8c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13053682a902a794806a92bf15ee5110"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a13053682a902a794806a92bf15ee5110"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#a13053682a902a794806a92bf15ee5110">read_io</a> (self)</td></tr>
+<tr class="memdesc:a13053682a902a794806a92bf15ee5110"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read available data from the io device. <br /></td></tr>
+<tr class="separator:a13053682a902a794806a92bf15ee5110"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10bbfdf01b197aee4f75e19eb81d4ed0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#a10bbfdf01b197aee4f75e19eb81d4ed0">read</a> (self)</td></tr>
 <tr class="memdesc:a10bbfdf01b197aee4f75e19eb81d4ed0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consume rx buffer data until a new message is successfully decoded.  <a href="#a10bbfdf01b197aee4f75e19eb81d4ed0">More...</a><br /></td></tr>
 <tr class="separator:a10bbfdf01b197aee4f75e19eb81d4ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,10 +160,6 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, de
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53b215d7ce6b2b5e9122dcfde608f97b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#a53b215d7ce6b2b5e9122dcfde608f97b">iodev</a></td></tr>
-<tr class="memdesc:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial object for device communication. <br /></td></tr>
-<tr class="separator:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9deb86d134e72427713b79e675ad24d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9deb86d134e72427713b79e675ad24d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#af9deb86d134e72427713b79e675ad24d">parser</a></td></tr>
 <tr class="memdesc:af9deb86d134e72427713b79e675ad24d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper class to take care of decoding the input stream. <br /></td></tr>
@@ -162,6 +168,13 @@ Public Attributes</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#af84854137d3dec24777d875a23de9987">my_id</a></td></tr>
 <tr class="memdesc:af84854137d3dec24777d875a23de9987"><td class="mdescLeft">&#160;</td><td class="mdescRight">device id of this Ping1D object, used for dst_device_id in outgoing messages <br /></td></tr>
 <tr class="separator:af84854137d3dec24777d875a23de9987"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53b215d7ce6b2b5e9122dcfde608f97b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#a53b215d7ce6b2b5e9122dcfde608f97b">iodev</a></td></tr>
+<tr class="memdesc:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial object for device communication. <br /></td></tr>
+<tr class="separator:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad6802dc1ab3ee8c0f409b8c22d0c7fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad6802dc1ab3ee8c0f409b8c22d0c7fd"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>server_address</b></td></tr>
+<tr class="separator:aad6802dc1ab3ee8c0f409b8c22d0c7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a451c566edbcf4a0a9d38b813a004e22a"></a>
@@ -180,6 +193,76 @@ Public Attributes</h2></td></tr>
 
 <p>Dump object into string representation. </p>
 <dl class="section return"><dt>Returns</dt><dd>string: a string representation of the object </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4d6639cdac2ad820642608384f0e7b39"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def brping.device.PingDevice.connect_serial </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>device_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Do the connection via an serial link. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">device_name</td><td>Serial device name. E.g: /dev/ttyUSB0 or COM5 </td></tr>
+    <tr><td class="paramname">baudrate</td><td>Connection baudrate used in the serial communication </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ade7ae7074787bc70ef2fbd55d50db8c5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def brping.device.PingDevice.connect_udp </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>host</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Do the connection via an UDP link. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">host</td><td>UDP server address (IPV4) or name </td></tr>
+    <tr><td class="paramname">port</td><td>port used to connect with server </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
