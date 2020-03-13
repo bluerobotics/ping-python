@@ -241,17 +241,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ping python library example.")
     parser.add_argument('--device', action="store", required=False, type=str, help="Ping device port. E.g: /dev/ttyUSB0")
     parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate. E.g: 115200")
-    parser.add_argument('--server', action="store", required=False, type=str, help="Ping UDP server. E.g: 0.0.0.0:12345")
+    parser.add_argument('--udp', action="store", required=False, type=str, help="Ping UDP server. E.g: 0.0.0.0:12345")
     args = parser.parse_args()
-    if args.device is None and args.server is None:
+    if args.device is None and args.udp is None:
         parser.print_help()
         exit(1)
 
     p = PingDevice()
     if args.device is not None:
         p.connect_serial(args.device, args.baudrate)
-    elif args.server is not None:
-        (host, port) = args.server.split(':')
+    elif args.udp is not None:
+        (host, port) = args.udp.split(':')
         p.connect_udp(host, int(port))
 
     print("Initialized: %s" % p.initialize())
