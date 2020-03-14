@@ -31,7 +31,7 @@ This library exposes all functionality of the device, such as getting profiles, 
 ### pip
 
 ```sh
-$ pip install --user bluerobotics-ping
+$ pip install --user bluerobotics-ping --upgrade
 ```
 
 ### From source
