@@ -4,3 +4,7 @@ dist
 bluerobotics_ping.egg-info
 build
 brping/definitions.py
+brping/device.py
+brping/ping1d.py
+brping/ping360.py
+
