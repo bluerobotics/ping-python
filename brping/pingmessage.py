@@ -88,7 +88,9 @@ class PingMessage(object):
         # Constructor 1: make a pingmessage object from a binary data buffer
         # (for receiving + unpacking)
         if msg_data is not None:
-            self.unpack_msg_data(msg_data)
+            if not self.unpack_msg_data(msg_data):
+                # Attempted to create an unknown message
+                return
         # Constructor 2: make a pingmessage object cooresponding to a message
         # id, with field members ready to access and populate
         # (for packing + transmitting)
@@ -150,7 +152,8 @@ class PingMessage(object):
 
         return self.msg_data
 
-    ## Unpack a bytearray into object attributes
+    ## Attempts to unpack a bytearray into object attributes
+    # @Returns True if successful, False otherwise
     def unpack_msg_data(self, msg_data):
         self.msg_data = msg_data
 
@@ -161,7 +164,11 @@ class PingMessage(object):
             setattr(self, attr, header[i])
 
         ## The name of this message
-        self.name = payload_dict[self.message_id]["name"]
+        try:
+            self.name = payload_dict[self.message_id]["name"]
+        except KeyError:
+            print("Unknown message: ", self.message_id)
+            return False
 
         ## The field names of this message
         self.payload_field_names = payload_dict[self.message_id]["field_names"]
@@ -190,6 +197,7 @@ class PingMessage(object):
 
         # Extract checksum
         self.checksum = struct.unpack(PingMessage.endianess + PingMessage.checksum_format, self.msg_data[PingMessage.headerLength + self.payload_length: PingMessage.headerLength + self.payload_length + PingMessage.checksumLength])[0]
+        return True
 
     ## Calculate the checksum from the internal bytearray self.msg_data
     def calculate_checksum(self):
