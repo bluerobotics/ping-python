@@ -21,7 +21,7 @@ This library exposes all functionality of the device, such as getting profiles, 
 
 * [API Reference](https://docs.bluerobotics.com/ping-python/)
 * [Device Specifications](https://www.bluerobotics.com/store/sensors-sonars-cameras/sonar/ping-sonar-r2-rp/#tab-technical-details)
-* [Serial Protocol](https://github.com/bluerobotics/ping-protocol)
+* [Communication Protocol](https://github.com/bluerobotics/ping-protocol)
 * [Support](https://gitter.im/bluerobotics/discussion)
 * [License](https://github.com/bluerobotics/ping-python/blob/master/LICENSE)
 
