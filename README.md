@@ -37,7 +37,7 @@ $ pip install --user bluerobotics-ping --upgrade
 ### From source
 
 ```sh
-$ git clone https://github.com/bluerobotics/ping-python.git
+$ git clone --single-branch --branch deployment https://github.com/bluerobotics/ping-python.git
 $ cd ping-python
 $ python setup.py install --user
 ```
