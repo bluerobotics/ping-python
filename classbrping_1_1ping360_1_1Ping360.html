@@ -115,6 +115,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad956e795361b373e967225e929858fe5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad956e795361b373e967225e929858fe5"></a>
 def&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (self)</td></tr>
 <tr class="separator:ad956e795361b373e967225e929858fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b3ef634b917738803902d79b6744d9d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping360_1_1Ping360.html#a9b3ef634b917738803902d79b6744d9d">get_auto_device_data</a> (self)</td></tr>
+<tr class="memdesc:a9b3ef634b917738803902d79b6744d9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a auto_device_data message from the device<br />
+ Message description:<br />
+ Extended version of <em>device_data</em> with <em>auto_transmit</em> information.  <a href="#a9b3ef634b917738803902d79b6744d9d">More...</a><br /></td></tr>
+<tr class="separator:a9b3ef634b917738803902d79b6744d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cbc8f05c1261b1cee85b15583d7d480"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping360_1_1Ping360.html#a2cbc8f05c1261b1cee85b15583d7d480">get_device_data</a> (self)</td></tr>
 <tr class="memdesc:a2cbc8f05c1261b1cee85b15583d7d480"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a device_data message from the device<br />
  Message description:<br />
@@ -127,9 +132,9 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (self)<
  Send the message to write the device parameters, then read the values back from the device<br />
 .  <a href="#a41913fe33f5e5262ced906cfa9b4276c">More...</a><br /></td></tr>
 <tr class="separator:a41913fe33f5e5262ced906cfa9b4276c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa31ce0b143627a3316d085a50a3e5c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa31ce0b143627a3316d085a50a3e5c3"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>control_auto_transmit</b> (self, start_angle, stop_angle, num_steps, delay)</td></tr>
-<tr class="separator:afa31ce0b143627a3316d085a50a3e5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e2edd28d502157fa8275a93562f2a76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e2edd28d502157fa8275a93562f2a76"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>control_auto_transmit</b> (self, mode, gain_setting, transmit_duration, sample_period, transmit_frequency, number_of_samples, start_angle, stop_angle, num_steps, delay)</td></tr>
+<tr class="separator:a8e2edd28d502157fa8275a93562f2a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a472a46825762d4c0785fce3931c4012a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a472a46825762d4c0785fce3931c4012a"></a>
 def&#160;</td><td class="memItemRight" valign="bottom"><b>control_motor_off</b> (self)</td></tr>
 <tr class="separator:a472a46825762d4c0785fce3931c4012a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,6 +225,41 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>transmit</b> (self)</t
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9b3ef634b917738803902d79b6744d9d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def brping.ping360.Ping360.get_auto_device_data </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get a auto_device_data message from the device<br />
+ Message description:<br />
+ Extended version of <em>device_data</em> with <em>auto_transmit</em> information. </p>
+<p>The sensor emits this message when in <em>auto_transmit</em> mode.</p>
+<dl class="section return"><dt>Returns</dt><dd>None if there is no reply from the device, otherwise a dictionary with the following keys:<br />
+ mode: Operating mode (1 for <a class="el" href="classbrping_1_1ping360_1_1Ping360.html">Ping360</a>)<br />
+ gain_setting: Analog gain setting (0 = low, 1 = normal, 2 = high)<br />
+ angle: Units: gradian; Head angle<br />
+ transmit_duration: Units: microsecond; Acoustic transmission duration (1~1000 microseconds)<br />
+ sample_period: Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)<br />
+ transmit_frequency: Units: kHz; Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.<br />
+ start_angle: Units: gradian; Head angle to begin scan sector for autoscan in gradians (0~399 = 0~360 degrees).<br />
+ stop_angle: Units: gradian; Head angle to end scan sector for autoscan in gradians (0~399 = 0~360 degrees).<br />
+ num_steps: Units: gradian; Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)<br />
+ delay: Units: millisecond; An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.<br />
+ number_of_samples: Number of samples per reflected signal<br />
+ data: 8 bit binary data array representing sonar echo strength<br />
+ </dd></dl>
 
 </div>
 </div>
