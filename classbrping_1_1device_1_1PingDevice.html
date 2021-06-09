@@ -168,9 +168,8 @@ Public Attributes</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#af84854137d3dec24777d875a23de9987">my_id</a></td></tr>
 <tr class="memdesc:af84854137d3dec24777d875a23de9987"><td class="mdescLeft">&#160;</td><td class="mdescRight">device id of this Ping1D object, used for dst_device_id in outgoing messages <br /></td></tr>
 <tr class="separator:af84854137d3dec24777d875a23de9987"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53b215d7ce6b2b5e9122dcfde608f97b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#a53b215d7ce6b2b5e9122dcfde608f97b">iodev</a></td></tr>
-<tr class="memdesc:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial object for device communication. <br /></td></tr>
+<tr class="memitem:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1device_1_1PingDevice.html#a53b215d7ce6b2b5e9122dcfde608f97b">iodev</a></td></tr>
+<tr class="memdesc:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial object for device communication write_timeout fixes it getting stuck forever atempting to write to /dev/ttyAMA0 on Raspberry Pis, this raises an exception instead.  <a href="#a53b215d7ce6b2b5e9122dcfde608f97b">More...</a><br /></td></tr>
 <tr class="separator:a53b215d7ce6b2b5e9122dcfde608f97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad6802dc1ab3ee8c0f409b8c22d0c7fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad6802dc1ab3ee8c0f409b8c22d0c7fd"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>server_address</b></td></tr>
@@ -513,6 +512,22 @@ None: if the buffer is empty and no message has been parsed </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of bytes written </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a53b215d7ce6b2b5e9122dcfde608f97b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">brping.device.PingDevice.iodev</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Serial object for device communication write_timeout fixes it getting stuck forever atempting to write to /dev/ttyAMA0 on Raspberry Pis, this raises an exception instead. </p>
+<p>Serial object for device communication.</p>
 
 </div>
 </div>
