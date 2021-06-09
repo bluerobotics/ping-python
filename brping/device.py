@@ -44,7 +44,9 @@ class PingDevice(object):
             print("Opening %s at %d bps" % (device_name, baudrate))
 
             ## Serial object for device communication
-            self.iodev = serial.Serial(device_name, baudrate)
+            # write_timeout fixes it getting stuck forever atempting to write to
+            # /dev/ttyAMA0 on Raspberry Pis, this raises an exception instead.
+            self.iodev = serial.Serial(device_name, baudrate, write_timeout=1.0)
             self.iodev.send_break()
             self.iodev.write("U".encode("ascii"))
 
