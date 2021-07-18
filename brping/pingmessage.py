@@ -196,7 +196,7 @@ class PingMessage(object):
         checksum = 0
         for byte in self.msg_data[0:PingMessage.headerLength + self.payload_length]:
             checksum += byte
-        return checksum
+        return checksum & 0xffff
 
     ## Update the object checksum value
     # @return the object checksum value
