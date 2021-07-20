@@ -13,7 +13,7 @@ deploy:
   user: bluerobotics
   distributions: sdist
   password:
-    secure: hfzPRQJ03YyKvUrTChgj+CfduDuHf02OU3WREEMDsn35QH3KjHb7d1lGbIryo7+rR+qnoY7EsFAFkFYlTicQ8O0NbQuNhZjq/ls9aF7IFbkHqSVkKMotqtMc2M8kW2hmGs096Au2jZY1iSXHhkqBWvXa+Kyfmdin2hZcGgwzs7muMmSwk9/LwDucgGxsbLz33PgFUXGvMTRXMUPbQI9XDTe1q1GG7eCq1J12e0vZ9+Y0KJVeDtuyiCd0c9Vcf5TVpTdeMLyew/cMiN3xX32f7uyBJ+0KwBflI8qmEyT4xipVJ79c+lrg0CT3osTve+U4blbw5UNooxDgInQuxvXAYYO/7sqcUw+Bc5SRbOkres6KECXSv1p9aJMq+PRVnP6asu+IivwtHS3hw20/BruW6bTMP3HcA82fgLjq0xuL7g6ylPuLhT99PTUwcFzCTCBpg6s768Y2HR/p9q4sxbsde6fO+roldycO1Opsi2EelxuqbG8LCNYTn44xGNDm9WV4xU4m/ZDMD/1TBNcV381wJHoNkxOMQ7+ioqPJLpfbKV8bazaHAYfGhjXjlr7Tg76Qq5o6uma5A72XbcUOO8EUadlAdo2vNnWkbh30ohOj5930OCD63Ptdq5Kz1Te/ethL8yc1M3UEAU+mSfFkEv8deykW0OFbMVo2zAdpbKLsmnc=
+    secure: aC6RbHIr4N8nR6zSEAyXCKNUHW8MWwNihb4IkM24qhXGXR0xk7lytxj8ILSKycIApMHeSe5cfJKBuk/g7cHrqqHWtAYYBsRlTKFlNbLwSUu5mEn5O9LS8/BkJC1n0mPedKMTHBjK1lRcDRaLaIDHBEPL6dNWT1NqCK5zO8w6rIWbLcHqhhZ5uSEo2Zl0NGKf8AISetNFqKYy/L7F4fe0sE+NAUl1wQjscJn3IjvUhRPQaYoVdc7ovfvkmhhh1xq18qsio707g5PxnUKYj+4K14lpyZgHlW3npxoQsCfqoVe4TxmW2O6Y8/dkfg3FcXNZMN1TLrfzeh0dJqmqOggBmkL5eq4nuZtCZeLHNKUmWyllrnvHHktwSBfz9AgdMSdF8B+g6N9lZOb+X/MEvs7qbRNNMgt50mxGcFOuyZr70tsXZGEPQAtOnnyUsCd/aWkm42G5wsXt5n2bkiZehpYyqSkVwx7zRnIZsB/T3dIQZFh0w1lxExlx9eVCQKTGe39o54763tVVSY1gN57WsQpeYjqdYYC2cWLApIB/f/F+kyBT8gui/+/VM+ND4VhpWQ7C+fiwYJPcT4o4MwHWVVhmd1xWK5lSZgFIva7VoQYis+mpCwjaidYTK8PxBoISIh5c/vS8Bz2sMD/OnWRvZ0EZbIBo1W95dauzfBgh2rfP2TM=
   on:
     tags: true
     condition: $TRAVIS_TAG =~ v[0-9]+.[0-9]+.[0-9]+.* && $(if grep -q "${BASH_REMATCH:1}" "$TRAVIS_BUILD_DIR/setup.py"; then echo 0; fi)
