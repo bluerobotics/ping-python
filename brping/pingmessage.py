@@ -268,6 +268,17 @@ class PingMessage(object):
 
 # A class to digest a serial stream and decode PingMessages
 class PingParser(object):
+    # pre-declare instance variables for faster access and reduced memory overhead 
+    __slots__ = (
+        "buf",
+        "state",
+        "payload_length",
+        "message_id",
+        "errors",
+        "parsed",
+        "rx_msg",
+    )
+
     NEW_MESSAGE       = 0    # Just got a complete checksum-verified message
     WAIT_START        = 1    # Waiting for the first character of a message 'B'
     WAIT_HEADER       = 2    # Waiting for the second character in the two-character sequence 'BR'
