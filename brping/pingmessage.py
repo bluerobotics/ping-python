@@ -470,7 +470,7 @@ if __name__ == "__main__":
     for byte in test_protocol_version_buf:
         result = p.parse_byte(byte)
 
-    if result is p.NEW_MESSAGE:
+    if result == p.NEW_MESSAGE:
         print(p.rx_msg)
     else:
         print("fail:", result)
@@ -481,7 +481,7 @@ if __name__ == "__main__":
     for byte in test_profile_buf:
         result = p.parse_byte(byte)
 
-    if result is p.NEW_MESSAGE:
+    if result == p.NEW_MESSAGE:
         print(p.rx_msg)
     else:
         print("fail:", result)
