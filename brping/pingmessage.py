@@ -193,10 +193,7 @@ class PingMessage(object):
 
     ## Calculate the checksum from the internal bytearray self.msg_data
     def calculate_checksum(self):
-        checksum = 0
-        for byte in self.msg_data[0:PingMessage.headerLength + self.payload_length]:
-            checksum += byte
-        return checksum & 0xffff
+        return sum(self.msg_data[0:PingMessage.headerLength + self.payload_length]) & 0xffff
 
     ## Update the object checksum value
     # @return the object checksum value
