@@ -291,6 +291,7 @@ class PingParser(object):
     WAIT_PAYLOAD      = 9    # Waiting for the last byte of the payload to come in
     WAIT_CHECKSUM_L   = 10   # Waiting for the checksum low byte
     WAIT_CHECKSUM_H   = 11   # Waiting for the checksum high byte
+    ERROR             = 12   # Checksum didn't check out
 
     def __init__(self):
         self.buf = bytearray()
@@ -366,9 +367,8 @@ class PingParser(object):
             self.parsed += 1
             return self.NEW_MESSAGE
         else:
-            # TODO add/return error state
-            print("parse error")
             self.errors += 1
+            return self.ERROR
 
         return self.state
 
