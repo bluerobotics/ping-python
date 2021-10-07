@@ -4,7 +4,6 @@ COMMON_ASCII_TEXT = 3
 COMMON_GENERAL_REQUEST = 6
 COMMON_DEVICE_INFORMATION = 4
 COMMON_PROTOCOL_VERSION = 5
-COMMON_SET_DEVICE_ID = 100
 
 # variable length fields are formatted with 's', and always occur at the end of the payload
 # the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
@@ -71,15 +70,6 @@ payload_dict_common = {
              "reserved",
             ),
         "payload_length": 4
-    },
-
-    COMMON_SET_DEVICE_ID: {
-        "name": "set_device_id",
-        "format": "B",
-        "field_names": (
-             "device_id",
-            ),
-        "payload_length": 1
     },
 
 }
@@ -377,7 +367,6 @@ payload_dict_ping1d = {
 
 PING360_DEVICE_ID = 2000
 PING360_DEVICE_DATA = 2300
-PING360_AUTO_DEVICE_DATA = 2301
 PING360_RESET = 2600
 PING360_TRANSDUCER = 2601
 PING360_AUTO_TRANSMIT = 2602
@@ -414,27 +403,6 @@ payload_dict_ping360 = {
         "payload_length": 14
     },
 
-    PING360_AUTO_DEVICE_DATA: {
-        "name": "auto_device_data",
-        "format": "BBHHHHHHBBHH",
-        "field_names": (
-             "mode",
-             "gain_setting",
-             "angle",
-             "transmit_duration",
-             "sample_period",
-             "transmit_frequency",
-             "start_angle",
-             "stop_angle",
-             "num_steps",
-             "delay",
-             "number_of_samples",
-             "data_length",
-             "data",
-            ),
-        "payload_length": 20
-    },
-
     PING360_RESET: {
         "name": "reset",
         "format": "BB",
@@ -464,20 +432,14 @@ payload_dict_ping360 = {
 
     PING360_AUTO_TRANSMIT: {
         "name": "auto_transmit",
-        "format": "BBHHHHHHBB",
+        "format": "HHBB",
         "field_names": (
-             "mode",
-             "gain_setting",
-             "transmit_duration",
-             "sample_period",
-             "transmit_frequency",
-             "number_of_samples",
              "start_angle",
              "stop_angle",
              "num_steps",
              "delay",
             ),
-        "payload_length": 16
+        "payload_length": 6
     },
 
     PING360_MOTOR_OFF: {
