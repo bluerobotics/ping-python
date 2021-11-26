@@ -125,7 +125,7 @@ class PingDevice(object):
         elif type(self.iodev).__name__ == 'Serial':
             return self.iodev.write(data)
         else: # Socket
-            return self.iodev.sendto(data, self.server_address)
+            return self.iodev.send(data)
 
     ##
     # @brief Make sure there is a device on and read some initial data
