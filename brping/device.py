@@ -44,7 +44,9 @@ class PingDevice(object):
             print("Opening %s at %d bps" % (device_name, baudrate))
 
             ## Serial object for device communication
-            self.iodev = serial.Serial(device_name, baudrate)
+            # write_timeout fixes it getting stuck forever atempting to write to
+            # /dev/ttyAMA0 on Raspberry Pis, this raises an exception instead.
+            self.iodev = serial.Serial(device_name, baudrate, write_timeout=1.0)
             self.iodev.send_break()
             self.iodev.write("U".encode("ascii"))
 
@@ -120,7 +122,7 @@ class PingDevice(object):
         elif type(self.iodev).__name__ == 'Serial':
             return self.iodev.write(data)
         else: # Socket
-            return self.iodev.sendto(data, self.server_address)
+            return self.iodev.send(data)
 
     ##
     # @brief Make sure there is a device on and read some initial data
@@ -263,17 +265,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ping python library example.")
     parser.add_argument('--device', action="store", required=False, type=str, help="Ping device port. E.g: /dev/ttyUSB0")
     parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate. E.g: 115200")
-    parser.add_argument('--server', action="store", required=False, type=str, help="Ping UDP server. E.g: 0.0.0.0:12345")
+    parser.add_argument('--udp', action="store", required=False, type=str, help="Ping UDP server. E.g: 0.0.0.0:12345")
     args = parser.parse_args()
-    if args.device is None and args.server is None:
+    if args.device is None and args.udp is None:
         parser.print_help()
         exit(1)
 
     p = PingDevice()
     if args.device is not None:
         p.connect_serial(args.device, args.baudrate)
-    elif args.server is not None:
-        (host, port) = args.server.split(':')
+    elif args.udp is not None:
+        (host, port) = args.udp.split(':')
         p.connect_udp(host, int(port))
 
     print("Initialized: %s" % p.initialize())
