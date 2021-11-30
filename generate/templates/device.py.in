@@ -57,6 +57,18 @@ class PingDevice(object):
             raise Exception("Failed to open the given serial port: {0}".format(exception))
 
     ##
+    # @brief Construct instance, and connect via serial
+    #
+    # @param device_name: Serial device name. E.g. /dev/ttyUSB0 or COM5
+    # @param baudrate: Connection baudrate used in the serial communication
+    #
+    @classmethod
+    def from_serial(cls, device_name: str, baudrate: int = 115200):
+        device = cls()
+        device.connect_serial(device_name, baudrate)
+        return device
+    
+    ##
     # @brief Do the connection via an UDP link
     #
     # @param host: UDP server address (IPV4) or name
@@ -77,6 +89,18 @@ class PingDevice(object):
         except Exception as exception:
             raise Exception("Failed to open the given UDP port: {0}".format(exception))
 
+    ##
+    # @brief Construct instance, and connect via UDP
+    #
+    # @param host: UDP server address (IPV4) or name
+    # @param port: port used to connect with server
+    #
+    @classmethod
+    def from_udp(cls, host: str = None, port: int = 12345):
+        device = cls()
+        device.connect_udp(host, port)
+        return device
+    
     ##
     # @brief Read available data from the io device
     def read_io(self):
@@ -195,6 +219,24 @@ class PingDevice(object):
             return False
 
         return True
+    
+    ##
+    # @brief Initialize on entry to context manager.
+    #
+    def __enter__(self):
+        if not self.initialize():
+            raise Exception("{0} initialization failed.".format(self.__class__))
+        return self
+    
+    ##
+    # @brief Close connection on context manager exit (if possible).
+    #
+    def __exit__(self, *args):
+        try:
+            # may not be possible/available for some OSs or Python versions
+            self.iodev.close()
+        except Exception as exception:
+            print("Failed to close", self.__class__, "connection:", exception)
 
     ##
     # @brief Dump object into string representation.
