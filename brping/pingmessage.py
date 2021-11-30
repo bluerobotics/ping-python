@@ -350,7 +350,7 @@ class PingParser(object):
     def wait_dst_id(self, msg_byte):
         self.buf.append(msg_byte)
         self.state += 1
-        if self.payload_length == 1: # no payload bytes -> skip waiting
+        if self.payload_length == 0: # no payload bytes -> skip waiting
             self.state += 1
 
     def wait_payload(self, msg_byte):
