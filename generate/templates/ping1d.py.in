@@ -11,8 +11,6 @@
 from brping import definitions
 from brping import PingDevice
 from brping import pingmessage
-import serial
-import time
 
 class Ping1D(PingDevice):
 
