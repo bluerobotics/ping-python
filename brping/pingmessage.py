@@ -98,10 +98,10 @@ class PingMessage(object):
 
             try:
                 ## The name of this message
-                self.name = payload_dict[self.message_id]["name"]
+                self.name = payload_dict[self.message_id].name
 
                 ## The field names of this message
-                self.payload_field_names = payload_dict[self.message_id]["field_names"]
+                self.payload_field_names = payload_dict[self.message_id].field_names
 
                 # initialize payload field members
                 for attr in self.payload_field_names:
@@ -133,7 +133,7 @@ class PingMessage(object):
         msg_format = PingMessage.endianess + PingMessage.header_format + self.get_payload_format()
 
         # Prepare complete list of field names (header + payload)
-        attrs = PingMessage.header_field_names + payload_dict[self.message_id]["field_names"]
+        attrs = PingMessage.header_field_names + payload_dict[self.message_id].field_names
 
         # Prepare iterable ordered list of values to pack
         values = []
@@ -165,13 +165,13 @@ class PingMessage(object):
 
         ## The name of this message
         try:
-            self.name = payload_dict[self.message_id]["name"]
+            self.name = payload_dict[self.message_id].name
         except KeyError:
             print("Unknown message: ", self.message_id)
             return False
 
         ## The field names of this message
-        self.payload_field_names = payload_dict[self.message_id]["field_names"]
+        self.payload_field_names = payload_dict[self.message_id].field_names
 
         if self.payload_length > 0:
             ## The struct formatting string for the message payload
@@ -217,22 +217,22 @@ class PingMessage(object):
     def update_payload_length(self):
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
             # The last field self.payload_field_names[-1] is always the single dynamic-length field
-            self.payload_length = payload_dict[self.message_id]["payload_length"] + len(getattr(self, self.payload_field_names[-1]))
+            self.payload_length = payload_dict[self.message_id].payload_length + len(getattr(self, self.payload_field_names[-1]))
         else:
-            self.payload_length = payload_dict[self.message_id]["payload_length"]
+            self.payload_length = payload_dict[self.message_id].payload_length
 
     ## Get the python struct formatting string for the message payload
     # @return the payload struct format string
     def get_payload_format(self):
         # messages with variable length fields
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
-            var_length = self.payload_length - payload_dict[self.message_id]["payload_length"]  # Subtract static length portion from payload length
+            var_length = self.payload_length - payload_dict[self.message_id].payload_length  # Subtract static length portion from payload length
             if var_length <= 0:
-                return payload_dict[self.message_id]["format"]  # variable data portion is empty
+                return payload_dict[self.message_id].format  # variable data portion is empty
 
-            return payload_dict[self.message_id]["format"] + str(var_length) + "s"
+            return payload_dict[self.message_id].format + str(var_length) + "s"
         else: # messages with a static (constant) length
-            return payload_dict[self.message_id]["format"]
+            return payload_dict[self.message_id].format
 
     ## Dump object into string representation
     # @return string representation of the object
@@ -250,17 +250,17 @@ class PingMessage(object):
             if self.message_id in variable_msgs:
 
                 # static fields are handled as usual
-                for attr in payload_dict[self.message_id]["field_names"][:-1]:
+                for attr in payload_dict[self.message_id].field_names[:-1]:
                     payload_string += "\n  - " + attr + ": " + str(getattr(self, attr))
 
                 # the variable length field is always the last field
-                attr = payload_dict[self.message_id]["field_names"][-1:][0]
+                attr = payload_dict[self.message_id].field_names[-1:][0]
 
                 # format this field as a list of hex values (rather than a string if we did not perform this handling)
                 payload_string += "\n  - " + attr + ": " + str([hex(item) for item in getattr(self, attr)])
 
             else:  # handling of static length messages and text messages
-                for attr in payload_dict[self.message_id]["field_names"]:
+                for attr in payload_dict[self.message_id].field_names:
                     payload_string += "\n  - " + attr + ": " + str(getattr(self, attr))
 
         representation = (

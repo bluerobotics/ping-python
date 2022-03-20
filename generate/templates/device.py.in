@@ -209,7 +209,7 @@ class PingDevice(object):
 
         if msg.message_id in pingmessage.payload_dict:
             try:
-                for attr in pingmessage.payload_dict[msg.message_id]["field_names"]:
+                for attr in pingmessage.payload_dict[msg.message_id].field_names:
                     setattr(self, "_" + attr, getattr(msg, attr))
             except AttributeError as e:
                 print("attribute error while handling msg %d (%s): %s" % (msg.message_id, msg.name, msg.msg_data))
