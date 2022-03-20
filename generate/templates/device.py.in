@@ -277,6 +277,31 @@ class PingDevice(object):
         })
         return data
 
+{# add properties for version numbers, for easier comparison #}
+{% set ns = namespace(prop = msg if "version" in msg) %}
+{%- if not ns.prop %}
+    {%- for field in messages["get"][msg].payload %}
+        {%- if not ns.prop and "version" in field.name %}
+            {%- set ns.prop = field.name[:field.name.index("version")+7] -%}
+        {% endif -%}
+    {% endfor -%}
+{% endif -%}
+{% if ns.prop %}
+    @property
+    def {{ns.prop}}(self):
+        try:
+            return (
+{% for field in messages["get"][msg].payload %}
+{% if "version" in field.name %}
+                self._{{field.name}},
+{% endif %}
+{% endfor %}
+            )
+        except AttributeError:
+            self.get_{{msg}}()
+            return self.{{ns.prop}}
+{% endif %}
+
 {% endfor %}
 
 if __name__ == "__main__":
