@@ -15,11 +15,7 @@ import time
 
 class Ping360(PingDevice):
     def initialize(self):
-        if not PingDevice.initialize(self):
-            return False
-        if (self.readDeviceInformation() is None):
-            return False
-        return True
+        return super().initialize() and self.readDeviceInformation() is not None
 
 {% for msg in messages["get"]|sort %}
     ##
