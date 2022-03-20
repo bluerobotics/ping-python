@@ -8,9 +8,7 @@
 # DO NOT EDIT
 # ~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
 
-from brping import definitions
-from brping import PingDevice
-from brping import pingmessage
+from brping import definitions, PingDevice, PingMessage
 import time
 
 class Ping360(PingDevice):
@@ -51,7 +49,7 @@ class Ping360(PingDevice):
     #
     # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def {{msg}}(self{% for field in messages["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
-        m = pingmessage.PingMessage(definitions.PING360_{{msg|upper}})
+        m = PingMessage(definitions.PING360_{{msg|upper}})
 {% for field in messages["set"][msg].payload %}
         m.{{field.name}} = {{field.name}}
 {% endfor %}
@@ -75,7 +73,7 @@ class Ping360(PingDevice):
 
 {% for msg in messages["control"]|sort %}
     def control_{{msg}}(self{% for field in messages["control"][msg].payload %}, {{field.name}}{% endfor %}):
-        m = pingmessage.PingMessage(definitions.PING360_{{msg|upper}})
+        m = PingMessage(definitions.PING360_{{msg|upper}})
 {% for field in messages["control"][msg].payload %}
         m.{{field.name}} = {{field.name}}
 {% endfor %}
