@@ -130,10 +130,10 @@ class PingMessage(object):
         self.update_payload_length()
 
         # Prepare struct packing format string
-        msg_format = PingMessage.endianess + PingMessage.header_format + self.get_payload_format()
+        msg_format = self.endianess + self.header_format + self.get_payload_format()
 
         # Prepare complete list of field names (header + payload)
-        attrs = PingMessage.header_field_names + payload_dict[self.message_id].field_names
+        attrs = self.header_field_names + payload_dict[self.message_id].field_names
 
         # Prepare iterable ordered list of values to pack
         values = []
@@ -148,7 +148,7 @@ class PingMessage(object):
         self.msg_data = bytearray(struct.pack(msg_format, *values))
 
         # Update and append checksum
-        self.msg_data += bytearray(struct.pack(PingMessage.endianess + PingMessage.checksum_format, self.update_checksum()))
+        self.msg_data += bytearray(struct.pack(self.endianess + self.checksum_format, self.update_checksum()))
 
         return self.msg_data
 
@@ -158,9 +158,9 @@ class PingMessage(object):
         self.msg_data = msg_data
 
         # Extract header
-        header = struct.unpack(PingMessage.endianess + PingMessage.header_format, self.msg_data[0:PingMessage.headerLength])
+        header = struct.unpack(self.endianess + self.header_format, self.msg_data[0:self.headerLength])
 
-        for i, attr in enumerate(PingMessage.header_field_names):
+        for i, attr in enumerate(self.header_field_names):
             setattr(self, attr, header[i])
 
         ## The name of this message
@@ -179,11 +179,11 @@ class PingMessage(object):
 
             # Extract payload
             try:
-                payload = struct.unpack(PingMessage.endianess + self.payload_format, self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length])
+                payload = struct.unpack(self.endianess + self.payload_format, self.msg_data[self.headerLength:self.headerLength + self.payload_length])
             except Exception as e:
                 print("error unpacking payload: %s" % e)
                 print("msg_data: %s, header: %s" % (msg_data, header))
-                print("format: %s, buf: %s" % (PingMessage.endianess + self.payload_format, self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length]))
+                print("format: %s, buf: %s" % (self.endianess + self.payload_format, self.msg_data[self.headerLength:self.headerLength + self.payload_length]))
                 print(self.payload_format)
             else:  # only use payload if didn't raise exception
                 for i, attr in enumerate(self.payload_field_names):
@@ -196,12 +196,12 @@ class PingMessage(object):
                             pass
 
         # Extract checksum
-        self.checksum = struct.unpack(PingMessage.endianess + PingMessage.checksum_format, self.msg_data[PingMessage.headerLength + self.payload_length: PingMessage.headerLength + self.payload_length + PingMessage.checksumLength])[0]
+        self.checksum = struct.unpack(self.endianess + self.checksum_format, self.msg_data[self.headerLength + self.payload_length: self.headerLength + self.payload_length + self.checksumLength])[0]
         return True
 
     ## Calculate the checksum from the internal bytearray self.msg_data
     def calculate_checksum(self):
-        return sum(self.msg_data[0:PingMessage.headerLength + self.payload_length]) & 0xffff
+        return sum(self.msg_data[0:self.headerLength + self.payload_length]) & 0xffff
 
     ## Update the object checksum value
     # @return the object checksum value
@@ -238,7 +238,7 @@ class PingMessage(object):
     # @return string representation of the object
     def __repr__(self):
         header_string = "Header:"
-        for attr in PingMessage.header_field_names:
+        for attr in self.header_field_names:
             header_string += " " + attr + ": " + str(getattr(self, attr))
 
         if self.payload_length == 0:  # this is a hack/guard for empty body requests
