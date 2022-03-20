@@ -16,6 +16,7 @@ import socket
 import time
 
 class PingDevice(object):
+    messages = definitions.CommonMessage
 {% for field in all_fields|sort %}
     _{{field}} = None
 {% endfor%}
@@ -156,7 +157,7 @@ class PingDevice(object):
     #
     # @return True if the device replies with expected data, False otherwise
     def initialize(self):
-        return self.request(definitions.COMMON_PROTOCOL_VERSION) is not None
+        return self.request(definitions.CommonMessage.PROTOCOL_VERSION) is not None
 
     ##
     # @brief Request the given message ID
@@ -169,13 +170,13 @@ class PingDevice(object):
     #
     # @todo handle nack to exit without blocking
     def request(self, m_id, timeout=0.5):
-        msg = pingmessage.PingMessage(definitions.COMMON_GENERAL_REQUEST)
+        msg = pingmessage.PingMessage(definitions.CommonMessage.GENERAL_REQUEST)
         msg.requested_id = m_id
         msg.pack_msg_data()
         self.write(msg.msg_data)
 
         # uncomment to return nacks in addition to m_id
-        # return self.wait_message([m_id, definitions.COMMON_NACK], timeout)
+        # return self.wait_message([m_id, definitions.CommonMessage.NACK], timeout)
 
         return self.wait_message([m_id], timeout)
 
@@ -268,7 +269,7 @@ class PingDevice(object):
     # {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}\n
 {% endfor%}
     def get_{{msg}}(self):
-        if self.request(definitions.COMMON_{{msg|upper}}) is None:
+        if self.request(definitions.CommonMessage.{{msg|upper}}) is None:
             return None
         data = ({
 {% for field in messages["get"][msg].payload %}

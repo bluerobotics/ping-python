@@ -6,8 +6,8 @@
 import struct
 from brping import definitions
 payload_dict = definitions.payload_dict_all
-asciiMsgs = [definitions.COMMON_NACK, definitions.COMMON_ASCII_TEXT]
-variable_msgs = [definitions.PING1D_PROFILE, definitions.PING360_DEVICE_DATA, ]
+asciiMsgs = [definitions.CommonMessage.NACK, definitions.CommonMessage.ASCII_TEXT]
+variable_msgs = [definitions.Ping1dMessage.PROFILE, definitions.Ping360Message.DEVICE_DATA, ]
 
 
 class PingMessage(object):
@@ -53,7 +53,7 @@ class PingMessage(object):
     #
     # @par Ex set:
     # @code
-    # m = PingMessage(PING1D_SET_RANGE)
+    # m = PingMessage(Ping1dMessage.SET_RANGE)
     # m.start_mm = 1000
     # m.length_mm = 2000
     # m.update_checksum()
@@ -63,7 +63,7 @@ class PingMessage(object):
     # @par Ex receive:
     # @code
     # m = PingMessage(rxByteArray)
-    # if m.message_id == PING1D_RANGE
+    # if m.message_id == Ping1dMessage.RANGE
     #     start_mm = m.start_mm
     #     length_mm = m.length_mm
     # @endcode
@@ -419,7 +419,7 @@ if __name__ == "__main__":
         0x52,
         4,
         0,
-        definitions.COMMON_PROTOCOL_VERSION,
+        definitions.CommonMessage.PROTOCOL_VERSION,
         0,
         77,
         211,

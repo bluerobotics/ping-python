@@ -12,6 +12,8 @@ from brping import definitions, PingDevice, PingMessage
 import time
 
 class Ping360(PingDevice):
+    messages = definitions.Ping360Message
+
     def initialize(self):
         return super().initialize() and self.readDeviceInformation() is not None
 
@@ -26,7 +28,7 @@ class Ping360(PingDevice):
     # {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}\n
 {% endfor%}
     def get_{{msg}}(self):
-        if self.request(definitions.PING360_{{msg|upper}}) is None:
+        if self.request(self.messages.{{msg|upper}}) is None:
             return None
         data = ({
 {% for field in messages["get"][msg].payload %}
@@ -49,13 +51,13 @@ class Ping360(PingDevice):
     #
     # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def {{msg}}(self{% for field in messages["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
-        m = PingMessage(definitions.PING360_{{msg|upper}})
+        m = PingMessage(self.messages.{{msg|upper}})
 {% for field in messages["set"][msg].payload %}
         m.{{field.name}} = {{field.name}}
 {% endfor %}
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.request(definitions.PING360_{{msg|replace("set_", "")|upper}}) is None:
+        if self.request(self.messages.{{msg|replace("set_", "")|upper}}) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
@@ -73,7 +75,7 @@ class Ping360(PingDevice):
 
 {% for msg in messages["control"]|sort %}
     def control_{{msg}}(self{% for field in messages["control"][msg].payload %}, {{field.name}}{% endfor %}):
-        m = PingMessage(definitions.PING360_{{msg|upper}})
+        m = PingMessage(self.messages.{{msg|upper}})
 {% for field in messages["control"][msg].payload %}
         m.{{field.name}} = {{field.name}}
 {% endfor %}
@@ -98,13 +100,13 @@ class Ping360(PingDevice):
             0,
             0
         )
-        return self.wait_message([definitions.PING360_DEVICE_DATA, definitions.COMMON_NACK], 4.0)
+        return self.wait_message([self.messages.DEVICE_DATA, super().messages.NACK], 4.0)
 
 {% endif %}
 {% endfor %}
 
     def readDeviceInformation(self):
-        return self.request(definitions.PING360_DEVICE_DATA)
+        return self.request(self.messages.DEVICE_DATA)
 
     def transmitAngle(self, angle):
         self.control_transducer(
@@ -118,7 +120,7 @@ class Ping360(PingDevice):
             1,
             0
         )
-        return self.wait_message([definitions.PING360_DEVICE_DATA, definitions.COMMON_NACK], 4.0)
+        return self.wait_message([self.messages.DEVICE_DATA, super().messages.NACK], 4.0)
     
     def transmit(self):
         return self.transmitAngle(self._angle)
@@ -164,7 +166,7 @@ if __name__ == "__main__":
         tstart_s = time.time()
         # wait for 400 device_data messages to arrive
         for x in range(400):
-            p.wait_message([definitions.PING360_DEVICE_DATA])
+            p.wait_message([definitions.Ping360Message.AUTO_DEVICE_DATA])
             tend_s = time.time()
 
         print("full scan in %dms, %dHz" % (1000*(tend_s - tstart_s), 400/(tend_s - tstart_s)))
@@ -178,7 +180,7 @@ if __name__ == "__main__":
         tstart_s = time.time()
         # wait for 40 device_data messages to arrive (40 * 10grad steps = 400 grads)
         for x in range(40):
-            p.wait_message([definitions.PING360_DEVICE_DATA])
+            p.wait_message([definitions.Ping360Message.AUTO_DEVICE_DATA])
             tend_s = time.time()
 
         print("full scan in %dms, %dHz" % (1000*(tend_s - tstart_s), 400/(tend_s - tstart_s)))

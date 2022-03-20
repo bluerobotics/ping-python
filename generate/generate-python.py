@@ -40,12 +40,15 @@ struct_token = {"u8": "B",
 
 payload_setup = '''\
 from typing import NamedTuple, Tuple
+from enum import IntEnum
 
 class Payload(NamedTuple):
     name: str
     format: str
     field_names: Tuple[str]
     payload_length: int
+
+class MessageEnum(IntEnum): pass
 
 '''
 
@@ -60,9 +63,11 @@ for definition in definitions:
 #allString = "payload_dict_all = {}\n"
 # add PINGMESSAGE_UNDEFINED for legacy request support
 allString = '''\
-PINGMESSAGE_UNDEFINED = 0
+class UndefinedMessage(MessageEnum):
+    UNDEFINED = 0
+
 payload_dict_all = {
-    PINGMESSAGE_UNDEFINED: Payload(
+    UndefinedMessage.UNDEFINED: Payload(
         name = "undefined",
         format = "",
         field_names = (),
