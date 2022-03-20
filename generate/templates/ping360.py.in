@@ -185,4 +185,4 @@ if __name__ == "__main__":
     else:
         print("firmware {} does not support auto commands".format(p.firmware_version))
 
-    p.control_reset(0, 0)
+    #p.control_reset(0, 0)
