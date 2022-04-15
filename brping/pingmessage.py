@@ -98,12 +98,11 @@ class PingMessage(object):
             self.update_payload_length()
 
             ## The struct formatting string for the message payload
-            self.payload_format = self.get_payload_format()
+            self.update_payload_format()
 
             # TODO pack_msg_data
             # Either when data is provided, or with a 'pack' argument (default True?)
             # - avoid re-updating payload length
-            # - probably change get_payload_format to update_payload_format
 
         except KeyError as e:
             message_id = self.message_id
@@ -135,7 +134,8 @@ class PingMessage(object):
         self.update_payload_length()
 
         # Prepare struct packing format string
-        msg_format = self.endianess + self.header_format + self.get_payload_format()
+        self.update_payload_format()
+        msg_format = self.endianess + self.header_format + self.payload_format
 
         # Prepare complete list of field names (header + payload)
         attrs = self.header_field_names + payload_dict[self.message_id].field_names
@@ -180,7 +180,7 @@ class PingMessage(object):
 
         if self.payload_length > 0:
             ## The struct formatting string for the message payload
-            self.payload_format = self.get_payload_format()
+            self.update_payload_format()
 
             # Extract payload
             try:
@@ -220,24 +220,23 @@ class PingMessage(object):
 
     ## Update the payload_length attribute with the **current** payload length, including dynamic length fields (if present)
     def update_payload_length(self):
+        self.payload_length = payload_dict[self.message_id].payload_length
+
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
             # The last field self.payload_field_names[-1] is always the single dynamic-length field
-            self.payload_length = payload_dict[self.message_id].payload_length + len(getattr(self, self.payload_field_names[-1]))
-        else:
-            self.payload_length = payload_dict[self.message_id].payload_length
+            self.payload_length += len(getattr(self, self.payload_field_names[-1]))
 
-    ## Get the python struct formatting string for the message payload
-    # @return the payload struct format string
-    def get_payload_format(self):
+    ## Update the python struct formatting string for the message payload
+    def update_payload_format(self):
         # messages with variable length fields
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
-            var_length = self.payload_length - payload_dict[self.message_id].payload_length  # Subtract static length portion from payload length
-            if var_length <= 0:
-                return payload_dict[self.message_id].format  # variable data portion is empty
-
-            return payload_dict[self.message_id].format + str(var_length) + "s"
-        else: # messages with a static (constant) length
-            return payload_dict[self.message_id].format
+            # Subtract static length portion from payload length
+            var_length = self.payload_length - payload_dict[self.message_id].payload_length
+            if var_length > 0:
+                self.payload_format = payload_dict[self.message_id].format + str(var_length) + "s"
+                return
+        # messages with a static (constant) length, or empty data portion
+        self.payload_format = payload_dict[self.message_id].format
 
     ## Dump object into string representation
     # @return string representation of the object
