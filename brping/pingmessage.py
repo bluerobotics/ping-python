@@ -41,7 +41,8 @@ class PingMessage(object):
     ## number of bytes in a checksum
     checksumLength = 2
 
-    ## Messge constructor
+    ## Message constructor
+    # Initialize from provided data (for packing and transmitting)
     #
     # @par Ex request:
     # @code
@@ -53,21 +54,11 @@ class PingMessage(object):
     #
     # @par Ex set:
     # @code
-    # m = PingMessage(Ping1dMessage.SET_RANGE)
-    # m.start_mm = 1000
-    # m.length_mm = 2000
-    # m.update_checksum()
+    # m = PingMessage(Ping1dMessage.SET_RANGE, start_mm=1000, length_mm=2000)
+    # m.pack_msg_data()
     # write(m.msg_data)
     # @endcode
-    #
-    # @par Ex receive:
-    # @code
-    # m = PingMessage(rxByteArray)
-    # if m.message_id == Ping1dMessage.RANGE
-    #     start_mm = m.start_mm
-    #     length_mm = m.length_mm
-    # @endcode
-    def __init__(self, msg_id=0, dst_device_id=0, src_device_id=0, **payload_fields):
+    def __init__(self, msg_id=0, dst_device_id=0, src_device_id=0, **payload_data):
         ## The message id
         self.message_id = msg_id
 
@@ -85,9 +76,6 @@ class PingMessage(object):
         # update with pack_msg_data()
         self.msg_data = None
 
-        # Constructor 2: make a pingmessage object cooresponding to a message
-        # id, with field members ready to access and populate
-        # (for packing + transmitting)
         try:
             ## The name of this message
             self.name = payload_dict[self.message_id].name
@@ -97,7 +85,7 @@ class PingMessage(object):
 
             # initialize payload field members
             for attr in self.payload_field_names:
-                setattr(self, attr, payload_fields.get(attr, 0))
+                setattr(self, attr, payload_data.get(attr, 0))
 
             # initialize vector field if present in message
             if self.message_id in variable_msgs:
@@ -112,13 +100,27 @@ class PingMessage(object):
             ## The struct formatting string for the message payload
             self.payload_format = self.get_payload_format()
 
+            # TODO pack_msg_data
+            # Either when data is provided, or with a 'pack' argument (default True?)
+            # - avoid re-updating payload length
+            # - probably change get_payload_format to update_payload_format
+
         except KeyError as e:
             message_id = self.message_id
             raise Exception(f"{message_id = } not recognized\n{msg_data = }") from e
 
+    ## Alternate constructor
+    # Initialize from a binary data buffer
+    #
+    # @par Ex receive:
+    # @code
+    # m = PingMessage.from_buffer(rxByteArray)
+    # if m.message_id == Ping1dMessage.RANGE
+    #     start_mm = m.start_mm
+    #     length_mm = m.length_mm
+    # @endcode
     @classmethod
     def from_buffer(cls, msg_data):
-        """ Alternate constructor - initialise from a binary data buffer. """
         msg = cls()
         if not msg.unpack_msg_data(msg_data):
             # Attempted to create an unknown message
