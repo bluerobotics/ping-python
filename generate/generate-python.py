@@ -38,7 +38,23 @@ struct_token = {"u8": "B",
                 "i32": "i",
                 "char": "s"}
 
+payload_setup = '''\
+from typing import NamedTuple, Tuple
+from enum import IntEnum
+
+class Payload(NamedTuple):
+    name: str
+    format: str
+    field_names: Tuple[str]
+    payload_length: int
+
+class MessageEnum(IntEnum): pass
+
+'''
+
 f = open("%s/definitions.py" % args.output_directory, "w")
+
+f.write(payload_setup)
 
 for definition in definitions:
     definitionFile = "%s/%s.json" % (definitionPath, definition)
@@ -46,16 +62,19 @@ for definition in definitions:
 
 #allString = "payload_dict_all = {}\n"
 # add PINGMESSAGE_UNDEFINED for legacy request support
-allString = '\
-PINGMESSAGE_UNDEFINED = 0\n\
-payload_dict_all = {\n\
-    PINGMESSAGE_UNDEFINED: {\n\
-        "name": "undefined",\n\
-        "format": "",\n\
-        "field_names": (),\n\
-        "payload_length": 0\n\
-    },\n\
-}\n'
+allString = '''\
+class UndefinedMessage(MessageEnum):
+    UNDEFINED = 0
+
+payload_dict_all = {
+    UndefinedMessage.UNDEFINED: Payload(
+        name = "undefined",
+        format = "",
+        field_names = (),
+        payload_length = 0
+    ),
+}
+'''
 
 f.write(allString)
 

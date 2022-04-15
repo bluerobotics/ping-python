@@ -6,8 +6,8 @@
 import struct
 from brping import definitions
 payload_dict = definitions.payload_dict_all
-asciiMsgs = [definitions.COMMON_NACK, definitions.COMMON_ASCII_TEXT]
-variable_msgs = [definitions.PING1D_PROFILE, definitions.PING360_DEVICE_DATA, ]
+asciiMsgs = [definitions.CommonMessage.NACK, definitions.CommonMessage.ASCII_TEXT]
+variable_msgs = [definitions.Ping1dMessage.PROFILE, definitions.Ping360Message.DEVICE_DATA, ]
 
 
 class PingMessage(object):
@@ -41,7 +41,8 @@ class PingMessage(object):
     ## number of bytes in a checksum
     checksumLength = 2
 
-    ## Messge constructor
+    ## Message constructor
+    # Initialize from provided data (for packing and transmitting)
     #
     # @par Ex request:
     # @code
@@ -53,21 +54,11 @@ class PingMessage(object):
     #
     # @par Ex set:
     # @code
-    # m = PingMessage(PING1D_SET_RANGE)
-    # m.start_mm = 1000
-    # m.length_mm = 2000
-    # m.update_checksum()
+    # m = PingMessage(Ping1dMessage.SET_RANGE, start_mm=1000, length_mm=2000)
+    # m.pack_msg_data()
     # write(m.msg_data)
     # @endcode
-    #
-    # @par Ex receive:
-    # @code
-    # m = PingMessage(rxByteArray)
-    # if m.message_id == PING1D_RANGE
-    #     start_mm = m.start_mm
-    #     length_mm = m.length_mm
-    # @endcode
-    def __init__(self, msg_id=0, msg_data=None):
+    def __init__(self, msg_id=0, dst_device_id=0, src_device_id=0, **payload_data):
         ## The message id
         self.message_id = msg_id
 
@@ -75,9 +66,9 @@ class PingMessage(object):
         self.request_id = None
 
         ## The message destination
-        self.dst_device_id = 0
+        self.dst_device_id = dst_device_id
         ## The message source
-        self.src_device_id = 0
+        self.src_device_id = src_device_id
         ## The message checksum
         self.checksum = 0
 
@@ -85,42 +76,55 @@ class PingMessage(object):
         # update with pack_msg_data()
         self.msg_data = None
 
-        # Constructor 1: make a pingmessage object from a binary data buffer
-        # (for receiving + unpacking)
-        if msg_data is not None:
-            if not self.unpack_msg_data(msg_data):
-                # Attempted to create an unknown message
-                return
-        # Constructor 2: make a pingmessage object cooresponding to a message
-        # id, with field members ready to access and populate
-        # (for packing + transmitting)
-        else:
+        try:
+            ## The name of this message
+            self.name = payload_dict[self.message_id].name
 
-            try:
-                ## The name of this message
-                self.name = payload_dict[self.message_id]["name"]
+            ## The field names of this message
+            self.payload_field_names = payload_dict[self.message_id].field_names
 
-                ## The field names of this message
-                self.payload_field_names = payload_dict[self.message_id]["field_names"]
+            # initialize payload field members
+            for attr in self.payload_field_names:
+                setattr(self, attr, payload_data.get(attr, 0))
 
-                # initialize payload field members
-                for attr in self.payload_field_names:
-                    setattr(self, attr, 0)
+            # initialize vector field if present in message
+            if self.message_id in variable_msgs:
+                last_field = self.payload_field_names[-1]
+                # only set if not already set by user
+                if getattr(self, last_field) == 0:
+                    setattr(self, last_field, bytearray())
 
-                # initialize vector fields
-                if self.message_id in variable_msgs:
-                    setattr(self, self.payload_field_names[-1], bytearray())
+            ## Number of bytes in the message payload
+            self.update_payload_length()
 
-                ## Number of bytes in the message payload
-                self.update_payload_length()
+            ## The struct formatting string for the message payload
+            self.update_payload_format()
 
-                ## The struct formatting string for the message payload
-                self.payload_format = self.get_payload_format()
+            # TODO pack_msg_data
+            # Either when data is provided, or with a 'pack' argument (default True?)
+            # - avoid re-updating payload length
 
-            # TODO handle better here, and catch Constructor 1 also
-            except KeyError as e:
-                print("message id not recognized: %d" % self.message_id, msg_data)
-                raise e
+        except KeyError as e:
+            message_id = self.message_id
+            raise Exception(f"{message_id = } not recognized\n{msg_data = }") from e
+
+    ## Alternate constructor
+    # Initialize from a binary data buffer
+    #
+    # @par Ex receive:
+    # @code
+    # m = PingMessage.from_buffer(rxByteArray)
+    # if m.message_id == Ping1dMessage.RANGE
+    #     start_mm = m.start_mm
+    #     length_mm = m.length_mm
+    # @endcode
+    @classmethod
+    def from_buffer(cls, msg_data):
+        msg = cls()
+        if not msg.unpack_msg_data(msg_data):
+            # Attempted to create an unknown message
+            return
+        return msg
 
     ## Pack object attributes into self.msg_data (bytearray)
     # @return self.msg_data
@@ -130,10 +134,11 @@ class PingMessage(object):
         self.update_payload_length()
 
         # Prepare struct packing format string
-        msg_format = PingMessage.endianess + PingMessage.header_format + self.get_payload_format()
+        self.update_payload_format()
+        msg_format = self.endianess + self.header_format + self.payload_format
 
         # Prepare complete list of field names (header + payload)
-        attrs = PingMessage.header_field_names + payload_dict[self.message_id]["field_names"]
+        attrs = self.header_field_names + payload_dict[self.message_id].field_names
 
         # Prepare iterable ordered list of values to pack
         values = []
@@ -148,7 +153,7 @@ class PingMessage(object):
         self.msg_data = bytearray(struct.pack(msg_format, *values))
 
         # Update and append checksum
-        self.msg_data += bytearray(struct.pack(PingMessage.endianess + PingMessage.checksum_format, self.update_checksum()))
+        self.msg_data += bytearray(struct.pack(self.endianess + self.checksum_format, self.update_checksum()))
 
         return self.msg_data
 
@@ -158,32 +163,32 @@ class PingMessage(object):
         self.msg_data = msg_data
 
         # Extract header
-        header = struct.unpack(PingMessage.endianess + PingMessage.header_format, self.msg_data[0:PingMessage.headerLength])
+        header = struct.unpack(self.endianess + self.header_format, self.msg_data[0:self.headerLength])
 
-        for i, attr in enumerate(PingMessage.header_field_names):
+        for i, attr in enumerate(self.header_field_names):
             setattr(self, attr, header[i])
 
         ## The name of this message
         try:
-            self.name = payload_dict[self.message_id]["name"]
+            self.name = payload_dict[self.message_id].name
         except KeyError:
             print("Unknown message: ", self.message_id)
             return False
 
         ## The field names of this message
-        self.payload_field_names = payload_dict[self.message_id]["field_names"]
+        self.payload_field_names = payload_dict[self.message_id].field_names
 
         if self.payload_length > 0:
             ## The struct formatting string for the message payload
-            self.payload_format = self.get_payload_format()
+            self.update_payload_format()
 
             # Extract payload
             try:
-                payload = struct.unpack(PingMessage.endianess + self.payload_format, self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length])
+                payload = struct.unpack(self.endianess + self.payload_format, self.msg_data[self.headerLength:self.headerLength + self.payload_length])
             except Exception as e:
                 print("error unpacking payload: %s" % e)
                 print("msg_data: %s, header: %s" % (msg_data, header))
-                print("format: %s, buf: %s" % (PingMessage.endianess + self.payload_format, self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length]))
+                print("format: %s, buf: %s" % (self.endianess + self.payload_format, self.msg_data[self.headerLength:self.headerLength + self.payload_length]))
                 print(self.payload_format)
             else:  # only use payload if didn't raise exception
                 for i, attr in enumerate(self.payload_field_names):
@@ -196,12 +201,12 @@ class PingMessage(object):
                             pass
 
         # Extract checksum
-        self.checksum = struct.unpack(PingMessage.endianess + PingMessage.checksum_format, self.msg_data[PingMessage.headerLength + self.payload_length: PingMessage.headerLength + self.payload_length + PingMessage.checksumLength])[0]
+        self.checksum = struct.unpack(self.endianess + self.checksum_format, self.msg_data[self.headerLength + self.payload_length: self.headerLength + self.payload_length + self.checksumLength])[0]
         return True
 
     ## Calculate the checksum from the internal bytearray self.msg_data
     def calculate_checksum(self):
-        return sum(self.msg_data[0:PingMessage.headerLength + self.payload_length]) & 0xffff
+        return sum(self.msg_data[0:self.headerLength + self.payload_length]) & 0xffff
 
     ## Update the object checksum value
     # @return the object checksum value
@@ -215,30 +220,29 @@ class PingMessage(object):
 
     ## Update the payload_length attribute with the **current** payload length, including dynamic length fields (if present)
     def update_payload_length(self):
+        self.payload_length = payload_dict[self.message_id].payload_length
+
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
             # The last field self.payload_field_names[-1] is always the single dynamic-length field
-            self.payload_length = payload_dict[self.message_id]["payload_length"] + len(getattr(self, self.payload_field_names[-1]))
-        else:
-            self.payload_length = payload_dict[self.message_id]["payload_length"]
+            self.payload_length += len(getattr(self, self.payload_field_names[-1]))
 
-    ## Get the python struct formatting string for the message payload
-    # @return the payload struct format string
-    def get_payload_format(self):
+    ## Update the python struct formatting string for the message payload
+    def update_payload_format(self):
         # messages with variable length fields
         if self.message_id in variable_msgs or self.message_id in asciiMsgs:
-            var_length = self.payload_length - payload_dict[self.message_id]["payload_length"]  # Subtract static length portion from payload length
-            if var_length <= 0:
-                return payload_dict[self.message_id]["format"]  # variable data portion is empty
-
-            return payload_dict[self.message_id]["format"] + str(var_length) + "s"
-        else: # messages with a static (constant) length
-            return payload_dict[self.message_id]["format"]
+            # Subtract static length portion from payload length
+            var_length = self.payload_length - payload_dict[self.message_id].payload_length
+            if var_length > 0:
+                self.payload_format = payload_dict[self.message_id].format + str(var_length) + "s"
+                return
+        # messages with a static (constant) length, or empty data portion
+        self.payload_format = payload_dict[self.message_id].format
 
     ## Dump object into string representation
     # @return string representation of the object
     def __repr__(self):
         header_string = "Header:"
-        for attr in PingMessage.header_field_names:
+        for attr in self.header_field_names:
             header_string += " " + attr + ": " + str(getattr(self, attr))
 
         if self.payload_length == 0:  # this is a hack/guard for empty body requests
@@ -250,17 +254,17 @@ class PingMessage(object):
             if self.message_id in variable_msgs:
 
                 # static fields are handled as usual
-                for attr in payload_dict[self.message_id]["field_names"][:-1]:
+                for attr in payload_dict[self.message_id].field_names[:-1]:
                     payload_string += "\n  - " + attr + ": " + str(getattr(self, attr))
 
                 # the variable length field is always the last field
-                attr = payload_dict[self.message_id]["field_names"][-1:][0]
+                attr = payload_dict[self.message_id].field_names[-1:][0]
 
                 # format this field as a list of hex values (rather than a string if we did not perform this handling)
                 payload_string += "\n  - " + attr + ": " + str([hex(item) for item in getattr(self, attr)])
 
             else:  # handling of static length messages and text messages
-                for attr in payload_dict[self.message_id]["field_names"]:
+                for attr in payload_dict[self.message_id].field_names:
                     payload_string += "\n  - " + attr + ": " + str(getattr(self, attr))
 
         representation = (
@@ -369,7 +373,7 @@ class PingParser(object):
         self.message_id = 0
 
         self.buf.append(msg_byte)
-        self.rx_msg = PingMessage(msg_data=self.buf)
+        self.rx_msg = PingMessage.from_buffer(self.buf)
 
         if self.rx_msg.verify_checksum():
             self.parsed += 1
@@ -419,7 +423,7 @@ if __name__ == "__main__":
         0x52,
         4,
         0,
-        definitions.COMMON_PROTOCOL_VERSION,
+        definitions.CommonMessage.PROTOCOL_VERSION,
         0,
         77,
         211,

@@ -13,6 +13,7 @@ from brping import PingDevice
 from brping import pingmessage
 
 class Ping1D(PingDevice):
+    messages = definitions.Ping1dMessage
 
     def legacyRequest(self, m_id, timeout=0.5):
         msg = pingmessage.PingMessage()
@@ -23,14 +24,14 @@ class Ping1D(PingDevice):
         self.write(msg.msg_data)
 
         # uncomment to return nacks in addition to m_id
-        # return self.wait_message([m_id, definitions.COMMON_NACK], timeout)
+        # return self.wait_message([m_id, super().messages.NACK], timeout)
 
         return self.wait_message([m_id], timeout)
 
     def initialize(self):
         if not PingDevice.initialize(self):
             return False
-        if self.legacyRequest(definitions.PING1D_GENERAL_INFO) is None:
+        if self.legacyRequest(self.messages.GENERAL_INFO) is None:
             return False
         return True
 
@@ -45,7 +46,7 @@ class Ping1D(PingDevice):
     # {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}\n
 {% endfor%}
     def get_{{msg}}(self):
-        if self.legacyRequest(definitions.PING1D_{{msg|upper}}) is None:
+        if self.legacyRequest(self.messages.{{msg|upper}}) is None:
             return None
         data = ({
 {% for field in messages["get"][msg].payload %}
@@ -68,13 +69,13 @@ class Ping1D(PingDevice):
     #
     # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def {{msg}}(self{% for field in messages["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
-        m = pingmessage.PingMessage(definitions.PING1D_{{msg|upper}})
+        m = pingmessage.PingMessage(self.messages.{{msg|upper}})
 {% for field in messages["set"][msg].payload %}
         m.{{field.name}} = {{field.name}}
 {% endfor %}
         m.pack_msg_data()
         self.write(m.msg_data)
-        if self.legacyRequest(definitions.PING1D_{{msg|replace("set_", "")|upper}}) is None:
+        if self.legacyRequest(self.messages.{{msg|replace("set_", "")|upper}}) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify

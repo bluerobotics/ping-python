@@ -16,6 +16,7 @@ import socket
 import time
 
 class PingDevice(object):
+    messages = definitions.CommonMessage
 {% for field in all_fields|sort %}
     _{{field}} = None
 {% endfor%}
@@ -57,6 +58,18 @@ class PingDevice(object):
             raise Exception("Failed to open the given serial port: {0}".format(exception))
 
     ##
+    # @brief Construct instance, and connect via serial
+    #
+    # @param device_name: Serial device name. E.g. /dev/ttyUSB0 or COM5
+    # @param baudrate: Connection baudrate used in the serial communication
+    #
+    @classmethod
+    def from_serial(cls, device_name: str, baudrate: int = 115200):
+        device = cls()
+        device.connect_serial(device_name, baudrate)
+        return device
+    
+    ##
     # @brief Do the connection via an UDP link
     #
     # @param host: UDP server address (IPV4) or name
@@ -77,6 +90,18 @@ class PingDevice(object):
         except Exception as exception:
             raise Exception("Failed to open the given UDP port: {0}".format(exception))
 
+    ##
+    # @brief Construct instance, and connect via UDP
+    #
+    # @param host: UDP server address (IPV4) or name
+    # @param port: port used to connect with server
+    #
+    @classmethod
+    def from_udp(cls, host: str = None, port: int = 12345):
+        device = cls()
+        device.connect_udp(host, port)
+        return device
+    
     ##
     # @brief Read available data from the io device
     def read_io(self):
@@ -132,7 +157,7 @@ class PingDevice(object):
     #
     # @return True if the device replies with expected data, False otherwise
     def initialize(self):
-        return self.request(definitions.COMMON_PROTOCOL_VERSION) is not None
+        return self.request(definitions.CommonMessage.PROTOCOL_VERSION) is not None
 
     ##
     # @brief Request the given message ID
@@ -145,13 +170,13 @@ class PingDevice(object):
     #
     # @todo handle nack to exit without blocking
     def request(self, m_id, timeout=0.5):
-        msg = pingmessage.PingMessage(definitions.COMMON_GENERAL_REQUEST)
+        msg = pingmessage.PingMessage(definitions.CommonMessage.GENERAL_REQUEST)
         msg.requested_id = m_id
         msg.pack_msg_data()
         self.write(msg.msg_data)
 
         # uncomment to return nacks in addition to m_id
-        # return self.wait_message([m_id, definitions.COMMON_NACK], timeout)
+        # return self.wait_message([m_id, definitions.CommonMessage.NACK], timeout)
 
         return self.wait_message([m_id], timeout)
 
@@ -185,7 +210,7 @@ class PingDevice(object):
 
         if msg.message_id in pingmessage.payload_dict:
             try:
-                for attr in pingmessage.payload_dict[msg.message_id]["field_names"]:
+                for attr in pingmessage.payload_dict[msg.message_id].field_names:
                     setattr(self, "_" + attr, getattr(msg, attr))
             except AttributeError as e:
                 print("attribute error while handling msg %d (%s): %s" % (msg.message_id, msg.name, msg.msg_data))
@@ -195,6 +220,24 @@ class PingDevice(object):
             return False
 
         return True
+    
+    ##
+    # @brief Initialize on entry to context manager.
+    #
+    def __enter__(self):
+        if not self.initialize():
+            raise Exception("{0} initialization failed.".format(self.__class__))
+        return self
+    
+    ##
+    # @brief Close connection on context manager exit (if possible).
+    #
+    def __exit__(self, *args):
+        try:
+            # may not be possible/available for some OSs or Python versions
+            self.iodev.close()
+        except Exception as exception:
+            print("Failed to close", self.__class__, "connection:", exception)
 
     ##
     # @brief Dump object into string representation.
@@ -226,7 +269,7 @@ class PingDevice(object):
     # {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}\n
 {% endfor%}
     def get_{{msg}}(self):
-        if self.request(definitions.COMMON_{{msg|upper}}) is None:
+        if self.request(definitions.CommonMessage.{{msg|upper}}) is None:
             return None
         data = ({
 {% for field in messages["get"][msg].payload %}
@@ -234,6 +277,31 @@ class PingDevice(object):
 {% endfor %}
         })
         return data
+
+{# add properties for version numbers, for easier comparison #}
+{% set ns = namespace(prop = msg if "version" in msg) %}
+{%- if not ns.prop %}
+    {%- for field in messages["get"][msg].payload %}
+        {%- if not ns.prop and "version" in field.name %}
+            {%- set ns.prop = field.name[:field.name.index("version")+7] -%}
+        {% endif -%}
+    {% endfor -%}
+{% endif -%}
+{% if ns.prop %}
+    @property
+    def {{ns.prop}}(self):
+        try:
+            return (
+{% for field in messages["get"][msg].payload %}
+{% if "version" in field.name %}
+                self._{{field.name}},
+{% endif %}
+{% endfor %}
+            )
+        except AttributeError:
+            self.get_{{msg}}()
+            return self.{{ns.prop}}
+{% endif %}
 
 {% endfor %}
 
