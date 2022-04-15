@@ -67,7 +67,7 @@ class PingMessage(object):
     #     start_mm = m.start_mm
     #     length_mm = m.length_mm
     # @endcode
-    def __init__(self, msg_id=0, msg_data=None):
+    def __init__(self, msg_id=0, dst_device_id=0, src_device_id=0, **payload_fields):
         ## The message id
         self.message_id = msg_id
 
@@ -75,9 +75,9 @@ class PingMessage(object):
         self.request_id = None
 
         ## The message destination
-        self.dst_device_id = 0
+        self.dst_device_id = dst_device_id
         ## The message source
-        self.src_device_id = 0
+        self.src_device_id = src_device_id
         ## The message checksum
         self.checksum = 0
 
@@ -85,42 +85,45 @@ class PingMessage(object):
         # update with pack_msg_data()
         self.msg_data = None
 
-        # Constructor 1: make a pingmessage object from a binary data buffer
-        # (for receiving + unpacking)
-        if msg_data is not None:
-            if not self.unpack_msg_data(msg_data):
-                # Attempted to create an unknown message
-                return
         # Constructor 2: make a pingmessage object cooresponding to a message
         # id, with field members ready to access and populate
         # (for packing + transmitting)
-        else:
+        try:
+            ## The name of this message
+            self.name = payload_dict[self.message_id].name
 
-            try:
-                ## The name of this message
-                self.name = payload_dict[self.message_id].name
+            ## The field names of this message
+            self.payload_field_names = payload_dict[self.message_id].field_names
 
-                ## The field names of this message
-                self.payload_field_names = payload_dict[self.message_id].field_names
+            # initialize payload field members
+            for attr in self.payload_field_names:
+                setattr(self, attr, payload_fields.get(attr, 0))
 
-                # initialize payload field members
-                for attr in self.payload_field_names:
-                    setattr(self, attr, 0)
+            # initialize vector field if present in message
+            if self.message_id in variable_msgs:
+                last_field = self.payload_field_names[-1]
+                # only set if not already set by user
+                if getattr(self, last_field) == 0:
+                    setattr(self, last_field, bytearray())
 
-                # initialize vector fields
-                if self.message_id in variable_msgs:
-                    setattr(self, self.payload_field_names[-1], bytearray())
+            ## Number of bytes in the message payload
+            self.update_payload_length()
 
-                ## Number of bytes in the message payload
-                self.update_payload_length()
+            ## The struct formatting string for the message payload
+            self.payload_format = self.get_payload_format()
 
-                ## The struct formatting string for the message payload
-                self.payload_format = self.get_payload_format()
+        except KeyError as e:
+            message_id = self.message_id
+            raise Exception(f"{message_id = } not recognized\n{msg_data = }") from e
 
-            # TODO handle better here, and catch Constructor 1 also
-            except KeyError as e:
-                print("message id not recognized: %d" % self.message_id, msg_data)
-                raise e
+    @classmethod
+    def from_buffer(cls, msg_data):
+        """ Alternate constructor - initialise from a binary data buffer. """
+        msg = cls()
+        if not msg.unpack_msg_data(msg_data):
+            # Attempted to create an unknown message
+            return
+        return msg
 
     ## Pack object attributes into self.msg_data (bytearray)
     # @return self.msg_data
@@ -369,7 +372,7 @@ class PingParser(object):
         self.message_id = 0
 
         self.buf.append(msg_byte)
-        self.rx_msg = PingMessage(msg_data=self.buf)
+        self.rx_msg = PingMessage.from_buffer(self.buf)
 
         if self.rx_msg.verify_checksum():
             self.parsed += 1
