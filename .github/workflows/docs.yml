@@ -1,0 +1,33 @@
+name: Deploy Documentation to gh-pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+          submodules: recursive
+
+    - name: Setup Python (if required)
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: sudo apt-get install doxygen graphviz
+
+    - name: Generate Documentation
+      run:  ci/deploy-gh-pages.sh
+
+    - name: Deploy to gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./doc/html
