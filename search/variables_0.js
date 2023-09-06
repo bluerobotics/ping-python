@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['checksum',['checksum',['../classPing_1_1PingMessage_1_1PingMessage.html#a06a240fdbe72793bdbb03e0ebe9221e4',1,'Ping::PingMessage::PingMessage']]],
-  ['checksum_5fformat',['checksum_format',['../classPing_1_1PingMessage_1_1PingMessage.html#a2e3a3b432b2724b746c048333dbd3f3b',1,'Ping::PingMessage::PingMessage']]],
-  ['checksumlength',['checksumLength',['../classPing_1_1PingMessage_1_1PingMessage.html#a7c7e8962070048b7d99803bad5f3724f',1,'Ping::PingMessage::PingMessage']]]
+  ['checksum_125',['checksum',['../classbrping_1_1pingmessage_1_1PingMessage.html#afe59761c83b56f5d987fe4456ac69bd5',1,'brping::pingmessage::PingMessage']]],
+  ['checksum_5fformat_126',['checksum_format',['../classbrping_1_1pingmessage_1_1PingMessage.html#ac77a4136ff22555d571b2f83ea0a2fa4',1,'brping::pingmessage::PingMessage']]],
+  ['checksumlength_127',['checksumLength',['../classbrping_1_1pingmessage_1_1PingMessage.html#afc5fc5ca8f4d74a69806412f214d67e6',1,'brping::pingmessage::PingMessage']]]
 ];

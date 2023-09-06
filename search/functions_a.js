@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['waitreply',['waitReply',['../classPing_1_1Ping1D_1_1Ping1D.html#aac56c8ce49e12aa05dc38fd4a23d215a',1,'Ping::Ping1D::Ping1D']]],
-  ['write',['write',['../classPing_1_1Ping1D_1_1Ping1D.html#a07a19b516198fc6ba90bfcf69a440e02',1,'Ping::Ping1D::Ping1D']]]
+  ['verify_5fchecksum_122',['verify_checksum',['../classbrping_1_1pingmessage_1_1PingMessage.html#a051a77b2214356e6aa092e801299313a',1,'brping::pingmessage::PingMessage']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['initialize',['initialize',['../classPing_1_1Ping1D_1_1Ping1D.html#ab24858d54667e76fa2365d06e0bfd1ab',1,'Ping::Ping1D::Ping1D']]],
-  ['iodev',['iodev',['../classPing_1_1Ping1D_1_1Ping1D.html#a89330e46cc502712d3238ef08baeca01',1,'Ping::Ping1D::Ping1D']]]
+  ['initialize_36',['initialize',['../classbrping_1_1device_1_1PingDevice.html#a70eaf1a8dc33d77c3f503d8a321e59e0',1,'brping.device.PingDevice.initialize()'],['../classbrping_1_1ping1d_1_1Ping1D.html#ac0bd084b030a45e16a3dbaf7187bb4db',1,'brping.ping1d.Ping1D.initialize()'],['../classbrping_1_1ping360_1_1Ping360.html#ad956e795361b373e967225e929858fe5',1,'brping.ping360.Ping360.initialize()']]],
+  ['iodev_37',['iodev',['../classbrping_1_1device_1_1PingDevice.html#a53b215d7ce6b2b5e9122dcfde608f97b',1,'brping::device::PingDevice']]]
 ];

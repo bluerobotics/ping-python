@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['message_5fid',['message_id',['../classPing_1_1PingMessage_1_1PingMessage.html#ab2481c4fabf6ba3c9c0c78ff02a20ec1',1,'Ping::PingMessage::PingMessage']]],
-  ['msgdata',['msgData',['../classPing_1_1PingMessage_1_1PingMessage.html#a85a42b8347f2f5408be87c1ad1b84c24',1,'Ping::PingMessage::PingMessage']]],
-  ['my_5fid',['my_id',['../classPing_1_1Ping1D_1_1Ping1D.html#a7ef279fd6e503006ae014b67066ce8a1',1,'Ping::Ping1D::Ping1D']]]
+  ['message_5fid_134',['message_id',['../classbrping_1_1pingmessage_1_1PingMessage.html#a7608d5862231a27e875ebb74965c0378',1,'brping::pingmessage::PingMessage']]],
+  ['msg_5fdata_135',['msg_data',['../classbrping_1_1pingmessage_1_1PingMessage.html#a5506871295c18200aa10641c9faf1a4f',1,'brping::pingmessage::PingMessage']]],
+  ['my_5fid_136',['my_id',['../classbrping_1_1device_1_1PingDevice.html#af84854137d3dec24777d875a23de9987',1,'brping::device::PingDevice']]]
 ];
