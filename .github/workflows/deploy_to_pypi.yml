@@ -23,7 +23,7 @@ jobs:
     - name: Check Tag and setup.py Version Match
       run: |
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
-        SETUP_VERSION=$(grep -oE "version='([^']+)" setup.py | grep -oE '[^=]+$')
+        SETUP_VERSION=$(grep -oE "version='([^']+)" setup.py | grep -oE "[^'=]+$")
         if [[ "$TAG_VERSION" != "$SETUP_VERSION" ]]; then
           echo "Tag version $TAG_VERSION does not match setup.py version $SETUP_VERSION."
           exit 1
