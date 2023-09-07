@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*.*.*' # This will trigger the workflow only when a tag that matches the pattern is pushed
 
+permissions:
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
