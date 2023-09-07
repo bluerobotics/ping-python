@@ -48,6 +48,7 @@ class PingDevice(object):
             # /dev/ttyAMA0 on Raspberry Pis, this raises an exception instead.
             self.iodev = serial.Serial(device_name, baudrate, write_timeout=1.0)
             self.iodev.send_break()
+            time.sleep(0.001)
             self.iodev.write("U".encode("ascii"))
 
         except Exception as exception:
