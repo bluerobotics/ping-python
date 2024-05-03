@@ -1,3 +1,7 @@
+"""
+A definitions file for all messages and structures for Ping Protocol.
+"""
+
 {% for msg_type in messages %}
 {% for msg in messages[msg_type] %}
 {% set m = messages[msg_type][msg] %}
