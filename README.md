@@ -44,6 +44,20 @@ $ python setup.py install --user
 
 The library is ready to use: `import brping`. If you would like to use the command line [examples](/examples) or [tools](/tools) provided by this package, follow the notes in python's [installing to user site](https://packaging.python.org/tutorials/installing-packages/#installing-to-the-user-site) directions (eg `export PATH=$PATH:~/.local/bin`).
 
+#### From master branch
+
+If you wish to build from scratch the project using master branch or wip pull requests to test, you should compile and generate the definitions file:
+
+```sh
+$ git clone https://github.com/bluerobotics/ping-python.git
+$ pip install jinja2
+$ cd ping-python
+$ git submodule update --init
+$ python generate/generate-python.py --output-dir=brping
+$ python setup.py install --user
+$ python -c "import brping"  # It works!
+```
+
 ## Quick Start
 
 The `bluerobotics-ping` package installs a `simplePingExample.py` script to get started. Place your device's file descriptor (eg. `/dev/ttyUSB0`, `COM1`) after the --device option.
