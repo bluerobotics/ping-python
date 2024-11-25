@@ -477,6 +477,44 @@ class Ping1D(PingDevice):
         return True  # success
 
 
+    ##
+    # @brief Send a continuous_start message to the device\n
+    # Message description:\n
+    # Command to initiate continuous data stream of profile messages.\n
+    #
+    # @param id - The message id to stream. 1300: profile
+    def control_continuous_start(self, id):
+        m = pingmessage.PingMessage(definitions.PING1D_CONTINUOUS_START)
+        m.id = id
+        m.pack_msg_data()
+        self.write(m.msg_data)
+
+
+    ##
+    # @brief Send a continuous_stop message to the device\n
+    # Message description:\n
+    # Command to stop the continuous data stream of profile messages.\n
+    #
+    # @param id - The message id to stop streaming. 1300: profile
+    def control_continuous_stop(self, id):
+        m = pingmessage.PingMessage(definitions.PING1D_CONTINUOUS_STOP)
+        m.id = id
+        m.pack_msg_data()
+        self.write(m.msg_data)
+
+
+    ##
+    # @brief Send a goto_bootloader message to the device\n
+    # Message description:\n
+    # Send the device into the bootloader. This is useful for firmware updates.\n
+    #
+    def control_goto_bootloader(self):
+        m = pingmessage.PingMessage(definitions.PING1D_GOTO_BOOTLOADER)
+        m.pack_msg_data()
+        self.write(m.msg_data)
+
+
+
 if __name__ == "__main__":
     import argparse
 
