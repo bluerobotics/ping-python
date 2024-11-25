@@ -218,6 +218,21 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>legacyRequest</b> (sel
  Message description:<br  />
  Set the speed of sound used for distance calculations.  <a href="classbrping_1_1ping1d_1_1Ping1D.html#a1841f392c80205ccdd82e7f7d92b73d0">More...</a><br /></td></tr>
 <tr class="separator:a1841f392c80205ccdd82e7f7d92b73d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4d3fdf01d8b542b344142e49600402d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#ae4d3fdf01d8b542b344142e49600402d">control_continuous_start</a> (self, id)</td></tr>
+<tr class="memdesc:ae4d3fdf01d8b542b344142e49600402d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a continuous_start message to the device<br  />
+ Message description:<br  />
+ Command to initiate continuous data stream of profile messages.  <a href="classbrping_1_1ping1d_1_1Ping1D.html#ae4d3fdf01d8b542b344142e49600402d">More...</a><br /></td></tr>
+<tr class="separator:ae4d3fdf01d8b542b344142e49600402d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c5d6c60ff322b234a36a0769f77de4e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a1c5d6c60ff322b234a36a0769f77de4e">control_continuous_stop</a> (self, id)</td></tr>
+<tr class="memdesc:a1c5d6c60ff322b234a36a0769f77de4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a continuous_stop message to the device<br  />
+ Message description:<br  />
+ Command to stop the continuous data stream of profile messages.  <a href="classbrping_1_1ping1d_1_1Ping1D.html#a1c5d6c60ff322b234a36a0769f77de4e">More...</a><br /></td></tr>
+<tr class="separator:a1c5d6c60ff322b234a36a0769f77de4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a657a9fdefc76e655baa40b553ebf78d5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbrping_1_1ping1d_1_1Ping1D.html#a657a9fdefc76e655baa40b553ebf78d5">control_goto_bootloader</a> (self)</td></tr>
+<tr class="memdesc:a657a9fdefc76e655baa40b553ebf78d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a goto_bootloader message to the device<br  />
+ Message description:<br  />
+ Send the device into the bootloader.  <a href="classbrping_1_1ping1d_1_1Ping1D.html#a657a9fdefc76e655baa40b553ebf78d5">More...</a><br /></td></tr>
+<tr class="separator:a657a9fdefc76e655baa40b553ebf78d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classbrping_1_1device_1_1PingDevice"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classbrping_1_1device_1_1PingDevice')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classbrping_1_1device_1_1PingDevice.html">brping.device.PingDevice</a></td></tr>
 <tr class="memitem:a674a7324bb82b537fca8bc0bb5c5117b inherit pub_methods_classbrping_1_1device_1_1PingDevice"><td class="memItemLeft" align="right" valign="top"><a id="a674a7324bb82b537fca8bc0bb5c5117b"></a>
 def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self)</td></tr>
@@ -280,6 +295,108 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:aad6802dc1ab3ee8c0f409b8c22d0c7fd inherit pub_attribs_classbrping_1_1device_1_1PingDevice"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae4d3fdf01d8b542b344142e49600402d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4d3fdf01d8b542b344142e49600402d">&#9670;&nbsp;</a></span>control_continuous_start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def brping.ping1d.Ping1D.control_continuous_start </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send a continuous_start message to the device<br  />
+ Message description:<br  />
+ Command to initiate continuous data stream of profile messages. </p>
+<p><br  />
+ </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>- The message id to stream. 1300: profile </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1c5d6c60ff322b234a36a0769f77de4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c5d6c60ff322b234a36a0769f77de4e">&#9670;&nbsp;</a></span>control_continuous_stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def brping.ping1d.Ping1D.control_continuous_stop </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send a continuous_stop message to the device<br  />
+ Message description:<br  />
+ Command to stop the continuous data stream of profile messages. </p>
+<p><br  />
+ </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>- The message id to stop streaming. 1300: profile </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a657a9fdefc76e655baa40b553ebf78d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a657a9fdefc76e655baa40b553ebf78d5">&#9670;&nbsp;</a></span>control_goto_bootloader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def brping.ping1d.Ping1D.control_goto_bootloader </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send a goto_bootloader message to the device<br  />
+ Message description:<br  />
+ Send the device into the bootloader. </p>
+<p>This is useful for firmware updates.<br  />
+</p>
+
+</div>
+</div>
 <a id="aff54fad6b6b55472bd09f31da949f9f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aff54fad6b6b55472bd09f31da949f9f6">&#9670;&nbsp;</a></span>get_device_id()</h2>
 
