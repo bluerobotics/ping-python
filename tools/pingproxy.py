@@ -73,7 +73,7 @@ class PingProxy(object):
             self.clients[address].parse(data)
 
         except Exception as e:
-            if e.errno == errno.EAGAIN:
+            if isinstance(e, OSError) and e.errno == errno.EAGAIN:
                 pass  # waiting for data
             else:
                 print("Error reading data", e)
