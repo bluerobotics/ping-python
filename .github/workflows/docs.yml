@@ -21,7 +21,10 @@ jobs:
         python-version: '3.x'
 
     - name: Install dependencies
-      run: sudo apt-get install doxygen graphviz
+      run: |
+        pip install -U pip setuptools
+        pip install --user sphinx sphinx-rtd-theme
+        python setup.py install
 
     - name: Generate Documentation
       run:  ci/deploy-gh-pages.sh
@@ -30,4 +33,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./doc/html
+        publish_dir: ./doc/build/html

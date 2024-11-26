@@ -10,9 +10,10 @@ echob "generating message api..."
 test pip install jinja2
 test generate/generate-python.py --output-dir=brping
 
-echob "Build doxygen documentation."
+echob "Build sphinx documentation."
+test rm -rf doc/build
 test cd $doc_path
-test doxygen Doxyfile
+test make html
 
 echo "- Check files"
-ls -A "html/"
+ls -A "build/html/"

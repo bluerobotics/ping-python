@@ -1,4 +1,6 @@
-#'Ping python package'
+"""
+Ping python package
+"""
 from brping.definitions import *
 from brping.pingmessage import *
 from brping.device import PingDevice
