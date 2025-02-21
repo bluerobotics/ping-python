@@ -1,0 +1,9 @@
+{
+  "versions": [
+    {
+      "name": "latest",
+      "branch": "master",
+      "is_default": true
+    }
+  ]
+} 
