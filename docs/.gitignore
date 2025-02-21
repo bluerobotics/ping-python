@@ -1,0 +1,6 @@
+__pycache__
+_build
+source/python_api
+source/cpp_api
+source/lua_api
+**.pyc

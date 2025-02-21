@@ -1,0 +1,199 @@
+name: "Publish documentation"
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - docs/**
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build (leave empty to build all versions)'
+        required: false
+        type: string
+
+jobs:
+  # Load versions configuration from the default branch
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.set-matrix.outputs.versions }}
+      default_version: ${{ steps.set-matrix.outputs.default_version }}
+      multiversion_enabled: ${{ steps.set-matrix.outputs.multiversion_enabled }}
+      event_branch: ${{ steps.set-matrix.outputs.event_branch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - id: set-matrix
+        run: |
+          content=$(cd docs && cat versions.json)
+
+          # Extract versions from versions.json
+          versions=$(echo "$content" | jq -c '.versions')
+          echo "versions=$versions" >> $GITHUB_OUTPUT
+
+          # Extract default version
+          default_version=$(echo "$content" | jq -r '.versions[] | select(.is_default == true) | .name')
+          echo "default_version=$default_version" >> $GITHUB_OUTPUT
+
+          # Check if multi-version is enabled
+          version_count=$(echo "$content" | jq '.versions | length')
+          if [[ $version_count -gt 1 ]]; then
+            echo "multiversion_enabled=true" >> $GITHUB_OUTPUT
+          else
+            echo "multiversion_enabled=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Set event_branch
+          event_branch=""
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            event_branch="${{ github.ref_name }}"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]] && [ -n "${{ github.event.inputs.branch }}" ]; then
+            event_branch="${{ github.event.inputs.branch }}"
+          fi
+          echo "event_branch=$event_branch" >> $GITHUB_OUTPUT
+
+          # If event_branch is defined, check if it exists in versions.json
+          if [ -n "$event_branch" ]; then
+            # Check if the branch exists in the versions.json
+            branch_exists=$(echo "$content" | jq -r --arg branch "$event_branch" '.versions[] | select(.branch == $branch) | .branch')
+            if [ -z "$branch_exists" ]; then
+              echo "error: Branch $event_branch not found in versions.json" >&2
+              exit 1
+            fi
+            # If branch exists, filter out only that version
+            filtered_versions=$(echo "$content" | jq --arg branch "$event_branch" -c '[.versions[] | select(.branch == $branch)]')
+            echo "versions=$filtered_versions" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Debug set-matrix output
+        run: |
+          echo "Versions: ${{ steps.set-matrix.outputs.versions }}"
+          echo "Default Version: ${{ steps.set-matrix.outputs.default_version }}"
+          echo "Multiversion Enabled: ${{ steps.set-matrix.outputs.multiversion_enabled }}"
+          echo "Event Branch: ${{ steps.set-matrix.outputs.event_branch }}"
+
+      - name: Save versions.json to artifact
+        run: |
+          mkdir -p /tmp/versions
+          cp docs/versions.json /tmp/versions/versions.json
+
+      - name: Upload versions.json artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: versions-json
+          path: /tmp/versions/
+
+  # Build all docs
+  build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ${{ fromJson(needs.prepare.outputs.versions) }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.version.branch }}
+
+      - name: Download versions.json artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: versions-json
+          path: /tmp/versions/
+
+      - name: Override versions.json
+        run: cp /tmp/versions/versions.json docs/versions.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Doxygen (optional)
+        run: sudo apt-get update && sudo apt-get install -y doxygen
+
+      - name: Install dependencies
+        run: make -C docs setupenv
+
+      - name: Build docs
+        env:
+          MULTIVERSION_CURRENT_NAME: ${{ matrix.version.name }}
+          MULTIVERSION_CURRENT_BRANCH: ${{ matrix.version.branch }}
+          MULTIVERSION_ENABLED: ${{ needs.prepare.outputs.multiversion_enabled }}
+        run: |
+          output_dir="${{ matrix.version.name }}"
+          make -C docs dirhtml BUILDDIR="_build/$output_dir"
+
+      - name: Save build output to artifact
+        run: |
+          mkdir -p /tmp/build-output
+          cp -r docs/_build/${{ matrix.version.name }}/dirhtml/* /tmp/build-output/
+
+      - name: Upload build output artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output-${{ matrix.version.name }}
+          path: /tmp/build-output
+
+  # Deploy to gh-pages branch
+  deploy:
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Download all build output artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/build-output
+
+      - name: Replace folder if only one version was built
+        if: ${{ needs.prepare.outputs.event_branch != '' }}
+        run: |
+          version_name=$(echo '${{ needs.prepare.outputs.versions }}' | jq -r '.[0].name')
+          rm -rf $version_name
+          mkdir -p $version_name
+          cp -r /tmp/build-output/build-output-$version_name/* $version_name/
+
+      - name: Clear all and replace folders if multiple versions were built
+        if: ${{ needs.prepare.outputs.event_branch == '' }}
+        run: |
+          versions_json='${{ needs.prepare.outputs.versions }}'
+          rm -rf *
+          for version in $(echo "$versions_json" | jq -c '.[]'); do
+            version_name=$(echo "$version" | jq -r '.name')
+            mkdir -p $version_name
+            cp -r /tmp/build-output/build-output-$version_name/* $version_name/
+          done
+      
+      - name: Create redirect to default version
+        env:
+          DEFAULT_VERSION: ${{ needs.prepare.outputs.default_version }}
+        run: |
+          cat > index.html << EOF
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta http-equiv="refresh" content="0; url=./${DEFAULT_VERSION}/">
+            </head>
+          </html>
+          EOF
+
+      - name: Create .nojekyll
+        run: touch .nojekyll
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Update documentation"
+          git push origin gh-pages
