@@ -390,8 +390,7 @@ class PingParser(object):
         'msg_byte' is the byte to parse.
             If it completes a valid message, returns PingParser.NEW_MESSAGE.
             The decoded PingMessage will be available in the self.rx_msg attribute
-                until a new message is decoded.
-
+            until a new message is decoded.
         """
         # Apply the relevant parsing method for the current state.
         #  (offset by 1 because NEW_MESSAGE isn't processed - start at WAIT_START)

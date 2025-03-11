@@ -28,5 +28,5 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y doxygen
 
       - name: Build docs
-        run: make -C docs test
+        run: make -C docs test BUILDDIR="_build/$output_dir"
   
