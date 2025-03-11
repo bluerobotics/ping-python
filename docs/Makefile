@@ -27,8 +27,7 @@ setupenv:
 setup:
 	$(POETRY) install --all-extras
 	cd $(ROOT_DIR) && git submodule update --init
-	cd $(ROOT_DIR) && $(POETRY) --directory docs run python generate/generate-python.py --output-dir=brping
-	
+	$(POETRY) run python $(ROOT_DIR)/generate/generate-python.py --output-dir=$(ROOT_DIR)/brping
 
 .PHONY: update
 update:
@@ -55,6 +54,7 @@ preview: setup
 # Testing commands
 .PHONY: test
 test: setup
+	$(SPHINXBUILD) -b dirhtml $(TESTSPHINXOPTS) $(BUILDDIR)/dirhtml
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/dirhtml."
 
 .PHONY: linkcheck
