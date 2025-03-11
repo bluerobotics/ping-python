@@ -1,0 +1,32 @@
+name: "Test documentation"
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "docs/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: make -C docs setupenv
+
+      - name: Install Doxygen (optional)
+        run: sudo apt-get update && sudo apt-get install -y doxygen
+
+      - name: Build docs
+        run: make -C docs test
+  
