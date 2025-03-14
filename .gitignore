@@ -7,4 +7,4 @@ brping/definitions.py
 brping/device.py
 brping/ping1d.py
 brping/ping360.py
-
+doc/xml
