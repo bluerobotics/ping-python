@@ -8,4 +8,4 @@ A python implementation of the Blue Robotics Ping messaging protocol and a devic
   :maxdepth: 2
   :caption: Contents:
 
-  python_api/index
+  python_api/library_root
