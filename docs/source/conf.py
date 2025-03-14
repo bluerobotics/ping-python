@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import logging
 from datetime import date
 
 # Global variables
+root_path = os.path.abspath(os.path.join("..", ".."))
+
+sys.path.insert(0, root_path)
+
 
 SITE_URL = "https://docs.bluerobotics.com/ping-python/"
 REPO_URL = "https://github.com/bluerobotics/ping-python/"
@@ -28,7 +33,9 @@ extensions = [
     "myst_parser",
     "sphinx_blue_robotics_theme",
     "sphinx_blue_robotics_theme.extensions.extras",
-    "sphinx_blue_robotics_theme.extensions.python",
+    "sphinx_blue_robotics_theme.extensions.cpp",
+    "breathe",
+    "exhale",
 ]
 master_doc = "index"
 source_suffix = {'.rst': 'restructuredtext', '.md': 'restructuredtext'}
@@ -100,14 +107,34 @@ html_context = {
     "exclude_comments": True
 }
 
-autodoc2_packages = [
-    {
-        "path": "../../brping",
-        "auto_mode": True,
-    },
+# Breathe and Exhale configuration
+breathe_projects = {project: os.path.join(root_path, "doc", "xml")}
+breathe_default_project = project
+breathe_domain_by_extension = {"h": "cpp", "py": "py"}
+
+# Silence doxygen warnings 
+suppress_warnings = [
+    "ref.duplicate",  # Suppress warnings about duplicate references
+    "app.add_directive",  # Suppress warnings about directives
+    "autodoc.duplicate_object_description",  # Suppress warnings about duplicate object descriptions
 ]
 
-autodoc2_output_dir = "python_api"
+exhale_args = {
+    "containmentFolder":     "./python_api",
+    "rootFileName":          "library_root.rst",
+    "doxygenStripFromPath":  root_path,
+    "rootFileTitle":         "API Reference",
+    "createTreeView":        True,
+    "exhaleExecutesDoxygen": True,
+    "exhaleDoxygenStdin":    f"INPUT = {os.path.join(root_path, 'brping')}",
+    "verboseBuild":          True,
+}
 
 # Myst Parser options
 myst_enable_extensions = ["substitution", "colon_fence"]
+
+def setup(app):
+    # Suppress Breathe duplicate object & parameter mismatch warnings
+    logger = logging.getLogger("sphinx")
+    logger.addFilter(lambda record: "duplicate object description" not in record.getMessage())
+    logger.addFilter(lambda record: "does not match any of the parameters" not in record.getMessage())
