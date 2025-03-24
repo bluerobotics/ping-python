@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a52a1eba9e1c93c4da1c8d43eb396d5ad:
+
+Variable brping::definitions::PING360_MOTOR_OFF
+===============================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING360_MOTOR_OFF
+   :project: ping-python

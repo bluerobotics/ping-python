@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1aa814c25c9f9d460d21cdcbc221bd79e9:
+
+Variable brping::definitions::PING360_RESET
+===========================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING360_RESET
+   :project: ping-python

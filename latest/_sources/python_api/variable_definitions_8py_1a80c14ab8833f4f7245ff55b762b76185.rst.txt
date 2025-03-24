@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a80c14ab8833f4f7245ff55b762b76185:
+
+Variable brping::definitions::PING360_AUTO_DEVICE_DATA
+======================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING360_AUTO_DEVICE_DATA
+   :project: ping-python

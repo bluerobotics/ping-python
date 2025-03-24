@@ -1,0 +1,14 @@
+.. _exhale_variable_ping1d_8py_1aae120db1e8a3102b1e8470f41941fb40:
+
+Variable brping::ping1d::action
+===============================
+
+- Defined in :ref:`file_brping_ping1d.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::ping1d::action
+   :project: ping-python

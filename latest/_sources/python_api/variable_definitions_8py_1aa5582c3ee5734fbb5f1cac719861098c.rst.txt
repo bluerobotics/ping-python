@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1aa5582c3ee5734fbb5f1cac719861098c:
+
+Variable brping::definitions::payload_dict_ping360
+==================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::payload_dict_ping360
+   :project: ping-python

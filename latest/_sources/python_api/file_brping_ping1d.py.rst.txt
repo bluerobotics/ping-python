@@ -1,0 +1,81 @@
+
+.. _file_brping_ping1d.py:
+
+File ping1d.py
+==============
+
+|exhale_lsh| :ref:`Parent directory <dir_brping>` (``brping``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``brping/ping1d.py``)
+---------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_brping_ping1d.py.rst
+
+
+
+
+
+
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_brping`
+
+- :ref:`namespace_brping__ping1d`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classbrping_1_1ping1d_1_1Ping1D`
+
+
+Variables
+---------
+
+
+- :ref:`exhale_variable_ping1d_8py_1aae120db1e8a3102b1e8470f41941fb40`
+
+- :ref:`exhale_variable_ping1d_8py_1a27a67fe22aa5cd30289d0bbe4326c560`
+
+- :ref:`exhale_variable_ping1d_8py_1acbca6e03abbfe479f42bd28bd273ea60`
+
+- :ref:`exhale_variable_ping1d_8py_1ad50d540b90d697e60d7eecfb9dacaee4`
+
+- :ref:`exhale_variable_ping1d_8py_1a218b5398ee2efac6d80e6fcb188a89df`
+
+- :ref:`exhale_variable_ping1d_8py_1a3ef41ef53f1c8cb140de67ba6fb0ffbe`
+
+- :ref:`exhale_variable_ping1d_8py_1a59a3c53ae1f8510aa8a66e96eea8764b`
+
+- :ref:`exhale_variable_ping1d_8py_1a72d17e84f31c002b0caf1af32a63371e`
+
+- :ref:`exhale_variable_ping1d_8py_1aba713a90e58acbe3d6e3a315bd207604`
+
+- :ref:`exhale_variable_ping1d_8py_1a1622d58551ec80a779a563a33ceb3f43`
+
+- :ref:`exhale_variable_ping1d_8py_1ac267712f828d29be23216331a42d483e`
+
+- :ref:`exhale_variable_ping1d_8py_1a991bf45e39738120a2c7464c6b11d6c3`
+
+- :ref:`exhale_variable_ping1d_8py_1afeed46c4eaf3b4e0a9f5cb4cbe75bdc6`
+
+- :ref:`exhale_variable_ping1d_8py_1a203ae6e63f6038554bb6ff4f51a522f7`
+

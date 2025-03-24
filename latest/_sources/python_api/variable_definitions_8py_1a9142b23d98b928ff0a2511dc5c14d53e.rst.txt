@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a9142b23d98b928ff0a2511dc5c14d53e:
+
+Variable brping::definitions::PING1D_DISTANCE_SIMPLE
+====================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING1D_DISTANCE_SIMPLE
+   :project: ping-python

@@ -1,0 +1,39 @@
+
+.. _file_brping___init__.py:
+
+File __init__.py
+================
+
+|exhale_lsh| :ref:`Parent directory <dir_brping>` (``brping``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``brping/__init__.py``)
+-----------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file_brping___init__.py.rst
+
+
+
+
+
+
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_brping`
+

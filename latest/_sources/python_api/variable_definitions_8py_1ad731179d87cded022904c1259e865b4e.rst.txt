@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1ad731179d87cded022904c1259e865b4e:
+
+Variable brping::definitions::PING1D_GAIN_SETTING
+=================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING1D_GAIN_SETTING
+   :project: ping-python

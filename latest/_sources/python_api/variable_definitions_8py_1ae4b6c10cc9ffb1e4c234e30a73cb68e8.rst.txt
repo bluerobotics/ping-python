@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1ae4b6c10cc9ffb1e4c234e30a73cb68e8:
+
+Variable brping::definitions::PING360_TRANSDUCER
+================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING360_TRANSDUCER
+   :project: ping-python

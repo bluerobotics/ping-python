@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a53764ae772e4d4b8f9139a0eef9a9002:
+
+Variable brping::definitions::PING1D_MODE_AUTO
+==============================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING1D_MODE_AUTO
+   :project: ping-python

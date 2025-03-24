@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1ac7b6147fa4111d7299160938d79306ae:
+
+Variable brping::definitions::COMMON_PROTOCOL_VERSION
+=====================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::COMMON_PROTOCOL_VERSION
+   :project: ping-python

@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1ac870b455f5068271a46c9520400bb841:
+
+Variable brping::definitions::PING1D_GOTO_BOOTLOADER
+====================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING1D_GOTO_BOOTLOADER
+   :project: ping-python

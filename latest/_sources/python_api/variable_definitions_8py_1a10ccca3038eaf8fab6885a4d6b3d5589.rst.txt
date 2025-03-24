@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a10ccca3038eaf8fab6885a4d6b3d5589:
+
+Variable brping::definitions::COMMON_NACK
+=========================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::COMMON_NACK
+   :project: ping-python

@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a109e984e6ea265342af78a2248d18109:
+
+Variable brping::definitions::PING1D_RANGE
+==========================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING1D_RANGE
+   :project: ping-python

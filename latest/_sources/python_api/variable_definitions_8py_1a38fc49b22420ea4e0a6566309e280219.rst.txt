@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a38fc49b22420ea4e0a6566309e280219:
+
+Variable brping::definitions::COMMON_GENERAL_REQUEST
+====================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::COMMON_GENERAL_REQUEST
+   :project: ping-python

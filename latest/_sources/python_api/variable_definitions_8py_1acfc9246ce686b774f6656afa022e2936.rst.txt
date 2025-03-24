@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1acfc9246ce686b774f6656afa022e2936:
+
+Variable brping::definitions::PING360_AUTO_TRANSMIT
+===================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING360_AUTO_TRANSMIT
+   :project: ping-python

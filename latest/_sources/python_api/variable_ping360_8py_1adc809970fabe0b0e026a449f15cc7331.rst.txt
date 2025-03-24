@@ -1,0 +1,14 @@
+.. _exhale_variable_ping360_8py_1adc809970fabe0b0e026a449f15cc7331:
+
+Variable brping::ping360::tend_s
+================================
+
+- Defined in :ref:`file_brping_ping360.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::ping360::tend_s
+   :project: ping-python

@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a33e595f59713bb999169439d13272d8d:
+
+Variable brping::definitions::PING1D_CONTINUOUS_START
+=====================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING1D_CONTINUOUS_START
+   :project: ping-python

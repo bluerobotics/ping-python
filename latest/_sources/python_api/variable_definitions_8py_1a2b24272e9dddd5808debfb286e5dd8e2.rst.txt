@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a2b24272e9dddd5808debfb286e5dd8e2:
+
+Variable brping::definitions::PING1D_CONTINUOUS_STOP
+====================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING1D_CONTINUOUS_STOP
+   :project: ping-python

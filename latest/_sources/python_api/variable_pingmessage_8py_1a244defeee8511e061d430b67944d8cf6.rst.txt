@@ -1,0 +1,14 @@
+.. _exhale_variable_pingmessage_8py_1a244defeee8511e061d430b67944d8cf6:
+
+Variable brping::pingmessage::p
+===============================
+
+- Defined in :ref:`file_brping_pingmessage.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::pingmessage::p
+   :project: ping-python

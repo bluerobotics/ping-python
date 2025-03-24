@@ -1,0 +1,14 @@
+.. _exhale_variable_device_8py_1a250c7c56d887c22fe02b1c36e9caede4:
+
+Variable brping::device::args
+=============================
+
+- Defined in :ref:`file_brping_device.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::device::args
+   :project: ping-python

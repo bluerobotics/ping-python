@@ -1,0 +1,26 @@
+.. _exhale_class_classbrping_1_1pingmessage_1_1PingMessage:
+
+Class PingMessage
+=================
+
+- Defined in :ref:`file_brping_pingmessage.py`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public object``
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: brping::pingmessage::PingMessage
+   :project: ping-python
+   :members:
+   :protected-members:
+   :undoc-members:

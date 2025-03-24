@@ -1,0 +1,14 @@
+.. _exhale_variable_ping360_8py_1a9376a04d851af7cd01f3d3d34f75a589:
+
+Variable brping::ping360::str
+=============================
+
+- Defined in :ref:`file_brping_ping360.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::ping360::str
+   :project: ping-python

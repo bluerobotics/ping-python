@@ -1,0 +1,3572 @@
+
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+    <!-- Meta tags -->
+    
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+      <!-- Page description -->
+      
+
+      <!-- Page author -->
+      
+
+      <!-- Canonical -->
+      
+
+      <!-- Favicon -->
+      <link rel="icon" href="_static/favicon.ico" />
+    
+
+    <!-- Site title -->
+    
+      
+        <title>Variable brping::definitions::PING1D_SET_DEVICE_ID - ping-python  documentation</title>
+      
+    
+
+    <!-- Theme-related style sheets -->
+    
+
+      <!-- Extra color palette -->
+      
+        
+
+        <!-- Theme-color meta tag for Android -->
+        
+      
+
+      <!-- Custom icons -->
+      
+
+    
+
+    <!-- JavaScript libraries -->
+    
+
+    <!-- Webfonts -->
+    
+
+      <!-- Load fonts from Google -->
+      
+        
+        
+        <style>
+          :root {
+            --md-text-font: "Roboto";
+            --md-code-font: "Roboto Mono";
+          }
+        </style>
+      
+    
+
+    <!-- Custom stylesheets -->
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.02cb18745d09eea51.min.css?v=ff456132" />
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+        <link rel="stylesheet" type="text/css" href="../../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/main.css?v=a2e3b4dc" />
+
+    <!-- Helper functions for inline scripts -->
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+
+    <!-- Analytics -->
+    
+      
+
+    
+
+    <!-- Meta tags from front matter or plugins -->
+    
+
+    <!-- Custom front matter -->
+    
+  </head>
+
+  <!-- Set text direction and color palette, if defined -->
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body
+      dir="ltr"
+      data-md-color-scheme="default"
+      data-md-color-primary=""
+      data-md-color-accent=""
+    >
+  
+    
+
+    <!-- User preference: color palette -->
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+
+    <!--
+      State toggles - we need to set autocomplete="off" in order to reset the
+      drawer on back button invocation in some browsers
+    -->
+    <input
+      class="md-toggle"
+      data-md-toggle="drawer"
+      type="checkbox"
+      id="__drawer"
+      autocomplete="off"
+    />
+    <input
+      class="md-toggle"
+      data-md-toggle="search"
+      type="checkbox"
+      id="__search"
+      autocomplete="off"
+    />
+
+    <!-- Overlay for expanded drawer -->
+    <label class="md-overlay" for="__drawer"></label>
+
+    <!-- Skip to content -->
+    <div data-md-component="skip">
+      
+        
+        <a href="#variable-documentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+
+    <!-- Announcement bar -->
+    <div data-md-component="announce">
+      
+    </div>
+
+    <!-- Version warning -->
+    
+
+    <!-- Header -->
+    
+      
+
+<!-- Determine class according to configuration -->
+
+
+
+<!-- Header -->
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+
+    <!-- Link to home -->
+    <a href="https://bluerobotics.com" title="ping-python  documentation"
+      class="md-header__button md-logo" aria-label="ping-python  documentation" data-md-component="logo">
+      
+<!-- Logo -->
+<img src="../../_static/img/logo-dark.png" alt="logo" class="show-slate" />
+<img src="../../_static/img/logo.png" alt="logo" class="show-default" />
+    </a>
+
+    <!-- Button to open drawer -->
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+
+    <!-- Icon -->
+    <a href="https://bluerobotics.com" title="ping-python  documentation"
+      class="mobile-logo" aria-label="ping-python  documentation">
+      
+<!-- Logo -->
+<img src="../../_static/img/logo-dark.png" alt="logo" class="show-slate" />
+<img src="../../_static/img/logo.png" alt="logo" class="show-default" />
+    </a>
+
+    <!-- Button to open search modal -->
+    
+    <label class="md-header__button md-icon" for="__search">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+    </label>
+
+   <div class="md-header__title" data-md-component="header-title">
+    <div class="md-header__ellipsis">
+      <div class="md-header__topic" data-md-component="header-topic"></div>
+    </div>
+  </div>
+
+    <!-- Search interface -->
+    <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    <!-- Custom mega menu  -->
+    
+    <div class="md_header__mega-menu">
+      <!-- Mobile icon -->
+      <label for="__drawer-right" class="mega-menu-item show-on-mobile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-layout-grid">
+          <rect width="7" height="7" x="3" y="3" rx="1" />
+          <rect width="7" height="7" x="14" y="3" rx="1" />
+          <rect width="7" height="7" x="14" y="14" rx="1" />
+          <rect width="7" height="7" x="3" y="14" rx="1" />
+        </svg>
+      </label>
+
+      <!-- Mega Menu desktop -->
+      <div class="md_header__mega-menu hide-on-mobile">
+        
+<nav class="mega-menu mega-menu-docs">
+  <ul>
+    <li class="mega-menu-item mega-menu-item_l1">
+      <a class="mega-menu-title" href="https://docs.bluerobotics.com" 
+         >
+        Docs<span class="mega-indicator"></span>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+
+<nav class="mega-menu mega-menu-projects">
+  <ul>
+    <li class="mega-menu-item mega-menu-item_l1">
+      <a class="mega-menu-title" href="#" 
+          tabindex="0" aria-haspopup="true" aria-expanded="false" role="button" >
+        Projects<span class="mega-indicator"></span>
+      </a>
+      
+      <ul class="mega-sub-menu">
+        
+        <li class="mega-menu-item mega-menu-item_l2">
+          <a class="mega-menu-header" href="#">
+            BlueOS
+          </a>
+          
+          <ul class="mega-sub-menu">
+            
+            <li>
+              <a class="mega-menu-link" href="https://blueos.cloud/docs/">
+                BlueOS docs
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://blueos.cloud/cockpit/docs/">
+                Cockpit docs
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://github.com/orgs/BlueOS-community/repositories">
+                BlueOS Community (GitHub)
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="hhttps://blueos.cloud/">
+                About BlueOS
+              </a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li class="mega-menu-item mega-menu-item_l2">
+          <a class="mega-menu-header" href="#">
+            Navigator
+          </a>
+          
+          <ul class="mega-sub-menu">
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                Navigator Libraries (Python)
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                Navigator Libraries (C++)
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                Navigator Libraries (Rust)
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://bluerobotics.com/store/comm-control-power/control/navigator/">
+                See Navigator Product
+              </a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li class="mega-menu-item mega-menu-item_l2">
+          <a class="mega-menu-header" href="#">
+            Ping Sonars and Ping Protocol
+          </a>
+          
+          <ul class="mega-sub-menu">
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                Ping Viewer
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                Ping Protocol
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                ping-rs
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                ping-cpp
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                ping-arduino
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                ping-python
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://bluerobotics.com/product-category/sonars/">
+                See Ping Sonar Products
+              </a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li class="mega-menu-item mega-menu-item_l2">
+          <a class="mega-menu-header" href="#">
+            Sensors
+          </a>
+          
+          <ul class="mega-sub-menu">
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                ms5837-python
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                BlueRobotics_MS5837_Library (Arduino)
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                KellerLD-python
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                BlueRobotics_KellerLD_Library (Arduino)
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                tsys01-python
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="#">
+                BlueRobotics_TSYS01_Library (Arduino)
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://bluerobotics.com/product-category/sensors-cameras/sensors/">
+                See Sensor Products
+              </a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+      </ul>
+      
+    </li>
+  </ul>
+</nav>
+
+<nav class="mega-menu mega-menu-community">
+  <ul>
+    <li class="mega-menu-item mega-menu-item_l1">
+      <a class="mega-menu-title" href="#" 
+          tabindex="0" aria-haspopup="true" aria-expanded="false" role="button" >
+        Community<span class="mega-indicator"></span>
+      </a>
+      
+      <ul class="mega-sub-menu">
+        
+        <li class="mega-menu-item mega-menu-item_l2">
+          <a class="mega-menu-header" href="#">
+            Blue Robotics
+          </a>
+          
+          <ul class="mega-sub-menu">
+            
+            <li>
+              <a class="mega-menu-link" href="https://bluerobotics.com/about/">
+                About Blue Robotics
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://bluerobotics.com/store/">
+                Visit the Store
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://bluerobotics.com/learn/">
+                Blue Robotics Guides
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://github.com/bluerobotics">
+                Blue Robotics Github
+              </a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li class="mega-menu-item mega-menu-item_l2">
+          <a class="mega-menu-header" href="#">
+            Support
+          </a>
+          
+          <ul class="mega-sub-menu">
+            
+            <li>
+              <a class="mega-menu-link" href="https://discuss.bluerobotics.com/">
+                Blue Robotics Forum
+              </a>
+            </li>
+            
+            <li>
+              <a class="mega-menu-link" href="https://bluerobotics.com/help/?want=report">
+                Blue Robotics Support
+              </a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+      </ul>
+      
+    </li>
+  </ul>
+</nav>
+
+      </div>
+    </div>
+
+    <!-- Right Drawer Toggle -->
+    <input type="checkbox" id="__drawer-right" class="md-drawer-toggle" hidden />
+
+    <!-- Right Drawer Overlay -->
+    <label for="__drawer-right" class="md-overlay-right-drawer"></label>
+
+    <!-- Right Drawer -->
+    <nav class="md-drawer md-drawer-right show-on-mobile">
+      <div class="md-drawer__megamenu">
+        
+
+<!-- Determine class according to configuration -->
+
+
+
+
+<!-- Main navigation -->
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <!-- Render item list -->
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+    
+    
+    
+    
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.bluerobotics.com" class="md-nav__link">
+        Docs
+      </a>
+    </li>
+  
+
+    
+    
+    
+    
+    
+    
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__rightdrawer_2" type="checkbox" id="__rightdrawer_2" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="#">Projects</a>
+          
+            <label for="__rightdrawer_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="" data-md-level="1">
+        <label class="md-nav__title" for="__rightdrawer_2">
+          <span class="md-nav__icon md-icon"></span>
+          Projects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__rightdrawer_2_1" type="checkbox" id="__rightdrawer_2_1" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="#">BlueOS</a>
+          
+            <label for="__rightdrawer_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="" data-md-level="2">
+        <label class="md-nav__title" for="__rightdrawer_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          BlueOS
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://blueos.cloud/docs/" class="md-nav__link">
+        BlueOS docs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://blueos.cloud/cockpit/docs/" class="md-nav__link">
+        Cockpit docs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/orgs/BlueOS-community/repositories" class="md-nav__link">
+        BlueOS Community (GitHub)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hhttps://blueos.cloud/" class="md-nav__link">
+        About BlueOS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__rightdrawer_2_2" type="checkbox" id="__rightdrawer_2_2" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="#">Navigator</a>
+          
+            <label for="__rightdrawer_2_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="" data-md-level="2">
+        <label class="md-nav__title" for="__rightdrawer_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Navigator
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        Navigator Libraries (Python)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        Navigator Libraries (C++)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        Navigator Libraries (Rust)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bluerobotics.com/store/comm-control-power/control/navigator/" class="md-nav__link">
+        See Navigator Product
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__rightdrawer_2_3" type="checkbox" id="__rightdrawer_2_3" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="#">Ping Sonars and Ping Protocol</a>
+          
+            <label for="__rightdrawer_2_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="" data-md-level="2">
+        <label class="md-nav__title" for="__rightdrawer_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Ping Sonars and Ping Protocol
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        Ping Viewer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        Ping Protocol
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        ping-rs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        ping-cpp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        ping-arduino
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        ping-python
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bluerobotics.com/product-category/sonars/" class="md-nav__link">
+        See Ping Sonar Products
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__rightdrawer_2_4" type="checkbox" id="__rightdrawer_2_4" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="#">Sensors</a>
+          
+            <label for="__rightdrawer_2_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="" data-md-level="2">
+        <label class="md-nav__title" for="__rightdrawer_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Sensors
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        ms5837-python
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        BlueRobotics_MS5837_Library (Arduino)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        KellerLD-python
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        BlueRobotics_KellerLD_Library (Arduino)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        tsys01-python
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="#" class="md-nav__link">
+        BlueRobotics_TSYS01_Library (Arduino)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bluerobotics.com/product-category/sensors-cameras/sensors/" class="md-nav__link">
+        See Sensor Products
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+    
+    
+    
+    
+    
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__rightdrawer_3" type="checkbox" id="__rightdrawer_3" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="#">Community</a>
+          
+            <label for="__rightdrawer_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="" data-md-level="1">
+        <label class="md-nav__title" for="__rightdrawer_3">
+          <span class="md-nav__icon md-icon"></span>
+          Community
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__rightdrawer_3_1" type="checkbox" id="__rightdrawer_3_1" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="#">Blue Robotics</a>
+          
+            <label for="__rightdrawer_3_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="" data-md-level="2">
+        <label class="md-nav__title" for="__rightdrawer_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Blue Robotics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bluerobotics.com/about/" class="md-nav__link">
+        About Blue Robotics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bluerobotics.com/store/" class="md-nav__link">
+        Visit the Store
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bluerobotics.com/learn/" class="md-nav__link">
+        Blue Robotics Guides
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/bluerobotics" class="md-nav__link">
+        Blue Robotics Github
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__rightdrawer_3_2" type="checkbox" id="__rightdrawer_3_2" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="#">Support</a>
+          
+            <label for="__rightdrawer_3_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="" data-md-level="2">
+        <label class="md-nav__title" for="__rightdrawer_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Support
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://discuss.bluerobotics.com/" class="md-nav__link">
+        Blue Robotics Forum
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bluerobotics.com/help/?want=report" class="md-nav__link">
+        Blue Robotics Support
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+    
+  </ul>
+</nav>
+      </div>
+    </nav>
+    
+
+    <!-- Color palette -->
+    
+    <form class="md-header__option" data-md-component="palette">
+      
+      
+      
+      <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default"
+        data-md-color-primary="" data-md-color-accent="" 
+        aria-label="Switch to dark mode"  type="radio" name="__palette"
+        id="__palette_1" />
+      
+      <label class="md-header__button md-icon" title="Switch to dark mode"
+        for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M9.598 1.591a.75.75 0 0 1 .785-.175 7 7 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.5 5.5 0 1 0 7.678-7.678z"/></svg>
+      </label>
+      
+      
+      
+      
+      <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate"
+        data-md-color-primary="" data-md-color-accent="" 
+        aria-label="Switch to light mode"  type="radio" name="__palette"
+        id="__palette_2" />
+      
+      <label class="md-header__button md-icon" title="Switch to light mode"
+        for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 10.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13zM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061zM16 8a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8zM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8zm10.657-5.657a.75.75 0 0 1 0 1.061l-1.061 1.06a.75.75 0 1 1-1.06-1.06l1.06-1.06a.75.75 0 0 1 1.06 0zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0z"/></svg>
+      </label>
+      
+      
+    </form>
+    
+
+    <!-- Site language selector -->
+    
+
+    <!-- Repository information -->
+    
+    <div class="md-header__source">
+      <a href="https://github.com/bluerobotics/ping-python/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ping-python
+  </div>
+</a>
+    </div>
+    
+
+
+    <!-- Navigation tabs (sticky) -->
+    
+
+</header>
+    
+
+    <!-- Container -->
+    <div class="md-container" data-md-component="container">
+
+      <!-- Hero teaser -->
+      
+      
+      
+
+      <!-- Navigation tabs (collapsing) -->
+      
+        
+          
+        
+      
+
+      <!-- Main area -->
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+
+          <!-- Sidebars -->
+          
+
+            <!-- Navigation -->
+            
+              
+              <div
+                class="md-sidebar md-sidebar--primary"
+                data-md-component="sidebar"
+                data-md-type="navigation"
+                
+              >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<!-- Determine class according to configuration -->
+
+
+
+
+<!-- Main navigation -->
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+
+  <!-- Site title -->
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://docs.bluerobotics.com/ping-python/">
+      ping-python
+    </a>
+  </label>
+
+  <!-- Repository information -->
+  
+  <div class="md-nav__source">
+    <a href="https://github.com/bluerobotics/ping-python/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ping-python
+  </div>
+</a>
+  </div>
+  
+
+  <!-- Render item list -->
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+    
+    
+    
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">Contents:<wbr></span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Contents:" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Contents:<wbr></span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1" type="checkbox" id="__nav_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../library_root/"><span class="md-ellipsis">API Reference</span></a>
+          
+            <label for="__nav_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1" type="checkbox" id="__nav_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../library_root/#full-api"><span class="md-ellipsis">Full API</span></a>
+          
+            <label for="__nav_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Full API" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Full API</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_1" type="checkbox" id="__nav_1_1_1_1" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../library_root/#namespaces"><span class="md-ellipsis">Namespaces</span></a>
+          
+            <label for="__nav_1_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Namespaces" data-md-level="4">
+        <label class="md-nav__title" for="__nav_1_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Namespaces</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_brping/" class="md-nav__link">
+        <span class="md-ellipsis">Namespace brping</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_brping__definitions/" class="md-nav__link">
+        <span class="md-ellipsis">Namespace brping::<wbr>definitions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_brping__device/" class="md-nav__link">
+        <span class="md-ellipsis">Namespace brping::<wbr>device</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_brping__ping1d/" class="md-nav__link">
+        <span class="md-ellipsis">Namespace brping::<wbr>ping1d</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_brping__ping360/" class="md-nav__link">
+        <span class="md-ellipsis">Namespace brping::<wbr>ping360</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespace_brping__pingmessage/" class="md-nav__link">
+        <span class="md-ellipsis">Namespace brping::<wbr>pingmessage</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_2" type="checkbox" id="__nav_1_1_1_2" >
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../library_root/#classes-and-structs"><span class="md-ellipsis">Classes and Structs</span></a>
+          
+            <label for="__nav_1_1_1_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Classes and Structs" data-md-level="4">
+        <label class="md-nav__title" for="__nav_1_1_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Classes and Structs</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classbrping_1_1device_1_1PingDevice/" class="md-nav__link">
+        <span class="md-ellipsis">Class Ping<wbr>Device</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classbrping_1_1ping1d_1_1Ping1D/" class="md-nav__link">
+        <span class="md-ellipsis">Class Ping1D</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classbrping_1_1ping360_1_1Ping360/" class="md-nav__link">
+        <span class="md-ellipsis">Class Ping360</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classbrping_1_1pingmessage_1_1PingMessage/" class="md-nav__link">
+        <span class="md-ellipsis">Class Ping<wbr>Message</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classbrping_1_1pingmessage_1_1PingParser/" class="md-nav__link">
+        <span class="md-ellipsis">Class Ping<wbr>Parser</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_3" type="checkbox" id="__nav_1_1_1_3" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../library_root/#variables"><span class="md-ellipsis">Variables</span></a>
+          
+            <label for="__nav_1_1_1_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Variables" data-md-level="4">
+        <label class="md-nav__title" for="__nav_1_1_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Variables</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a688e9459a90f207aff3748685902e7df/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>COMMON_<wbr>ACK</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a96c0c422950e0ae25c073e5fb2add1bc/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>COMMON_<wbr>ASCII_<wbr>TEXT</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a9546127472946bfcb3670b5ec9eea703/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>COMMON_<wbr>DEVICE_<wbr>INFORMATION</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a38fc49b22420ea4e0a6566309e280219/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>COMMON_<wbr>GENERAL_<wbr>REQUEST</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a10ccca3038eaf8fab6885a4d6b3d5589/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>COMMON_<wbr>NACK</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ac7b6147fa4111d7299160938d79306ae/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>COMMON_<wbr>PROTOCOL_<wbr>VERSION</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a57d284ed80231646748fc03e2616c795/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>COMMON_<wbr>SET_<wbr>DEVICE_<wbr>ID</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a14540039f50137588d4eed7d4899d24f/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>payload_<wbr>dict_<wbr>all</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1aad83d27cde609aa6936465c6dbbc1643/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>payload_<wbr>dict_<wbr>common</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1afec886e6d17f2c1657d843b0fa3fcb00/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>payload_<wbr>dict_<wbr>ping1d</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1aa5582c3ee5734fbb5f1cac719861098c/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>payload_<wbr>dict_<wbr>ping360</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a33e595f59713bb999169439d13272d8d/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>CONTINUOUS_<wbr>START</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a2b24272e9dddd5808debfb286e5dd8e2/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>CONTINUOUS_<wbr>STOP</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a9afdc007fccef40067d0b61fbc6ba967/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>DEVICE_<wbr>ID</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ace68eec52b3522f640e8df107e9194b1/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>DISTANCE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a9142b23d98b928ff0a2511dc5c14d53e/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>DISTANCE_<wbr>SIMPLE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ad5bae96ba63737b70c6b967fdebcb759/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>FIRMWARE_<wbr>VERSION</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ad731179d87cded022904c1259e865b4e/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>GAIN_<wbr>SETTING</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a4e63bfc95879eb25b0325a53e1eb464c/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>GENERAL_<wbr>INFO</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ac870b455f5068271a46c9520400bb841/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>GOTO_<wbr>BOOTLOADER</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a53764ae772e4d4b8f9139a0eef9a9002/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>MODE_<wbr>AUTO</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a3891daf87078b3f7fb72823d2b729a11/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>PCB_<wbr>TEMPERATURE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1afdbd1eabc8f4ec53c11d92d9e9871261/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>PING_<wbr>ENABLE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1adf61b180aad9eb4f566b9c5b1deecf3e/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>PING_<wbr>INTERVAL</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ade4a97d145dd2e7b1fec8cdfa3326fc2/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>PROCESSOR_<wbr>TEMPERATURE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a491fa4b39fbe05d065d016309a157cb0/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>PROFILE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a109e984e6ea265342af78a2248d18109/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>RANGE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>DEVICE_<wbr>ID</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>DEVICE_<wbr>ID</span>
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>DEVICE_<wbr>ID</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#variable-documentation" class="md-nav__link">
+    <span class="md-ellipsis">Variable Documentation</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variable Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#brping.definitions.PING1D_SET_DEVICE_ID" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="brping.definitions.PING1D_SET_DEVICE_ID (Python attribute)" class="md-ellipsis">brping.<wbr>definitions.<wbr>PING1D_<wbr>SET_<wbr>DEVICE_<wbr>ID</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1adcd1c2f2281528c4d9f7e6c42b16fea1/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>GAIN_<wbr>SETTING</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a7af61de9c235cbc1cab82425d0bb7c2b/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>MODE_<wbr>AUTO</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ad2a311ee171f32a207a642341b9d17c5/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>PING_<wbr>ENABLE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a8e76b6d22b9173153960910b117277e0/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>PING_<wbr>INTERVAL</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a804cd6b01edfa5eb16b45f68e305f955/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>RANGE</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a95aa523c0c348e891545d124502c5254/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>SPEED_<wbr>OF_<wbr>SOUND</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a2b4974886c4393d9d82124f317a0a623/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SPEED_<wbr>OF_<wbr>SOUND</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a0833445f17894576c33de6ba257718d7/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>TRANSMIT_<wbr>DURATION</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1aed42b69f24436aaf5eff8324d8a6bd99/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>VOLTAGE_<wbr>5</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a80c14ab8833f4f7245ff55b762b76185/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING360_<wbr>AUTO_<wbr>DEVICE_<wbr>DATA</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1acfc9246ce686b774f6656afa022e2936/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING360_<wbr>AUTO_<wbr>TRANSMIT</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ad7d01038c016f907af56513b3a84574a/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING360_<wbr>DEVICE_<wbr>DATA</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a7525d6e86a4d33e8951277037ad54ef3/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING360_<wbr>DEVICE_<wbr>ID</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a52a1eba9e1c93c4da1c8d43eb396d5ad/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING360_<wbr>MOTOR_<wbr>OFF</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1aa814c25c9f9d460d21cdcbc221bd79e9/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING360_<wbr>RESET</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1ae4b6c10cc9ffb1e4c234e30a73cb68e8/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING360_<wbr>TRANSDUCER</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_definitions_8py_1a51336b65fd1ec7547f4bee43bd2c1f04/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PINGMESSAGE_<wbr>UNDEFINED</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a8e6c8735102f796e131900fc2ff65511/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>action</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a250c7c56d887c22fe02b1c36e9caede4/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>args</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1ab44441b8336d0e49cbda20948ed8f7a6/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>default</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a4af3a874470af41854d262d9674f2a8c/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>False</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1aa75dde5dd53704d3808267cf3784e7f0/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>help</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a9c542fdbddb11fd1ff789ca4babcb58f/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>host</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a801164f84c8ab477e0d7f2fbd2494df7/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>int</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1aef0406cc7a449b70e8209a200437a796/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>p</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1aef474a3010ee48e256affd7caff8d61f/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>parser</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a8630343277dc9045393b6429c2ca16ad/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>port</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a52019a5b5b9946a2609409f453b59ce7/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>required</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a413c062ba51b50424a955cbbff051b5e/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>result</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a67e6b93c2fc3049926ea59f39c94e446/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>str</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_device_8py_1a0381b951ecb5330f34dd2809d9602f10/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>device::<wbr>type</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1aae120db1e8a3102b1e8470f41941fb40/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>action</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1a27a67fe22aa5cd30289d0bbe4326c560/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>args</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1acbca6e03abbfe479f42bd28bd273ea60/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>default</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1ad50d540b90d697e60d7eecfb9dacaee4/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>False</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1a218b5398ee2efac6d80e6fcb188a89df/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>help</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1a3ef41ef53f1c8cb140de67ba6fb0ffbe/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>host</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1a59a3c53ae1f8510aa8a66e96eea8764b/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>int</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1a72d17e84f31c002b0caf1af32a63371e/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>p</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1aba713a90e58acbe3d6e3a315bd207604/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>parser</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1a1622d58551ec80a779a563a33ceb3f43/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>port</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1ac267712f828d29be23216331a42d483e/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>required</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1a991bf45e39738120a2c7464c6b11d6c3/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>result</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1afeed46c4eaf3b4e0a9f5cb4cbe75bdc6/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>str</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping1d_8py_1a203ae6e63f6038554bb6ff4f51a522f7/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping1d::<wbr>type</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a1103a0d6a92dd73bd978ac1bbb4bb5a6/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>action</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1aeb6b205358cad6c811750150cf043e65/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>args</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1af9fc4110389fc521c95565aa31fa4159/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>default</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a7a7304649208897016436d629b70df3a/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>False</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a846f17f371b3cf20e6fdedf8f8ff342e/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>help</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1ad73d14a80731f566b824321309835d2f/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>host</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a9a33924b081aca44a713aa40517ea00e/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>int</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a540f31536f5b3345fa620dba5afddeaf/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>p</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a5ee4bfb58157ce9a476681da13aa1d54/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>parser</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a2e317d26557e9824d1ac841665145594/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>port</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a61c293b90f780e80187d8657fc300d51/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>required</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1a9376a04d851af7cd01f3d3d34f75a589/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>str</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1adc809970fabe0b0e026a449f15cc7331/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>tend_<wbr>s</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1af514b314d2fc9934455441fe0ce7cea2/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>tstart_<wbr>s</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_ping360_8py_1af109f16c297915a2ffe9ec12f2b9e4b9/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>ping360::<wbr>type</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_pingmessage_8py_1a0301c80c7375b1c57f2f387557b51219/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>pingmessage::<wbr>ascii<wbr>Msgs</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_pingmessage_8py_1a244defeee8511e061d430b67944d8cf6/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>pingmessage::<wbr>p</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_pingmessage_8py_1ab3fb5a32866af1e102dbbb08f46fa335/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>pingmessage::<wbr>payload_<wbr>dict</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_pingmessage_8py_1a1a485441e7e6f3885b76c295ae22e293/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>pingmessage::<wbr>result</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_pingmessage_8py_1ab307b82ce08e563607e9b467123da1ac/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>pingmessage::<wbr>test_<wbr>profile_<wbr>buf</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_pingmessage_8py_1a7b8d759fea8cdca3e4e79c9fe3161111/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>pingmessage::<wbr>test_<wbr>protocol_<wbr>version_<wbr>buf</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../variable_pingmessage_8py_1af9ddd9f3c254d74f8d1b27817119dc7b/" class="md-nav__link">
+        <span class="md-ellipsis">Variable brping::<wbr>pingmessage::<wbr>variable_<wbr>msgs</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+
+            <!-- Table of contents -->
+            
+              
+              <div
+                class="md-sidebar md-sidebar--secondary"
+                data-md-component="sidebar"
+                data-md-type="toc"
+                
+              >
+                
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Variable brping::<wbr>definitions::<wbr>PING1D_<wbr>SET_<wbr>DEVICE_<wbr>ID</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#variable-documentation" class="md-nav__link">
+    <span class="md-ellipsis">Variable Documentation</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variable Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#brping.definitions.PING1D_SET_DEVICE_ID" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="brping.definitions.PING1D_SET_DEVICE_ID (Python attribute)" class="md-ellipsis">brping.<wbr>definitions.<wbr>PING1D_<wbr>SET_<wbr>DEVICE_<wbr>ID</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+
+          <!-- Page content -->
+          
+            <div class="md-content" data-md-component="content">
+              <!-- sphinx-immaterial: Include role="main" for sphinx search -->
+              <article class="md-content__inner md-typeset" role="main">
+                <!-- sphinx-immaterial: make content of `body` block visible to `content.html` -->
+                  
+
+
+  <a href="https://github.com/bluerobotics/ping-python/blob/master/docs/source/python_api/variable_definitions_8py_1ab44bdac646dfaa834e31318425547934.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+  </a>
+
+<h1 id="variable-brping-definitions-ping1d-set-device-id"><span id="exhale-variable-definitions-8py-1ab44bdac646dfaa834e31318425547934"></span>Variable brping::definitions::PING1D_SET_DEVICE_ID<a class="headerlink" href="#variable-brping-definitions-ping1d-set-device-id" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="../file_brping_definitions.py/#file-brping-definitions-py"><span class="std std-ref">File definitions.py</span></a></p></li>
+</ul>
+<h2 id="variable-documentation">Variable Documentation<a class="headerlink" href="#variable-documentation" title="Link to this heading">¶</a></h2>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="brping.definitions.PING1D_SET_DEVICE_ID">
+<span class="target" id="definitions_8py_1ab44bdac646dfaa834e31318425547934"></span><span class="sig-prename descclassname"><span class="pre">brping.definitions.</span></span><span class="sig-name descname"><span class="pre">PING1D_SET_DEVICE_ID</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="mi">1000</span></code><a class="headerlink" href="#brping.definitions.PING1D_SET_DEVICE_ID" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      24 Mar 2025
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+
+          <!-- User preference: content -->
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+
+        <!-- Back-to-top button -->
+        
+          <a
+            href="#"
+            class="md-top md-icon"
+            data-md-component="top"
+            hidden
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+
+      <!-- Footer -->
+      
+        
+
+<!-- Footer -->
+<footer class="md-footer">
+
+  <!-- Link to previous and/or next page -->
+  
+  
+  <nav class="md-footer__inner md-grid" aria-label="Footer" >
+
+    <!-- Link to previous page -->
+    
+    
+    <a href="../variable_definitions_8py_1a109e984e6ea265342af78a2248d18109/" class="md-footer__link md-footer__link--prev"
+      aria-label="Previous: Variable brping::definitions::PING1D_RANGE" rel="prev">
+      <div class="md-footer__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </div>
+      <div class="md-footer__title">
+        <div class="md-ellipsis">
+          <span class="md-footer__direction">
+            Previous
+          </span>
+          Variable brping::definitions::PING1D_RANGE
+        </div>
+      </div>
+    </a>
+    
+
+    <!-- Link to next page -->
+    
+    
+    <a href="../variable_definitions_8py_1adcd1c2f2281528c4d9f7e6c42b16fea1/" class="md-footer__link md-footer__link--next"
+      aria-label="Next: Variable brping::definitions::PING1D_SET_GAIN_SETTING" rel="next">
+      <div class="md-footer__title">
+        <div class="md-ellipsis">
+          <span class="md-footer__direction">
+            Next
+          </span>
+          Variable brping::definitions::PING1D_SET_GAIN_SETTING
+        </div>
+      </div>
+      <div class="md-footer__button md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+      </div>
+    </a>
+    
+  </nav>
+  
+  
+
+  <!-- sphinx-immaterial: Define extracopyright block for inclusion in child template -->
+  
+  <!-- Further information -->
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      
+
+<!-- Copyright and theme information -->
+<div class="md-copyright">
+  
+  <span class="md-footer-copyright__highlight">
+    Copyright 2025 - Blue Robotics Inc
+    
+  </span>
+
+  <span class="footer-divider first">
+    |
+  </span>
+  <span>
+    <a href="https://bluerobotics.com/terms-conditions-privacy-policy-return-policy/" target="_blank">Terms &
+      Conditions</a>
+  </span>
+  <span class="footer-divider">
+    |
+  </span>
+  <span>
+    <a href="https://bluerobotics.com/terms-conditions-privacy-policy-return-policy/" target="_blank">Privacy Policy</a>
+  </span>
+  
+  <div class="show-sphinx">
+    
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    8.1.3
+     and
+    <a href="https://github.com/bluerobotics/sphinx-blue-robotics-theme/" target="_blank" rel="noopener">Sphinx Blue
+      Robotics Theme</a> 0.0.2.
+    
+  </div>
+</div>
+
+      <!-- Social links -->
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+
+    <!-- Dialog -->
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+
+    <!-- Consent -->
+    
+
+    <!-- Theme-related configuration -->
+    <!-- Versioning --><!-- Tags --><!-- Translations --><!-- Configuration -->
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.megamenu", "navigation.top", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+
+    <!-- Theme-related JavaScript -->
+      
+      <!-- sphinx-immaterial: bundled JavaScript is added from `script_files -->
+      <!-- Custom JavaScript -->
+        <script src="../../_static/js/jquery.min.js?v=9c479fa5"></script>
+        <script src="../../_static/sphinx_immaterial_theme.48b1f36c1777f6fe9.min.js?v=64a73510"></script>
+        <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+        <script src="../../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+        <script src="../../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+        <script src="../../_static/js/main.js?v=0a2e4203"></script>
+    
+  </body>
+</html>

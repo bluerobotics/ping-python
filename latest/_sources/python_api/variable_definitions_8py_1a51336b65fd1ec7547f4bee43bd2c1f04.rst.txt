@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1a51336b65fd1ec7547f4bee43bd2c1f04:
+
+Variable brping::definitions::PINGMESSAGE_UNDEFINED
+===================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PINGMESSAGE_UNDEFINED
+   :project: ping-python

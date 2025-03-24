@@ -1,0 +1,33 @@
+.. _exhale_class_classbrping_1_1device_1_1PingDevice:
+
+Class PingDevice
+================
+
+- Defined in :ref:`file_brping_device.py`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public object``
+
+
+Derived Types
+*************
+
+- ``public brping.ping1d.Ping1D`` (:ref:`exhale_class_classbrping_1_1ping1d_1_1Ping1D`)
+- ``public brping.ping360.Ping360`` (:ref:`exhale_class_classbrping_1_1ping360_1_1Ping360`)
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: brping::device::PingDevice
+   :project: ping-python
+   :members:
+   :protected-members:
+   :undoc-members:

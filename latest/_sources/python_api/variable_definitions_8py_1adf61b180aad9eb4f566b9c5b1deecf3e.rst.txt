@@ -1,0 +1,14 @@
+.. _exhale_variable_definitions_8py_1adf61b180aad9eb4f566b9c5b1deecf3e:
+
+Variable brping::definitions::PING1D_PING_INTERVAL
+==================================================
+
+- Defined in :ref:`file_brping_definitions.py`
+
+
+Variable Documentation
+----------------------
+
+
+.. doxygenvariable:: brping::definitions::PING1D_PING_INTERVAL
+   :project: ping-python

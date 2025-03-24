@@ -1,0 +1,108 @@
+
+.. _namespace_brping__definitions:
+
+Namespace brping::definitions
+=============================
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+
+
+
+
+Variables
+---------
+
+
+- :ref:`exhale_variable_definitions_8py_1a688e9459a90f207aff3748685902e7df`
+
+- :ref:`exhale_variable_definitions_8py_1a96c0c422950e0ae25c073e5fb2add1bc`
+
+- :ref:`exhale_variable_definitions_8py_1a9546127472946bfcb3670b5ec9eea703`
+
+- :ref:`exhale_variable_definitions_8py_1a38fc49b22420ea4e0a6566309e280219`
+
+- :ref:`exhale_variable_definitions_8py_1a10ccca3038eaf8fab6885a4d6b3d5589`
+
+- :ref:`exhale_variable_definitions_8py_1ac7b6147fa4111d7299160938d79306ae`
+
+- :ref:`exhale_variable_definitions_8py_1a57d284ed80231646748fc03e2616c795`
+
+- :ref:`exhale_variable_definitions_8py_1a14540039f50137588d4eed7d4899d24f`
+
+- :ref:`exhale_variable_definitions_8py_1aad83d27cde609aa6936465c6dbbc1643`
+
+- :ref:`exhale_variable_definitions_8py_1afec886e6d17f2c1657d843b0fa3fcb00`
+
+- :ref:`exhale_variable_definitions_8py_1aa5582c3ee5734fbb5f1cac719861098c`
+
+- :ref:`exhale_variable_definitions_8py_1a33e595f59713bb999169439d13272d8d`
+
+- :ref:`exhale_variable_definitions_8py_1a2b24272e9dddd5808debfb286e5dd8e2`
+
+- :ref:`exhale_variable_definitions_8py_1a9afdc007fccef40067d0b61fbc6ba967`
+
+- :ref:`exhale_variable_definitions_8py_1ace68eec52b3522f640e8df107e9194b1`
+
+- :ref:`exhale_variable_definitions_8py_1a9142b23d98b928ff0a2511dc5c14d53e`
+
+- :ref:`exhale_variable_definitions_8py_1ad5bae96ba63737b70c6b967fdebcb759`
+
+- :ref:`exhale_variable_definitions_8py_1ad731179d87cded022904c1259e865b4e`
+
+- :ref:`exhale_variable_definitions_8py_1a4e63bfc95879eb25b0325a53e1eb464c`
+
+- :ref:`exhale_variable_definitions_8py_1ac870b455f5068271a46c9520400bb841`
+
+- :ref:`exhale_variable_definitions_8py_1a53764ae772e4d4b8f9139a0eef9a9002`
+
+- :ref:`exhale_variable_definitions_8py_1a3891daf87078b3f7fb72823d2b729a11`
+
+- :ref:`exhale_variable_definitions_8py_1afdbd1eabc8f4ec53c11d92d9e9871261`
+
+- :ref:`exhale_variable_definitions_8py_1adf61b180aad9eb4f566b9c5b1deecf3e`
+
+- :ref:`exhale_variable_definitions_8py_1ade4a97d145dd2e7b1fec8cdfa3326fc2`
+
+- :ref:`exhale_variable_definitions_8py_1a491fa4b39fbe05d065d016309a157cb0`
+
+- :ref:`exhale_variable_definitions_8py_1a109e984e6ea265342af78a2248d18109`
+
+- :ref:`exhale_variable_definitions_8py_1ab44bdac646dfaa834e31318425547934`
+
+- :ref:`exhale_variable_definitions_8py_1adcd1c2f2281528c4d9f7e6c42b16fea1`
+
+- :ref:`exhale_variable_definitions_8py_1a7af61de9c235cbc1cab82425d0bb7c2b`
+
+- :ref:`exhale_variable_definitions_8py_1ad2a311ee171f32a207a642341b9d17c5`
+
+- :ref:`exhale_variable_definitions_8py_1a8e76b6d22b9173153960910b117277e0`
+
+- :ref:`exhale_variable_definitions_8py_1a804cd6b01edfa5eb16b45f68e305f955`
+
+- :ref:`exhale_variable_definitions_8py_1a95aa523c0c348e891545d124502c5254`
+
+- :ref:`exhale_variable_definitions_8py_1a2b4974886c4393d9d82124f317a0a623`
+
+- :ref:`exhale_variable_definitions_8py_1a0833445f17894576c33de6ba257718d7`
+
+- :ref:`exhale_variable_definitions_8py_1aed42b69f24436aaf5eff8324d8a6bd99`
+
+- :ref:`exhale_variable_definitions_8py_1a80c14ab8833f4f7245ff55b762b76185`
+
+- :ref:`exhale_variable_definitions_8py_1acfc9246ce686b774f6656afa022e2936`
+
+- :ref:`exhale_variable_definitions_8py_1ad7d01038c016f907af56513b3a84574a`
+
+- :ref:`exhale_variable_definitions_8py_1a7525d6e86a4d33e8951277037ad54ef3`
+
+- :ref:`exhale_variable_definitions_8py_1a52a1eba9e1c93c4da1c8d43eb396d5ad`
+
+- :ref:`exhale_variable_definitions_8py_1aa814c25c9f9d460d21cdcbc221bd79e9`
+
+- :ref:`exhale_variable_definitions_8py_1ae4b6c10cc9ffb1e4c234e30a73cb68e8`
+
+- :ref:`exhale_variable_definitions_8py_1a51336b65fd1ec7547f4bee43bd2c1f04`
