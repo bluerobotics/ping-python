@@ -47,6 +47,10 @@ class PingDevice(object):
             # write_timeout fixes it getting stuck forever atempting to write to
             # /dev/ttyAMA0 on Raspberry Pis, this raises an exception instead.
             self.iodev = serial.Serial(device_name, baudrate, write_timeout=1.0)
+            try:
+                self.iodev.set_low_latency_mode(True)
+            except Exception as exception:
+                print("Failed to set low latency mode: {0}".format(exception))
             self.iodev.send_break()
             time.sleep(0.001)
             self.iodev.write("U".encode("ascii"))
