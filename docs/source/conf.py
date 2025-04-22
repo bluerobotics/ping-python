@@ -39,7 +39,7 @@ extensions = [
 ]
 master_doc = "index"
 source_suffix = {'.rst': 'restructuredtext', '.md': 'restructuredtext'}
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "python_api/library_root.rst"]
 
 # Syntax highlighting
 pygments_style = "sphinx"
@@ -57,6 +57,8 @@ extlinks = {
 # HTML output configuration
 html_theme = "sphinx_blue_robotics_theme"
 html_static_path = ["_static"]
+html_css_files = ['custom.css']
+
 html_theme_options = {
     "site_url": SITE_URL,
     "repo_url": REPO_URL,
@@ -124,8 +126,10 @@ exhale_args = {
     "rootFileName":          "library_root.rst",
     "doxygenStripFromPath":  root_path,
     "rootFileTitle":         "API Reference",
-    "createTreeView":        True,
+    "createTreeView":        False,
+    "contentsDirectives":    False,
     "exhaleExecutesDoxygen": True,
+    "fullToctreeMaxDepth": 1,
     "exhaleDoxygenStdin":    f"INPUT = {os.path.join(root_path, 'brping')}",
     "verboseBuild":          True,
 }

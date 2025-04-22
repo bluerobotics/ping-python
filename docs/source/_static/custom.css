@@ -1,0 +1,5 @@
+/* Hide third level of secondary sidebar onwards */
+.md-sidebar--secondary .md-nav__list .md-nav__list .md-nav__list {
+    display: none;
+  }
+  

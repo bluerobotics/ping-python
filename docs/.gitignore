@@ -1,6 +1,7 @@
 __pycache__
 _build
-source/python_api
+source/python_api/*
+!/source/python_api/index.rst
 source/cpp_api
 source/lua_api
 **.pyc
