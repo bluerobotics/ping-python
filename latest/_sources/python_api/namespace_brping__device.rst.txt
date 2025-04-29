@@ -5,13 +5,6 @@ Namespace brping::device
 ========================
 
 
-.. contents:: Contents
-   :local:
-   :backlinks: none
-
-
-
-
 
 Classes
 -------

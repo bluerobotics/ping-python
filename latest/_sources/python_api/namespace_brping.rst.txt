@@ -5,13 +5,6 @@ Namespace brping
 ================
 
 
-.. contents:: Contents
-   :local:
-   :backlinks: none
-
-
-
-
 
 Namespaces
 ----------

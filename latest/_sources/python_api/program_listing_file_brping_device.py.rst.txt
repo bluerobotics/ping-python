@@ -52,6 +52,10 @@ Program Listing for File device.py
    
                
                self.iodev = serial.Serial(device_name, baudrate, write_timeout=1.0)
+               try:
+                   self.iodev.set_low_latency_mode(True)
+               except Exception as exception:
+                   print("Failed to set low latency mode: {0}".format(exception))
                self.iodev.send_break()
                time.sleep(0.001)
                self.iodev.write("U".encode("ascii"))

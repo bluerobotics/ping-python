@@ -5,13 +5,6 @@ Namespace brping::definitions
 =============================
 
 
-.. contents:: Contents
-   :local:
-   :backlinks: none
-
-
-
-
 
 Variables
 ---------
