@@ -10,7 +10,6 @@ from builtins import input
 
 import signal
 import sys
-import struct
 
 ##Parse Command line options
 ############################
@@ -19,25 +18,21 @@ parser = argparse.ArgumentParser(description="Ping python library example.")
 parser.add_argument('--device', action="store", required=False, type=str, help="Ping device port. E.g: /dev/ttyUSB0")
 parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate. E.g: 115200")
 parser.add_argument('--udp', action="store", required=False, type=str, help="Ping UDP server. E.g: 192.168.2.2:9090")
+parser.add_argument('--tcp', action="store", required=False, type=str, help="Sounder IP:Port. E.g: 192.168.2.86:51200")
 args = parser.parse_args()
-if args.device is None and args.udp is None:
+if args.device is None and args.udp is None and args.tcp is None:
     parser.print_help()
     exit(1)
 
 # Signal handler to stop pinging on the S500
 def signal_handler(sig, frame):
     print("Stopping pinging on S500...")
-    myS500.control_set_ping_params(
-    start_mm=0,
-    length_mm=0,
-    gain_index=-1,
-    msec_per_ping=-1,
-    pulse_len_usec=0,
-    report_id=0,
-    reserved=0,
-    chirp=1,
-    decimation=0
-    )
+    myS500.control_set_ping_params(report_id=0)
+    if myS500.iodev:
+        try:
+            myS500.iodev.close()
+        except Exception as e:
+            print(f"Failed to close socket: {e}")
     sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -49,10 +44,16 @@ if args.device is not None:
 elif args.udp is not None:
     (host, port) = args.udp.split(':')
     myS500.connect_udp(host, int(port))
+elif args.tcp is not None:
+    (host, port) = args.tcp.split(':')
+    myS500.connect_tcp(host, int(port))
 
 if myS500.initialize() is False:
     print("Failed to initialize S500!")
     exit(1)
+
+data1 = myS500.get_device_information()
+print("Device type: %s" % data1["device_type"])
 
 print("------------------------------------")
 print("Starting S500..")
@@ -64,15 +65,9 @@ input("Press Enter to continue...")
 print("\n-------Distance2-------")
 # Tell S500 to send distance2 data
 myS500.control_set_ping_params(
-    start_mm=0,
-    length_mm=0,
-    gain_index=-1,
     msec_per_ping=0,
-    pulse_len_usec=0,
     report_id=definitions.S500_DISTANCE2,
-    reserved=0,
-    chirp=1,
-    decimation=0
+    chirp=1
 )
 
 # Read and print distance2 data
@@ -87,15 +82,9 @@ if data:
 print("\n-------Profile6-------")
 # Tell S500 to send profile6 data
 myS500.control_set_ping_params(
-    start_mm=0,
-    length_mm=0,
-    gain_index=-1,
-    msec_per_ping=100,
-    pulse_len_usec=0,
+    msec_per_ping=0,
     report_id=definitions.S500_PROFILE6_T,
-    reserved=0,
     chirp=1,
-    decimation=0
 )
 
 # Read and print profile6 data
@@ -120,16 +109,11 @@ if data:
 
 else:
     print("Failed to get profile6 data")
-    
+
 # Stop pinging
-myS500.control_set_ping_params(
-    start_mm=0,
-    length_mm=0,
-    gain_index=-1,
-    msec_per_ping=-1,
-    pulse_len_usec=0,
-    report_id=0,
-    reserved=0,
-    chirp=1,
-    decimation=0
-)
+myS500.control_set_ping_params(report_id=0)
+if myS500.iodev:
+    try:
+        myS500.iodev.close()
+    except Exception as e:
+        print(f"Failed to close socket: {e}")
