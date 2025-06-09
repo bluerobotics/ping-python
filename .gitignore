@@ -7,4 +7,7 @@ brping/definitions.py
 brping/device.py
 brping/ping1d.py
 brping/ping360.py
+brping/s500.py
+brping/surveyor240.py
+brping/omniscan450.py
 doc/xml

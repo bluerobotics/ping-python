@@ -11,6 +11,10 @@ variable_msgs = [
     definitions.PING1D_PROFILE,
     definitions.PING360_DEVICE_DATA,
     definitions.PING360_AUTO_DEVICE_DATA,
+    definitions.SURVEYOR240_ATOF_POINT_DATA,
+    definitions.SURVEYOR240_YZ_POINT_DATA,
+    definitions.S500_PROFILE6_T,
+    definitions.OMNISCAN450_OS_MONO_PROFILE
 ]
 
 
