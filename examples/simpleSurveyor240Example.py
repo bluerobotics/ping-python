@@ -18,33 +18,17 @@ import math
 parser = argparse.ArgumentParser(description="Ping python library example.")
 parser.add_argument('--device', action="store", required=False, type=str, help="Ping device port. E.g: /dev/ttyUSB0")
 parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate. E.g: 115200")
-parser.add_argument('--udp', action="store", required=False, type=str, help="Ping UDP server. E.g: 192.168.2.2:9090")
+parser.add_argument('--udp', action="store", required=False, type=str, help="Surveyor IP:Port. E.g: 192.168.2.86:62312")
+parser.add_argument('--tcp', action="store", required=False, type=str, help="Surveyor IP:Port. E.g: 192.168.2.86:62312")
 args = parser.parse_args()
-if args.device is None and args.udp is None:
+if args.device is None and args.udp is None and args.tcp is None:
     parser.print_help()
     exit(1)
 
 # Signal handler to stop pinging on the Surveyor240
 def signal_handler(sig, frame):
     print("Stopping pinging on Surveyor240...")
-    mySurveyor240.control_set_ping_parameters(
-    start_mm = 5,
-    end_mm = 0,
-    sos_mps = 1500,
-    gain_index = -1,
-    msec_per_ping = 100,
-    deprecated=0,
-    diagnostic_injected_signal = 0,
-    ping_enable = False,
-    enable_channel_data = False,
-    reserved_for_raw_data = False,
-    enable_yz_point_data = True,
-    enable_atof_data = True,
-    target_ping_hz=240000,
-    n_range_steps = 400,
-    reserved = 0,
-    pulse_len_steps = 1.5
-    )
+    mySurveyor240.control_set_ping_parameters(ping_enable = False)
     # Close socket if open
     if mySurveyor240.iodev:
         try:
@@ -63,6 +47,9 @@ if args.device is not None:
 elif args.udp is not None:
     (host, port) = args.udp.split(':')
     mySurveyor240.connect_udp(host, int(port))
+elif args.tcp is not None:
+    (host, port) = args.tcp.split(':')
+    mySurveyor240.connect_tcp(host, int(port))
 
 if mySurveyor240.initialize() is False:
     print("Failed to initialize Surveyor240!")
@@ -79,24 +66,12 @@ print("------------------------------------")
 input("Press Enter to continue...")
 
 mySurveyor240.control_set_ping_parameters(
-    start_mm = 0,
-    end_mm = 0,
-    sos_mps = 1500,
-    gain_index = -1,
-    msec_per_ping = 100,
-    deprecated=0,
-    diagnostic_injected_signal = 0,
     ping_enable = True,
-    enable_channel_data = False,
-    reserved_for_raw_data = False,
     enable_yz_point_data = True,
     enable_atof_data = True,
-    target_ping_hz=240000,
-    n_range_steps = 400,
-    reserved = 0,
-    pulse_len_steps = 1.5
 )
 
+print("\n---------Attitude Report---------")
 while True:
     data = mySurveyor240.wait_message([definitions.SURVEYOR240_ATTITUDE_REPORT])
     if data:
@@ -109,21 +84,25 @@ while True:
         print("Failed to get attitude report")
     time.sleep(0.1)
 
+print("\n---------ATOF Point Data---------")
 while True:
     data = mySurveyor240.wait_message([definitions.SURVEYOR240_ATOF_POINT_DATA])
     if data:
         # Use create_atof_list to get formatted atof_t[num_points] list
         atof_data = Surveyor240.create_atof_list(data)
-        for i in range(len(atof_data)):
-            distance = 0.5 * data.sos_mps * atof_data[i].tof
-            y = distance * math.sin(atof_data[i].angle)
-            z = -distance * math.cos(atof_data[i].angle)
-            print(f"{i}.\tDistance: {distance:.3f} meters\tY: {y:.3f}\tZ: {z:.3f}\t{atof_data[i]}")
-        break
-
+        if len(atof_data) == 0:
+            continue
+        else:
+            for i in range(len(atof_data)):
+                distance = 0.5 * data.sos_mps * atof_data[i].tof
+                y = distance * math.sin(atof_data[i].angle)
+                z = -distance * math.cos(atof_data[i].angle)
+                print(f"{i}.\tDistance: {distance:.3f} meters\tY: {y:.3f}\tZ: {z:.3f}\t{atof_data[i]}")
+            break
     else:
-        print("Failed to get attitude report")
+        print("Failed to get atof point data")
 
+print("\n---------YZ Point Data---------")
 while True:
     data = mySurveyor240.wait_message([definitions.SURVEYOR240_YZ_POINT_DATA])
     if data:
@@ -134,24 +113,12 @@ while True:
             print(f"{i//2}\t{yz_data[i]:.2f}\t{yz_data[i+1]:.2f}")
         break
     else:
-        print("Failed to get attitude report")
+        print("Failed to get yz point data")
 
 # Stop pinging from Surveyor
-mySurveyor240.control_set_ping_parameters(
-    start_mm = 5,
-    end_mm = 0,
-    sos_mps = 1500,
-    gain_index = -1,
-    msec_per_ping = 100,
-    deprecated=0,
-    diagnostic_injected_signal = 0,
-    ping_enable = False,
-    enable_channel_data = False,
-    reserved_for_raw_data = False,
-    enable_yz_point_data = True,
-    enable_atof_data = True,
-    target_ping_hz=240000,
-    n_range_steps = 400,
-    reserved = 0,
-    pulse_len_steps = 1.5
-    )
+mySurveyor240.control_set_ping_parameters(ping_enable = False)
+if mySurveyor240.iodev:
+    try:
+        mySurveyor240.iodev.close()
+    except Exception as e:
+        print(f"Failed to close socket: {e}")

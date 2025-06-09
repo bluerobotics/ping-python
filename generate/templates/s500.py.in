@@ -11,10 +11,9 @@
 from brping import definitions
 from brping import PingDevice
 from brping import pingmessage
-{# from brping.pingmessage import PingMessage
-from brping.pingmessage import PingParser #}
 import time
 import struct
+import socket
 
 class S500(PingDevice):
     def initialize(self):
@@ -79,7 +78,7 @@ class S500(PingDevice):
 {% endfor %}
 
 {% for msg in messages["control"]|sort %}
-    def control_{{msg}}(self{% for field in messages["control"][msg].payload %}, {{field.name}}{% endfor %}):
+    def control_{{msg}}(self{% for field in messages["control"][msg].payload %}, {{field.name}}{% if field.default is defined %}={{field.default}}{% endif %}{% endfor %}):
         m = pingmessage.PingMessage(definitions.S500_{{msg|upper}})
 {% for field in messages["control"][msg].payload %}
         m.{{field.name}} = {{field.name}}
@@ -91,7 +90,56 @@ class S500(PingDevice):
 
     def readDeviceInformation(self):
         return self.request(definitions.COMMON_DEVICE_INFORMATION)
-    
+
+    ##
+    # @brief Do the connection via an TCP link
+    #
+    # @param host: TCP server address (IPV4) or name
+    # @param port: port used to connect with server
+    #
+    def connect_tcp(self, host: str = None, port: int = 12345):
+        if host is None:
+            host = '0.0.0.0'
+        
+        self.server_address = (host, port)
+        try:
+            print("Opening %s:%d" % self.server_address)
+            self.iodev = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.iodev.connect(self.server_address)
+            self.iodev.setblocking(0)
+        
+        except Exception as exception:
+            raise Exception("Failed to open the given TCP port: {0}".format(exception))
+
+    ##
+    # @brief Read available data from the io device
+    def read_io(self):
+        if self.iodev == None:
+            raise Exception("IO device is null, please configure a connection before using the class.")
+        elif type(self.iodev).__name__ == 'Serial':
+            bytes = self.iodev.read(self.iodev.in_waiting)
+            self._input_buffer.extendleft(bytes)
+        else: # Socket
+            buffer_size = 4096
+            while True:
+                try: # Check if we are reading before closing a connection
+                    bytes = self.iodev.recv(buffer_size)
+                    if not bytes:
+                        # if recv() returns empty, connection is closed (TCP)
+                        if self.iodev.type == socket.SOCK_STREAM:
+                            raise ConnectionError("TCP connection closed by peer.")
+
+                    self._input_buffer.extendleft(bytes)
+
+                    if len(bytes) < buffer_size:
+                        break
+
+                except BlockingIOError as exception:
+                    pass # Ignore exceptions related to read before connection, a result of UDP nature
+                
+                except ConnectionResetError as e:
+                    raise ConnectionError("Socket connection was reset: %s" % str(e))       
+
     # Converts power results to correct format
     @staticmethod
     def scale_power(msg):
@@ -124,8 +172,9 @@ if __name__ == "__main__":
     parser.add_argument('--device', action="store", required=False, type=str, help="Ping device port. E.g: /dev/ttyUSB0")
     parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate. E.g: 115200")
     parser.add_argument('--udp', action="store", required=False, type=str, help="Ping UDP server. E.g: 192.168.2.2:9092")
+    parser.add_argument('--tcp', action="store", required=False, type=str, help="Sounder IP:Port. E.g: 192.168.2.86:51200")
     args = parser.parse_args()
-    if args.device is None and args.udp is None:
+    if args.device is None and args.udp is None and args.tcp is None:
         parser.print_help()
         exit(1)
 
@@ -135,5 +184,13 @@ if __name__ == "__main__":
     elif args.udp is not None:
         (host, port) = args.udp.split(':')
         p.connect_udp(host, int(port))
+    elif args.tcp is not None:
+        (host, port) = args.tcp.split(':')
+        p.connect_tcp(host, int(port))
 
     print("Initialized: %s" % p.initialize())
+    if p.iodev:
+        try:
+            p.iodev.close()
+        except Exception as e:
+            print(f"Failed to close socket: {e}")
