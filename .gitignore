@@ -11,3 +11,4 @@ brping/s500.py
 brping/surveyor240.py
 brping/omniscan450.py
 doc/xml
+examples/logs
