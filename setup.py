@@ -26,9 +26,9 @@ setup(name='bluerobotics-ping',
       ],
       scripts=[
           "examples/simplePingExample.py",
-          "examples/simpleS500Example.py",
-          "examples/simpleOmniscan450Example.py",
-          "examples/simpleSurveyor240Example.py",
+          "examples/s500Example.py",
+          "examples/omniscan450Example.py",
+          "examples/surveyor240Example.py",
           "tools/pingproxy.py",
           "tools/ping1d-simulation.py"]
       )
