@@ -98,6 +98,9 @@ if args.log is not None and not new_log:
         data = PingMessage(msg_data=raw_bytes)
 
     if data:
+        print(data)
+
+        # Printing the same results as if directly connected to the Omniscan
         scaled_result = Omniscan450.scale_power(data)
         for i in range(len(scaled_result)):
             print(f"{i+1}: Raw: {data.pwr_results[i]}\tScaled: {scaled_result[i]}dB")

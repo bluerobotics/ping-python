@@ -236,6 +236,7 @@ else:
 
             print(f"Pressure: {data.pressure} bar")
             print(f"Temperature: {data.temperature} C")
+            print(f"Temperature: {(data.temperature * 9/5) + 32} F")
             break
         else:
             print("Failed to get pressure data")
