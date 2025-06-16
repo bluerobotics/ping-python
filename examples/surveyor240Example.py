@@ -221,6 +221,9 @@ else:
             print("Index\tY\tZ")
             for i in range(0, len(yz_data), 2):
                 print(f"{i//2}\t{yz_data[i]:.2f}\t{yz_data[i+1]:.2f}")
+            print(f"Temperature: {(data.water_degC * 9/5) + 32} F")
+            print(f"Temperature: {data.water_degC} C")
+            print(f"Pressure: {data.water_bar} Bar")
             break
         else:
             print("Failed to get yz point data")
@@ -234,12 +237,12 @@ else:
                 with open(water_stats_path, 'ab') as f:
                     f.write(data.msg_data)
 
-            print(f"Pressure: {data.pressure} bar")
-            print(f"Temperature: {data.temperature} C")
             print(f"Temperature: {(data.temperature * 9/5) + 32} F")
+            print(f"Temperature: {data.temperature} C")
+            print(f"Pressure: {data.pressure} bar")
             break
         else:
-            print("Failed to get pressure data")
+            print("Failed to get water stats data")
 
     # Stop pinging from Surveyor
     mySurveyor240.control_set_ping_parameters(ping_enable = False)
