@@ -15,8 +15,21 @@ import time
 import math
 import struct
 import socket
+from datetime import datetime
+from pathlib import Path
+
+MAX_LOG_SIZE_MB = 500
 
 class Omniscan450(PingDevice):
+    def __init__(self, logging = False, log_directory = None):
+        super().__init__()
+        self.logging = logging
+        self.log_directory = log_directory
+        self.bytes_written = None
+        self.current_log = None
+        if logging:
+            self.new_log(log_directory)
+
     def initialize(self):
         if (self.readDeviceInformation() is None):
             return False
@@ -114,6 +127,39 @@ class Omniscan450(PingDevice):
         final_power_results = tuple(scaled_power_results)
         return final_power_results
 
+    # Creates a new log file
+    def new_log(self, log_directory=None):
+        dt = datetime.now()
+        save_name = dt.strftime("%Y-%m-%d-%H-%M")
+        
+        if log_directory is None:
+            project_root = Path.cwd().parent
+            log_directory = project_root / "logs/omniscan"
+        else:
+            log_directory = Path(log_directory)
+
+        log_directory.mkdir(parents=True, exist_ok=True)
+
+        log_path = log_directory / f"{save_name}.svlog"
+
+        if log_path.exists():
+            raise FileExistsError(f"Log file already exists: {log_path}")
+
+        self.current_log = log_path
+        self.bytes_written = 0
+
+    # Write data to .svlog file
+    def write_data(self, msg):
+        if not self.logging:
+            return
+        
+        if self.bytes_written > MAX_LOG_SIZE_MB * 1000000:
+            self.new_log(log_directory=self.log_directory)
+
+        with open(self.current_log, 'ab') as f:
+            f.write(msg.msg_data)
+            self.bytes_written += len(msg.msg_data)
+
     # Override wait_message to format power results before returning
     def wait_message(self, message_ids, timeout=0.5):
         tstart = time.time()
@@ -126,6 +172,8 @@ class Omniscan450(PingDevice):
                     msg.pwr_results = power_results
 
                 if msg.message_id in message_ids:
+                    if self.logging:
+                        self.write_data(msg)
                     return msg
             time.sleep(0.005)
         return None
