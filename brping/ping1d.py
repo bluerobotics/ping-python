@@ -170,6 +170,25 @@ class Ping1D(PingDevice):
         return data
 
     ##
+    # @brief Get a oss_profile_configuration message from the device\n
+    # Message description:\n
+    # Get the profile output configuration. (Open source firmware only)
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # number_of_points: \n
+    # normalization_enabled: If enabled, the profile data is scaled so that the maximum value aligns with the upper limit of 255. (0: Disabled, 1: Enabled)\n
+    # enhance_enabled: If enabled, the profile data will be unevenly scaled to enhance peak values. (0: Disabled, 1: Enabled)\n
+    def get_oss_profile_configuration(self):
+        if self.legacyRequest(definitions.PING1D_OSS_PROFILE_CONFIGURATION) is None:
+            return None
+        data = ({
+            "number_of_points": self._number_of_points,  # 
+            "normalization_enabled": self._normalization_enabled,  # If enabled, the profile data is scaled so that the maximum value aligns with the upper limit of 255. (0: Disabled, 1: Enabled)
+            "enhance_enabled": self._enhance_enabled,  # If enabled, the profile data will be unevenly scaled to enhance peak values. (0: Disabled, 1: Enabled)
+        })
+        return data
+
+    ##
     # @brief Get a pcb_temperature message from the device\n
     # Message description:\n
     # Temperature of the on-board thermistor.
@@ -242,7 +261,7 @@ class Ping1D(PingDevice):
     # scan_start: Units: mm; The beginning of the scan region in mm from the transducer.\n
     # scan_length: Units: mm; The length of the scan region.\n
     # gain_setting: The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144\n
-    # profile_data: An array of return strength measurements taken at regular intervals across the scan region.\n
+    # profile_data: An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range.\n
     def get_profile(self):
         if self.legacyRequest(definitions.PING1D_PROFILE) is None:
             return None
@@ -254,7 +273,7 @@ class Ping1D(PingDevice):
             "scan_start": self._scan_start,  # Units: mm; The beginning of the scan region in mm from the transducer.
             "scan_length": self._scan_length,  # Units: mm; The length of the scan region.
             "gain_setting": self._gain_setting,  # The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
-            "profile_data": self._profile_data,  # An array of return strength measurements taken at regular intervals across the scan region.
+            "profile_data": self._profile_data,  # An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range.
         })
         return data
 
@@ -387,6 +406,32 @@ class Ping1D(PingDevice):
         return True  # success
 
     ##
+    # @brief Send a set_oss_profile_configuration message to the device\n
+    # Message description:\n
+    # Set the profile output configuration. (Open source firmware only)\n
+    # Send the message to write the device parameters, then read the values back from the device\n
+    #
+    # @param number_of_points - 
+    # @param normalization_enabled - If enabled, the profile data is scaled so that the maximum value aligns with the upper limit of 255. (0: Disabled, 1: Enabled)
+    # @param enhance_enabled - If enabled, the profile data will be unevenly scaled to enhance peak values. (0: Disabled, 1: Enabled)
+    #
+    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    def set_oss_profile_configuration(self, number_of_points, normalization_enabled, enhance_enabled, verify=True):
+        m = pingmessage.PingMessage(definitions.PING1D_SET_OSS_PROFILE_CONFIGURATION)
+        m.number_of_points = number_of_points
+        m.normalization_enabled = normalization_enabled
+        m.enhance_enabled = enhance_enabled
+        m.pack_msg_data()
+        self.write(m.msg_data)
+        if self.legacyRequest(definitions.PING1D_OSS_PROFILE_CONFIGURATION) is None:
+            return False
+        # Read back the data and check that changes have been applied
+        if (verify
+                and (self._number_of_points != number_of_points or self._normalization_enabled != normalization_enabled or self._enhance_enabled != enhance_enabled)):
+            return False
+        return True  # success
+
+    ##
     # @brief Send a set_ping_enable message to the device\n
     # Message description:\n
     # Enable or disable acoustic measurements.\n
@@ -437,7 +482,7 @@ class Ping1D(PingDevice):
     # Send the message to write the device parameters, then read the values back from the device\n
     #
     # @param scan_start - Units: mm; 
-    # @param scan_length - Units: mm; The length of the scan range.
+    # @param scan_length - Units: mm; The length of the scan range. Minimum 1000.
     #
     # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_range(self, scan_start, scan_length, verify=True):
@@ -568,6 +613,11 @@ if __name__ == "__main__":
 
     print("\ntesting get_mode_auto")
     result = p.get_mode_auto()
+    print("  " + str(result))
+    print("  > > pass: %s < <" % (result is not None))
+
+    print("\ntesting get_oss_profile_configuration")
+    result = p.get_oss_profile_configuration()
     print("  " + str(result))
     print("  > > pass: %s < <" % (result is not None))
 

@@ -24,37 +24,37 @@ class Ping360(PingDevice):
     ##
     # @brief Get a auto_device_data message from the device\n
     # Message description:\n
-    # Extended version of *device_data* with *auto_transmit* information. The sensor emits this message when in *auto_transmit* mode.
+    # **NEW (v1.1.0)** Extended version of `device_data` with `auto_transmit` information. The sensor emits this message when in `auto_transmit` mode.
     #
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # mode: Operating mode (1 for Ping360)\n
     # gain_setting: Analog gain setting (0 = low, 1 = normal, 2 = high)\n
-    # angle: Units: gradian; Head angle\n
-    # transmit_duration: Units: microsecond; Acoustic transmission duration (1~1000 microseconds)\n
-    # sample_period: Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)\n
-    # transmit_frequency: Units: kHz; Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.\n
-    # start_angle: Units: gradian; Head angle to begin scan sector for autoscan in gradians (0~399 = 0~360 degrees).\n
-    # stop_angle: Units: gradian; Head angle to end scan sector for autoscan in gradians (0~399 = 0~360 degrees).\n
-    # num_steps: Units: gradian; Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)\n
-    # delay: Units: millisecond; An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.\n
-    # number_of_samples: Number of samples per reflected signal\n
-    # data: 8 bit binary data array representing sonar echo strength\n
+    # angle: Units: gradians; Head angle\n
+    # transmit_duration: Units: microseconds; Acoustic transmission duration (1~1000 us)\n
+    # sample_period: Units: eicosapenta-nanoseconds; Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)\n
+    # transmit_frequency: Units: kilohertz; Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.\n
+    # start_angle: Units: gradians; Head angle to begin scan sector for autoscan (0~399 = 0~360 degrees).\n
+    # stop_angle: Units: gradians; Head angle to end scan sector for autoscan (0~399 = 0~360 degrees).\n
+    # num_steps: Units: gradians; Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)\n
+    # delay: Units: milliseconds; An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.\n
+    # number_of_samples: Units: samples; Number of samples per reflected signal (supported values: 200~1200)\n
+    # data: An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range.\n
     def get_auto_device_data(self):
         if self.request(definitions.PING360_AUTO_DEVICE_DATA) is None:
             return None
         data = ({
             "mode": self._mode,  # Operating mode (1 for Ping360)
             "gain_setting": self._gain_setting,  # Analog gain setting (0 = low, 1 = normal, 2 = high)
-            "angle": self._angle,  # Units: gradian; Head angle
-            "transmit_duration": self._transmit_duration,  # Units: microsecond; Acoustic transmission duration (1~1000 microseconds)
-            "sample_period": self._sample_period,  # Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)
-            "transmit_frequency": self._transmit_frequency,  # Units: kHz; Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.
-            "start_angle": self._start_angle,  # Units: gradian; Head angle to begin scan sector for autoscan in gradians (0~399 = 0~360 degrees).
-            "stop_angle": self._stop_angle,  # Units: gradian; Head angle to end scan sector for autoscan in gradians (0~399 = 0~360 degrees).
-            "num_steps": self._num_steps,  # Units: gradian; Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)
-            "delay": self._delay,  # Units: millisecond; An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.
-            "number_of_samples": self._number_of_samples,  # Number of samples per reflected signal
-            "data": self._data,  # 8 bit binary data array representing sonar echo strength
+            "angle": self._angle,  # Units: gradians; Head angle
+            "transmit_duration": self._transmit_duration,  # Units: microseconds; Acoustic transmission duration (1~1000 us)
+            "sample_period": self._sample_period,  # Units: eicosapenta-nanoseconds; Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)
+            "transmit_frequency": self._transmit_frequency,  # Units: kilohertz; Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.
+            "start_angle": self._start_angle,  # Units: gradians; Head angle to begin scan sector for autoscan (0~399 = 0~360 degrees).
+            "stop_angle": self._stop_angle,  # Units: gradians; Head angle to end scan sector for autoscan (0~399 = 0~360 degrees).
+            "num_steps": self._num_steps,  # Units: gradians; Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)
+            "delay": self._delay,  # Units: milliseconds; An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.
+            "number_of_samples": self._number_of_samples,  # Units: samples; Number of samples per reflected signal (supported values: 200~1200)
+            "data": self._data,  # An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range.
         })
         return data
 
@@ -66,29 +66,29 @@ class Ping360(PingDevice):
     # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
     # mode: Operating mode (1 for Ping360)\n
     # gain_setting: Analog gain setting (0 = low, 1 = normal, 2 = high)\n
-    # angle: Units: gradian; Head angle\n
-    # transmit_duration: Units: microsecond; Acoustic transmission duration (1~1000 microseconds)\n
-    # sample_period: Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)\n
-    # transmit_frequency: Units: kHz; Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.\n
-    # number_of_samples: Number of samples per reflected signal\n
-    # data: 8 bit binary data array representing sonar echo strength\n
+    # angle: Units: gradians; Head angle\n
+    # transmit_duration: Units: microseconds; Acoustic transmission duration (1~1000 us)\n
+    # sample_period: Units: eicosapenta-nanoseconds; Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)\n
+    # transmit_frequency: Units: kilohertz; Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.\n
+    # number_of_samples: Units: samples; Number of samples per reflected signal (supported values: 200~1200)\n
+    # data: An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range.\n
     def get_device_data(self):
         if self.request(definitions.PING360_DEVICE_DATA) is None:
             return None
         data = ({
             "mode": self._mode,  # Operating mode (1 for Ping360)
             "gain_setting": self._gain_setting,  # Analog gain setting (0 = low, 1 = normal, 2 = high)
-            "angle": self._angle,  # Units: gradian; Head angle
-            "transmit_duration": self._transmit_duration,  # Units: microsecond; Acoustic transmission duration (1~1000 microseconds)
-            "sample_period": self._sample_period,  # Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)
-            "transmit_frequency": self._transmit_frequency,  # Units: kHz; Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.
-            "number_of_samples": self._number_of_samples,  # Number of samples per reflected signal
-            "data": self._data,  # 8 bit binary data array representing sonar echo strength
+            "angle": self._angle,  # Units: gradians; Head angle
+            "transmit_duration": self._transmit_duration,  # Units: microseconds; Acoustic transmission duration (1~1000 us)
+            "sample_period": self._sample_period,  # Units: eicosapenta-nanoseconds; Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)
+            "transmit_frequency": self._transmit_frequency,  # Units: kilohertz; Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.
+            "number_of_samples": self._number_of_samples,  # Units: samples; Number of samples per reflected signal (supported values: 200~1200)
+            "data": self._data,  # An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range.
         })
         return data
 
     ##
-    # @brief Send a device_id message to the device\n
+    # @brief Send a set_device_id message to the device\n
     # Message description:\n
     # Change the device id\n
     # Send the message to write the device parameters, then read the values back from the device\n
@@ -97,8 +97,8 @@ class Ping360(PingDevice):
     # @param reserved - reserved
     #
     # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
-    def device_id(self, id, reserved, verify=True):
-        m = pingmessage.PingMessage(definitions.PING360_DEVICE_ID)
+    def set_device_id(self, id, reserved, verify=True):
+        m = pingmessage.PingMessage(definitions.PING360_SET_DEVICE_ID)
         m.id = id
         m.reserved = reserved
         m.pack_msg_data()
