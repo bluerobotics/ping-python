@@ -32,7 +32,7 @@ if args.device is None and args.udp is None and args.tcp is None and args.log is
 
 # Signal handler to stop pinging on the Omniscan450
 def signal_handler(sig, frame):
-    print("Stopping pinging on Omniscan450...")
+    print("\nStopping pinging on Omniscan450...")
     myOmniscan450.control_os_ping_params(enable=0)
     if myOmniscan450.iodev:
         try:
@@ -50,14 +50,21 @@ signal.signal(signal.SIGINT, signal_handler)
 new_log = False
 log_path = ""
 replay_path = None
+default_dir = Path("logs/omniscan").resolve()
 if args.log is not None:
     if args.log is True:
         # Logging to default directory
-        myOmniscan450 = Omniscan450(logging=True)
-        print(f"Logging to new file: {myOmniscan450.current_log}")
+        default_dir.mkdir(parents=True, exist_ok=True)
+        myOmniscan450 = Omniscan450(logging=True, log_directory=default_dir)
+        print(f"Logging to new file in: {default_dir}")
         new_log = True
     elif isinstance(args.log, str):
-        log_path = Path(args.log).expanduser().resolve()
+        log_path = Path(args.log).expanduser()
+
+        if log_path.suffix == ".svlog" and log_path.parent == Path("."):
+            log_path = default_dir / log_path.name
+
+        log_path = log_path.resolve()
 
         if log_path.suffix == ".svlog":
             if log_path.exists() and log_path.is_file():
@@ -66,7 +73,6 @@ if args.log is not None:
                 myOmniscan450 = Omniscan450(logging=False)
                 replay_path = log_path
                 print(f"Replaying from: {replay_path}")
-            # TODO add default path logic
             else:
                 raise FileNotFoundError(f"Log file not found: {log_path}")
 
@@ -78,8 +84,6 @@ if args.log is not None:
         
         else:
             raise ValueError(f"Invalid log argument: {args.log}")
-    else:
-        log_filename = None
 
 if args.device is not None:
     myOmniscan450.connect_serial(args.device, args.baudrate)
@@ -95,8 +99,8 @@ if args.log is None or new_log:
         print("Failed to initialize Omniscan450!")
         exit(1)
 
-    data1 = myOmniscan450.get_device_information()
-    print("Device type: %s" % data1["device_type"])
+    data1 = myOmniscan450.readDeviceInformation()
+    print("Device type: %s" % data1.device_type)
 
 print("------------------------------------")
 print("Starting Omniscan450..")
@@ -109,43 +113,21 @@ input("Press Enter to continue...")
 if args.log is not None and not new_log:
     with open(log_path, 'rb') as f:
         while True:
-            start_bytes = f.read(2)
-            if len(start_bytes) < 2:
-                break   # EOF
+            data = Omniscan450.read_packet(f)
 
-            if start_bytes != b'BR':
-                print("Invalid start bytes. Skipping...")
-                continue
+            if data == None:
+                break # EOF or bad packet
 
-            header = f.read(6)
-            if len(header) < 6:
-                print("Incomplete header. Ending replay.")
-                break
+            if data.message_id == definitions.OMNISCAN450_OS_MONO_PROFILE:
+                # print(data)
 
-            payload_length = int.from_bytes(header[0:2], 'little')
-            total_len = 2 + 2 + 2 + 2 + payload_length + 2  # BR + num payload bytes + packet id + reserved + payload + checksum 
-
-            remaining = payload_length + 2
-            rest = f.read(remaining)
-
-            if len(rest) < remaining:
-                print("Incomplete payload or checksum. Ending replay.")
-            
-            msg_bytes = start_bytes + header + rest
-            data = PingMessage(msg_data=msg_bytes)
-
-            # print(data)
-
-            # Printing the same results as if directly connected to the Omniscan
-            scaled_result = Omniscan450.scale_power(data)
-            # for i in range(len(scaled_result)):
-                # print(f"{i+1}: Raw: {data.pwr_results[i]}\tScaled: {scaled_result[i]}dB")
-            print(f"Min power: {data.min_pwr_db} dB")
-            print(f"Max power: {data.max_pwr_db} dB")
-            print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
-
-        raw_bytes = f.read()
-        data = PingMessage(msg_data=raw_bytes)
+                # Printing the same results as if directly connected to the Omniscan
+                scaled_result = Omniscan450.scale_power(data)
+                # for i in range(len(scaled_result)):
+                    # print(f"{i+1}: Raw: {data.pwr_results[i]}\tScaled: {scaled_result[i]}dB")
+                # print(f"Min power: {data.min_pwr_db} dB")
+                # print(f"Max power: {data.max_pwr_db} dB")
+                print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
 
 # Connected to physical omniscan
 else:
@@ -186,18 +168,22 @@ else:
     # )
 
     # View power results
-    while True:
-        data = myOmniscan450.wait_message([definitions.OMNISCAN450_OS_MONO_PROFILE])
-        if data:
-            print("Message Recieved")
-            # scaled_result = Omniscan450.scale_power(data)
-            # for i in range(len(scaled_result)):
-            #     print(f"{i+1}: Raw: {data.pwr_results[i]}\tScaled: {scaled_result[i]}dB")
-            # print(f"Min power: {data.min_pwr_db} dB")
-            # print(f"Max power: {data.max_pwr_db} dB")
-            
-        else:
-            print("Failed to get report")
+    if new_log:
+        print("Logging...\nCTRL+C to stop logging")
+    try:
+        while True:
+            data = myOmniscan450.wait_message([definitions.OMNISCAN450_OS_MONO_PROFILE])
+            if data and not new_log:
+                pass
+                scaled_result = Omniscan450.scale_power(data)
+                for i in range(len(scaled_result)):
+                    print(f"{i+1}: Raw: {data.pwr_results[i]}\tScaled: {scaled_result[i]}dB")
+                print(f"Min power: {data.min_pwr_db} dB")
+                print(f"Max power: {data.max_pwr_db} dB")
+            elif not data:
+                print("Failed to get report")
+    except KeyboardInterrupt:
+        print("Stopping logging...")
 
     # Disable pinging and close socket
     myOmniscan450.control_os_ping_params(enable=0)
@@ -206,9 +192,3 @@ else:
                 myOmniscan450.iodev.close()
             except Exception as e:
                 print(f"Failed to close socket: {e}")
-
-    if new_log:
-        os.makedirs("logs/omniscan", exist_ok=True)
-        log_path = os.path.join("logs/omniscan", log_filename)
-        with open(log_path, 'ab') as f:
-            f.write(data.msg_data)
