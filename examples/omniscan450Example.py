@@ -177,14 +177,10 @@ else:
         while True:
             data = myOmniscan450.wait_message([definitions.OMNISCAN450_OS_MONO_PROFILE])
             if data and not new_log:
-                pass
                 scaled_result = Omniscan450.scale_power(data)
-                for i in range(len(scaled_result)):
-                    print(f"{i+1}: Raw: {data.pwr_results[i]}\tScaled: {scaled_result[i]}dB")
-                print(f"Min power: {data.min_pwr_db} dB")
-                print(f"Max power: {data.max_pwr_db} dB")
+                print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
             elif not data:
-                print("Failed to get report")
+                print("Failed to get message")
     except KeyboardInterrupt:
         print("Stopping logging...")
 
