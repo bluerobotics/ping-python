@@ -25,7 +25,7 @@ parser.add_argument('--baudrate', action="store", type=int, default=115200, help
 parser.add_argument('--udp', action="store", required=False, type=str, help="Surveyor IP:Port. E.g: 192.168.2.86:62312")
 parser.add_argument('--tcp', action="store", required=False, type=str, help="Surveyor IP:Port. E.g: 192.168.2.86:62312")
 parser.add_argument('--range', action="store", required=False, type=str, help="Set range. E.g: 5000 or 0:5000")
-parser.add_argument('--log', action="store", nargs='?', const=True, type=str, help="Log filename or folder name. Will log if it doesn't exist, or replay all packets inside directory if it does. Left blank creates new log.")
+parser.add_argument('--log', action="store", nargs='?', const=True, type=str, help="Log filename and/or directory path. Will create new log if blank or directory is specified. Will replay if file is specified and exists.")
 args = parser.parse_args()
 if args.device is None and args.udp is None and args.tcp is None and args.log is None:
     parser.print_help()
@@ -45,37 +45,60 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-# Make a new Surveyor240
-mySurveyor240 = Surveyor240()
-if args.device is not None:
-    mySurveyor240.connect_serial(args.device, args.baudrate)
-elif args.udp is not None:
-    (host, port) = args.udp.split(':')
-    mySurveyor240.connect_udp(host, int(port))
-elif args.tcp is not None:
-    (host, port) = args.tcp.split(':')
-    mySurveyor240.connect_tcp(host, int(port))
-
-# Check for log argument
-# If no log is specified, create one using date and time
-# If a log is specified, existing log will be opened
+# Check for log argument and make new Surveyor240
+# If no .svlog is specified, create one using default directory
+# If directory specified, .svlog be created in specified directory
+# If a .svlog is specified, existing log will be opened
 new_log = False
-new_folder_name = None
+log_path = ""
+replay_path = None
+default_dir = Path("logs/surveyor").resolve()
 if args.log is not None:
     if args.log is True:
+        # Logging to default directory
+        default_dir.mkdir(parents=True, exist_ok=True)
+        mySurveyor240 = Surveyor240(logging=True, log_directory=default_dir)
+        print(f"Logging to new file in: {default_dir}")
         new_log = True
     elif isinstance(args.log, str):
-        log_path = os.path.join("logs/surveyor", args.log)
-        if args.log.endswith(".txt"):
-            new_log = False
-        elif os.path.exists(log_path):
-            print(f"Replaying from existing log folder: {log_path}")
-            new_log = False
-        else:
-            new_folder_name = args.log
+        log_path = Path(args.log).expanduser()
+
+        if log_path.suffix == ".svlog" and log_path.parent == Path("."):
+            log_path = default_dir / log_path.name
+
+        log_path = log_path.resolve()
+
+        if log_path.suffix == ".svlog":
+            if log_path.exists() and log_path.is_file():
+                # File exists, replaying
+                new_log = False
+                mySurveyor240 = Surveyor240(logging=False)
+                replay_path = log_path
+                print(f"Replaying from: {replay_path}")
+            else:
+                raise FileNotFoundError(f"Log file not found: {log_path}")
+
+        elif log_path.is_dir() or log_path.suffix == "":
+            # Path is directory, logging to that directory
+            mySurveyor240 = Surveyor240(logging=True, log_directory=log_path)
+            print(f"Logging to new file: {Surveyor240.current_log}")
             new_log = True
+        
+        else:
+            raise ValueError(f"Invalid log argument: {args.log}")
+else:
+    mySurveyor240 = Surveyor240()
 
 if args.log is None or new_log:
+    if args.device is not None:
+        mySurveyor240.connect_serial(args.device, args.baudrate)
+    elif args.udp is not None:
+        (host, port) = args.udp.split(':')
+        mySurveyor240.connect_udp(host, int(port))
+    elif args.tcp is not None:
+        (host, port) = args.tcp.split(':')
+        mySurveyor240.connect_tcp(host, int(port))
+
     if mySurveyor240.initialize() is False:
         print("Failed to initialize Surveyor240!")
         exit(1)
@@ -87,37 +110,55 @@ print("------------------------------------")
 
 input("Press Enter to continue...")
 
-# Running Surveyor240 from existing log file
+# Running surveyor240Example.py from existing log file
 if args.log is not None and not new_log:
-    log_path = Path("logs/surveyor") / args.log
-    if not log_path.exists():
-        print(f"Log path does not exist: {log_path}")
-        sys.exit(1)
-    
-    if log_path.is_dir():
-        for file in sorted(log_path.iterdir()):
-            if file.suffix == ".txt":
-                print(f"\n---------Replaying File: {file.name}---------")
-                with open(file, 'rb') as f:
-                    raw_bytes = f.read()
-                    data = PingMessage(msg_data=raw_bytes)
-                
-                if data:
-                    print(data)
-                else:
-                    print("Failed to get report")
-    elif log_path.is_file():
-        print(f"\n---------Replaying File: {log_path.name}---------")
-        with open(log_path, 'rb') as f:
-            raw_bytes = f.read()
-            data = PingMessage(msg_data=raw_bytes)
-        
-        if data:
-            print(data)
-        else:
-            print("Failed to get report")
-    else:
-        print(f"Invalid log path: {log_path}")
+    with open(log_path, 'rb') as f:
+        while True:
+            data = Surveyor240.read_packet(f)
+
+            if data == None:
+                break   # EOF or bad packet
+            
+            # print(f"ID: {data.message_id}\tName: {data.name}")
+
+            ## Surveyor will report the Water Stats packet if temperature and/or pressure sensor is connected
+            # if data.message_id == definitions.SURVEYOR240_WATER_STATS:
+            #     print(f"Temperature: {(data.temperature * 9/5) + 32} F")
+            #     print(f"Temperature: {data.temperature} C")
+            #     print(f"Pressure: {data.pressure} bar")
+
+            if data.message_id == definitions.SURVEYOR240_ATTITUDE_REPORT:
+                # Print pitch and roll data
+                vector = (data.up_vec_x, data.up_vec_y, data.up_vec_z)
+                pitch = math.asin(vector[0])
+                roll = math.atan2(vector[1], vector[2])
+                print(f"Pitch: {pitch}\tRoll: {roll}")
+
+            # if data.message_id == definitions.SURVEYOR240_YZ_POINT_DATA:
+            #      # Display YZ point data in a table
+            #     yz_data = Surveyor240.create_yz_point_data(data)
+            #     print(f"Length of yz_data: {len(yz_data)}\tNum_points: {data.num_points}")
+            #     print("Index\tY\tZ")
+            #     for i in range(0, len(yz_data), 2):
+            #         print(f"{i//2}\t{yz_data[i]:.2f}\t{yz_data[i+1]:.2f}")
+            #     print(f"Temperature: {(data.water_degC * 9/5) + 32} F")
+            #     print(f"Temperature: {data.water_degC} C")
+            #     print(f"Pressure: {data.water_bar} Bar")
+
+            # if data.message_id == definitions.SURVEYOR240_ATOF_POINT_DATA:
+            #     # Just an example packet, could check for other packet types and 
+            #     # show results from those too
+
+            #     # Use create_atof_list to get formatted atof_t[num_points] list
+            #     atof_data = Surveyor240.create_atof_list(data)
+            #     if len(atof_data) == 0:
+            #         continue
+            #     else:
+            #         # Just the first data point in atof[]
+            #         distance = 0.5 * data.sos_mps * atof_data[0].tof
+            #         y = distance * math.sin(atof_data[0].angle)
+            #         z = -distance * math.cos(atof_data[0].angle)
+            #         print(f"Distance: {distance:.3f} meters\tY: {y:.3f}\tZ: {z:.3f}\t{atof_data[0]}")
 
 # Connected to physical Surveyor
 else:
@@ -155,94 +196,27 @@ else:
         )
 
     if new_log:
-        if new_folder_name is None:
-            log_folder_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        else:
-            log_folder_name = new_folder_name
-        log_path = os.path.join("logs/surveyor", log_folder_name)
-        os.makedirs(log_path, exist_ok=True)
-        print(f"Logging new files in: {log_path}")
+        print("Logging...\nCTRL+C to stop logging")
+    else:
+        print("CTRL-C to end program...")
+    try:
+        while True:
+            # Set multiple packets to listen for
+            data = mySurveyor240.wait_message([definitions.SURVEYOR240_ATOF_POINT_DATA,
+                                               definitions.SURVEYOR240_ATTITUDE_REPORT,
+                                               definitions.SURVEYOR240_YZ_POINT_DATA,
+                                               definitions.SURVEYOR240_WATER_STATS])
+            
+            ## To watch pitch and roll data in real time while recording, uncomment this block
+            # if data.message_id == definitions.SURVEYOR240_ATTITUDE_REPORT:
+            #     # Print pitch and roll data
+            #     vector = (data.up_vec_x, data.up_vec_y, data.up_vec_z)
+            #     pitch = math.asin(vector[0])
+            #     roll = math.atan2(vector[1], vector[2])
+            #     print(f"Pitch: {pitch}\tRoll: {roll}")
 
-    print("\n---------Attitude Report---------")
-    while True:
-        data = mySurveyor240.wait_message([definitions.SURVEYOR240_ATTITUDE_REPORT])
-        if data:
-            # Create new log if specified
-            if new_log:
-                attitude_data_path = os.path.join(log_path, "Attitude_Report.txt")
-                with open(attitude_data_path, 'ab') as f:
-                    f.write(data.msg_data)
-
-            # Print pitch and roll data
-            vector = (data.up_vec_x, data.up_vec_y, data.up_vec_z)
-            pitch = math.asin(vector[0])
-            roll = math.atan2(vector[1], vector[2])
-            print(f"Pitch: {pitch}\tRoll: {roll}")
-            break 
-        else:
-            print("Failed to get attitude report")
-        time.sleep(0.1)
-
-    print("\n---------ATOF Point Data---------")
-    while True:
-        data = mySurveyor240.wait_message([definitions.SURVEYOR240_ATOF_POINT_DATA])
-        if data:
-            if new_log:
-                atof_data_path = os.path.join(log_path, "ATOF_Point_Data.txt")
-                with open(atof_data_path, 'ab') as f:
-                    f.write(data.msg_data)
-
-            # Use create_atof_list to get formatted atof_t[num_points] list
-            atof_data = Surveyor240.create_atof_list(data)
-            if len(atof_data) == 0:
-                continue
-            else:
-                for i in range(len(atof_data)):
-                    distance = 0.5 * data.sos_mps * atof_data[i].tof
-                    y = distance * math.sin(atof_data[i].angle)
-                    z = -distance * math.cos(atof_data[i].angle)
-                    print(f"{i}.\tDistance: {distance:.3f} meters\tY: {y:.3f}\tZ: {z:.3f}\t{atof_data[i]}")
-                break
-        else:
-            print("Failed to get atof point data")
-
-    print("\n---------YZ Point Data---------")
-    while True:
-        data = mySurveyor240.wait_message([definitions.SURVEYOR240_YZ_POINT_DATA])
-        if data:
-            if new_log:
-                yz_data_path = os.path.join(log_path, "YZ_Point_Data.txt")
-                with open(yz_data_path, 'ab') as f:
-                    f.write(data.msg_data)
-
-            # Display YZ point data in a table
-            yz_data = Surveyor240.create_yz_point_data(data)
-            print(f"Length of yz_data: {len(yz_data)}\tNum_points: {data.num_points}")
-            print("Index\tY\tZ")
-            for i in range(0, len(yz_data), 2):
-                print(f"{i//2}\t{yz_data[i]:.2f}\t{yz_data[i+1]:.2f}")
-            print(f"Temperature: {(data.water_degC * 9/5) + 32} F")
-            print(f"Temperature: {data.water_degC} C")
-            print(f"Pressure: {data.water_bar} Bar")
-            break
-        else:
-            print("Failed to get yz point data")
-
-    print("\n---------Water Stats---------")
-    while True:
-        data = mySurveyor240.wait_message([definitions.SURVEYOR240_WATER_STATS])
-        if data:
-            if new_log:
-                water_stats_path = os.path.join(log_path, "Water_Stats.txt")
-                with open(water_stats_path, 'ab') as f:
-                    f.write(data.msg_data)
-
-            print(f"Temperature: {(data.temperature * 9/5) + 32} F")
-            print(f"Temperature: {data.temperature} C")
-            print(f"Pressure: {data.pressure} bar")
-            break
-        else:
-            print("Failed to get water stats data")
+    except KeyboardInterrupt:
+        print("Stopping logging...")
 
     # Stop pinging from Surveyor
     mySurveyor240.control_set_ping_parameters(ping_enable = False)

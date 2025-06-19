@@ -15,7 +15,7 @@ import time
 import math
 import struct
 import socket
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Imports for svlog header
@@ -187,6 +187,7 @@ class Omniscan450(PingDevice):
             "session_clients": [],
             "session_plan_name": None,
 
+            "is_recording": True,
             "sonarlink_version": "",
             "os_hostname": platform.node(),
             "os_uptime": None,
@@ -199,8 +200,8 @@ class Omniscan450(PingDevice):
             "process_uptime": time.process_time(),
             "process_arch": platform.machine(),
 
-            "timestamp": datetime.utcnow().isoformat() + "Z",
-            "timestamp_timezone_offset": -time.timezone // 60
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp_timezone_offset": datetime.now().astimezone().utcoffset().total_seconds() // 60
         }
 
         json_bytes = json.dumps(content, indent=2).encode("utf-8")

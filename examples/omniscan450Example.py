@@ -11,7 +11,6 @@ from builtins import input
 
 import signal
 import sys
-import os
 from pathlib import Path
 from datetime import datetime
 
@@ -84,17 +83,19 @@ if args.log is not None:
         
         else:
             raise ValueError(f"Invalid log argument: {args.log}")
-
-if args.device is not None:
-    myOmniscan450.connect_serial(args.device, args.baudrate)
-elif args.udp is not None:
-    (host, port) = args.udp.split(':')
-    myOmniscan450.connect_udp(host, int(port))
-elif args.tcp is not None:
-    (host, port) = args.tcp.split(':')
-    myOmniscan450.connect_tcp(host, int(port))    
+else:
+    myOmniscan450 = Omniscan450()
 
 if args.log is None or new_log:
+    if args.device is not None:
+        myOmniscan450.connect_serial(args.device, args.baudrate)
+    elif args.udp is not None:
+        (host, port) = args.udp.split(':')
+        myOmniscan450.connect_udp(host, int(port))
+    elif args.tcp is not None:
+        (host, port) = args.tcp.split(':')
+        myOmniscan450.connect_tcp(host, int(port))    
+
     if myOmniscan450.initialize() is False:
         print("Failed to initialize Omniscan450!")
         exit(1)
@@ -109,7 +110,7 @@ print("------------------------------------")
 
 input("Press Enter to continue...")
 
-# Running Omniscan from existing log file
+# Running omniscan450Example.py from existing log file
 if args.log is not None and not new_log:
     with open(log_path, 'rb') as f:
         while True:
@@ -170,6 +171,8 @@ else:
     # View power results
     if new_log:
         print("Logging...\nCTRL+C to stop logging")
+    else:
+        print("CTRL-C to end program...")
     try:
         while True:
             data = myOmniscan450.wait_message([definitions.OMNISCAN450_OS_MONO_PROFILE])
