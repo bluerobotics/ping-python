@@ -237,9 +237,9 @@ class Surveyor240(PingDevice):
         else:
             self.log_directory = Path(log_directory)
 
-        log_directory.mkdir(parents=True, exist_ok=True)
+        self.log_directory.mkdir(parents=True, exist_ok=True)
 
-        log_path = log_directory / f"{save_name}.svlog"
+        log_path = self.log_directory / f"{save_name}.svlog"
 
         if log_path.exists():
             log_path.unlink() # delete existing file (program was restarted quickly)

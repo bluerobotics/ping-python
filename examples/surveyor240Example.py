@@ -113,7 +113,7 @@ if args.log is not None and not new_log:
         while True:
             data = Surveyor240.read_packet(f)
 
-            if data == None:
+            if data is None:
                 break   # EOF or bad packet
             
             # print(f"ID: {data.message_id}\tName: {data.name}")
@@ -204,13 +204,14 @@ else:
                                                definitions.SURVEYOR240_YZ_POINT_DATA,
                                                definitions.SURVEYOR240_WATER_STATS])
             
-            ## To watch pitch and roll data in real time while recording, uncomment this block
-            if data.message_id == definitions.SURVEYOR240_ATTITUDE_REPORT:
-                # Print pitch and roll data
-                vector = (data.up_vec_x, data.up_vec_y, data.up_vec_z)
-                pitch = math.asin(vector[0])
-                roll = math.atan2(vector[1], vector[2])
-                print(f"Pitch: {pitch}\tRoll: {roll}")
+            if data:
+                ## To watch pitch and roll data in real time while recording, uncomment this block
+                if data.message_id == definitions.SURVEYOR240_ATTITUDE_REPORT:
+                    # Print pitch and roll data
+                    vector = (data.up_vec_x, data.up_vec_y, data.up_vec_z)
+                    pitch = math.asin(vector[0])
+                    roll = math.atan2(vector[1], vector[2])
+                    print(f"Pitch: {pitch}\tRoll: {roll}")
 
     except KeyboardInterrupt:
         if new_log:
