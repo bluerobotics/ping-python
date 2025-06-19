@@ -55,7 +55,6 @@ if args.log is not None:
         # Logging to default directory
         default_dir.mkdir(parents=True, exist_ok=True)
         myOmniscan450 = Omniscan450(logging=True, log_directory=default_dir)
-        print(f"Logging to new file in: {default_dir}")
         new_log = True
     elif isinstance(args.log, str):
         log_path = Path(args.log).expanduser()
@@ -78,7 +77,6 @@ if args.log is not None:
         elif log_path.is_dir() or log_path.suffix == "":
             # Path is directory, logging to that directory
             myOmniscan450 = Omniscan450(logging=True, log_directory=log_path)
-            print(f"Logging to new file: {myOmniscan450.current_log}")
             new_log = True
         
         else:
@@ -119,15 +117,12 @@ if args.log is not None and not new_log:
             if data == None:
                 break # EOF or bad packet
 
+            print(f"ID: {data.message_id}\tName: {data.name}")
             if data.message_id == definitions.OMNISCAN450_OS_MONO_PROFILE:
-                # print(data)
+            #     # print(data)
 
                 # Printing the same results as if directly connected to the Omniscan
                 scaled_result = Omniscan450.scale_power(data)
-                # for i in range(len(scaled_result)):
-                    # print(f"{i+1}: Raw: {data.pwr_results[i]}\tScaled: {scaled_result[i]}dB")
-                # print(f"Min power: {data.min_pwr_db} dB")
-                # print(f"Max power: {data.max_pwr_db} dB")
                 print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
 
 # Connected to physical omniscan

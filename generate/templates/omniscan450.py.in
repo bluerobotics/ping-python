@@ -261,6 +261,8 @@ class Omniscan450(PingDevice):
         self.current_log = log_path
         self.bytes_written = 0
 
+        print(f"Logging to {self.current_log}")
+
         self.write_data(self.build_metadata_packet())
 
     # Write data to .svlog file
