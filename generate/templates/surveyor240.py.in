@@ -149,7 +149,6 @@ class Surveyor240(PingDevice):
 
     # Builds the packet containing metadata for the beginning of .svlog
     def build_metadata_packet(self):
-
         protocol = "tcp" # default fallback
         if self.iodev:
             if self.iodev.type == socket.SOCK_STREAM:

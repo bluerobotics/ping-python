@@ -12,7 +12,6 @@ from builtins import input
 import signal
 import sys
 import math
-import os
 from datetime import datetime
 from pathlib import Path
 
@@ -208,15 +207,17 @@ else:
                                                definitions.SURVEYOR240_WATER_STATS])
             
             ## To watch pitch and roll data in real time while recording, uncomment this block
-            # if data.message_id == definitions.SURVEYOR240_ATTITUDE_REPORT:
-            #     # Print pitch and roll data
-            #     vector = (data.up_vec_x, data.up_vec_y, data.up_vec_z)
-            #     pitch = math.asin(vector[0])
-            #     roll = math.atan2(vector[1], vector[2])
-            #     print(f"Pitch: {pitch}\tRoll: {roll}")
+            if data.message_id == definitions.SURVEYOR240_ATTITUDE_REPORT:
+                # Print pitch and roll data
+                vector = (data.up_vec_x, data.up_vec_y, data.up_vec_z)
+                pitch = math.asin(vector[0])
+                roll = math.atan2(vector[1], vector[2])
+                print(f"Pitch: {pitch}\tRoll: {roll}")
 
     except KeyboardInterrupt:
-        print("Stopping logging...")
+        if new_log:
+            print("Stopping logging...")
+        
 
     # Stop pinging from Surveyor
     mySurveyor240.control_set_ping_parameters(ping_enable = False)

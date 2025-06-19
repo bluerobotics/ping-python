@@ -11,7 +11,6 @@ from builtins import input
 
 import signal
 import sys
-import os
 from datetime import datetime
 from pathlib import Path
 
@@ -43,37 +42,60 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-# Make a new S500
-myS500 = S500()
-if args.device is not None:
-    myS500.connect_serial(args.device, args.baudrate)
-elif args.udp is not None:
-    (host, port) = args.udp.split(':')
-    myS500.connect_udp(host, int(port))
-elif args.tcp is not None:
-    (host, port) = args.tcp.split(':')
-    myS500.connect_tcp(host, int(port))
-
-# Check for log argument
-# If no log is specified, create one using date and time
-# If a log is specified, existing log will be opened
+# Check for log argument and make new S500
+# If no .svlog is specified, create one using default directory
+# If directory specified, .svlog be created in specified directory
+# If a .svlog is specified, existing log will be opened
 new_log = False
-new_folder_name = None
+log_path = ""
+replay_path = None
+default_dir = Path("logs/s500").resolve()
 if args.log is not None:
     if args.log is True:
+        # Logging to default directory
+        default_dir.mkdir(parents=True, exist_ok=True)
+        myS500 = S500(logging=True, log_directory=default_dir)
+        # print(f"Logging to new file in: {default_dir}")
         new_log = True
     elif isinstance(args.log, str):
-        log_path = os.path.join("logs/sounder", args.log)
-        if args.log.endswith(".txt"):
-            new_log = False
-        elif os.path.exists(log_path):
-            print(f"Replaying from existing log folder: {log_path}")
-            new_log = False
-        else:
-            new_folder_name = args.log
+        log_path = Path(args.log).expanduser()
+
+        if log_path.suffix == ".svlog" and log_path.parent == Path("."):
+            log_path = default_dir / log_path.name
+
+        log_path = log_path.resolve()
+
+        if log_path.suffix == ".svlog":
+            if log_path.exists() and log_path.is_file():
+                # File exists, replaying
+                new_log = False
+                myS500 = S500(logging=False)
+                replay_path = log_path
+                print(f"Replaying from: {replay_path}")
+            else:
+                raise FileNotFoundError(f"Log file not found: {log_path}")
+
+        elif log_path.is_dir() or log_path.suffix == "":
+            # Path is directory, logging to that directory
+            myS500 = S500(logging=True, log_directory=log_path)
+            # print(f"Logging to new file: {S500.current_log}")
             new_log = True
+        
+        else:
+            raise ValueError(f"Invalid log argument: {args.log}")
+else:
+    myS500 = S500()
 
 if args.log is None or new_log:
+    if args.device is not None:
+        myS500.connect_serial(args.device, args.baudrate)
+    elif args.udp is not None:
+        (host, port) = args.udp.split(':')
+        myS500.connect_udp(host, int(port))
+    elif args.tcp is not None:
+        (host, port) = args.tcp.split(':')
+        myS500.connect_tcp(host, int(port))
+
     if myS500.initialize() is False:
         print("Failed to initialize S500!")
         exit(1)
@@ -85,103 +107,23 @@ print("------------------------------------")
 
 input("Press Enter to continue...")
 
-# Running S500 from existing log file
+# Running s500Example.py from existing log file
 if args.log is not None and not new_log:
-    log_path = Path("logs/sounder") / args.log
-    if not log_path.exists():
-        print(f"Log path does not exist: {log_path}")
-        sys.exit(1)
-    
-    if log_path.is_dir():
-        for file in sorted(log_path.iterdir()):
-            if file.suffix == ".txt":
-                print(f"\n---------Replaying File: {file.name}---------")
-                with open(file, 'rb') as f:
-                    raw_bytes = f.read()
-                    data = PingMessage(msg_data=raw_bytes)
-                
-                if data:
-                    print(data)
-                else:
-                    print("Failed to get report")
-    elif log_path.is_file():
-        print(f"\n---------Replaying File: {log_path.name}---------")
-        with open(log_path, 'rb') as f:
-            raw_bytes = f.read()
-            data = PingMessage(msg_data=raw_bytes)
-        
-        if data:
-            print(data)
-        else:
-            print("Failed to get report")
-    else:
-        print(f"Invalid log path: {log_path}")
+    with open(log_path, 'rb') as f:
+        while True:
+            data = S500.read_packet(f)
+
+            if data == None:
+                break   # EOF or bad packet
+
+            print(f"ID: {data.message_id}\tName: {data.name}")
 
 # Connected to physical S500
 else:
-    if new_log:
-        if new_folder_name is None:
-            log_folder_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        else:
-            log_folder_name = new_folder_name
-        log_path = os.path.join("logs/sounder", log_folder_name)
-        os.makedirs(log_path, exist_ok=True)
-        print(f"Logging new files in: {log_path}")
-
-    print("\n-------Distance2-------")
-    if args.range is not None:
-        parts = args.range.split(':')
-        # Tell S500 to send distance 2 data
-        if len(parts) == 2:
-            myS500.control_set_ping_params(
-                start_mm=int(parts[0]),
-                length_mm=int(parts[1]),
-                msec_per_ping=0,
-                report_id=definitions.S500_DISTANCE2,
-                chirp=1
-            )
-        elif len(parts) == 1:
-            myS500.control_set_ping_params(
-                start_mm=0,
-                length_mm=int(parts[0]),
-                msec_per_ping=0,
-                report_id=definitions.S500_DISTANCE2,
-                chirp=1
-            )
-        else:
-            print("Invalid range input, using default range")
-            myS500.control_set_ping_params(
-                msec_per_ping=0,
-                report_id=definitions.S500_DISTANCE2,
-                chirp=1
-            )   
-    else:
-        myS500.control_set_ping_params(
-            msec_per_ping=0,
-            report_id=definitions.S500_DISTANCE2,
-            chirp=1
-        )
-
-    # Read and print distance2 data
-    data = myS500.wait_message([definitions.S500_DISTANCE2])
-    if data:
-        # Create new log if specified
-        if new_log:
-            distance2_path = os.path.join(log_path, "Distance2.txt")
-            with open(distance2_path, 'ab') as f:
-                f.write(data.msg_data)
-
-        print(f"Ping Distance: {data.ping_distance_mm} mm")
-        print(f"Confidence: {data.ping_confidence}")
-        print(f"Average Distance: {data.averaged_distance_mm} mm")
-        print(f"Confidence of Average: {data.average_distance_confidence}")
-        print(f"Timestamp: {data.timestamp}")
-
     print("\n-------Profile6-------")
     # Tell S500 to send profile6 data
     if args.range is not None:
         parts = args.range.split(':')
-        # Tell S500 to send distance 2 data
         if len(parts) == 2:
             myS500.control_set_ping_params(
                 start_mm=int(parts[0]),
@@ -212,34 +154,22 @@ else:
             chirp=1
         )
 
-    # Read and print profile6 data
-    data = myS500.wait_message([definitions.S500_PROFILE6_T])
-    if data:
-        # Create new log if specified
-        if new_log:
-            profile6_path = os.path.join(log_path, "Profile6.txt")
-            with open(profile6_path, 'ab') as f:
-                f.write(data.msg_data)
-
-        scaled_result = S500.scale_power(data)
-
-        if (data.num_results > 100):
-            for i in range(5):
-                print(f"{i}:\tNot Scaled: {data.pwr_results[i]}  |  Scaled: {scaled_result[i]:.2f} dB")
-            print(".\n.\n.")
-            for i in range(5, 0, -1):
-                print(f"{data.num_results-i}:\tNot Scaled: {data.pwr_results[data.num_results-i]}  |  Scaled: {scaled_result[data.num_results-i]:.2f} dB")
-        else:
-            for i in range(len(scaled_result)):
-                print(f"{i+1}:\tNot scaled: {data.pwr_results[i]}  |  Scaled: {scaled_result[i]:.2f} dB")
-
-        print(f"Number of results: {data.num_results}")
-        print(f"Min power: {data.min_pwr_db} dB")
-        print(f"Max power: {data.max_pwr_db} dB")
-        # print(data)
-
+    if new_log:
+        print("Logging...\nCTRL+C to stop logging")
     else:
-        print("Failed to get profile6 data")
+        print("CTRL-C to end program...")
+    try:
+        while True:
+            # Read and print profile6 data
+            data = myS500.wait_message([definitions.S500_PROFILE6_T,
+                                        definitions.S500_DISTANCE2])
+            if data and not new_log:
+                scaled_result = S500.scale_power(data)
+                print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+            elif not data:
+                print("Failed to get message")
+    except KeyboardInterrupt:
+        print("Stopping logging...")
 
     # Stop pinging
     myS500.control_set_ping_params(report_id=0)
