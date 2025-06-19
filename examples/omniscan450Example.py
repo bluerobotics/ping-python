@@ -114,7 +114,7 @@ if args.log is not None and not new_log:
         while True:
             data = Omniscan450.read_packet(f)
 
-            if data == None:
+            if data is None:
                 break # EOF or bad packet
 
             print(f"ID: {data.message_id}\tName: {data.name}")
@@ -171,9 +171,12 @@ else:
     try:
         while True:
             data = myOmniscan450.wait_message([definitions.OMNISCAN450_OS_MONO_PROFILE])
-            if data and not new_log:
+            if data:
                 scaled_result = Omniscan450.scale_power(data)
-                print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+                try:
+                    print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+                except ZeroDivisionError:
+                    print("Length of scaled_result is 0")
             elif not data:
                 print("Failed to get message")
     except KeyboardInterrupt:

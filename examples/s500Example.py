@@ -113,14 +113,21 @@ if args.log is not None and not new_log:
         while True:
             data = S500.read_packet(f)
 
-            if data == None:
+            if data is None:
                 break   # EOF or bad packet
 
-            print(f"ID: {data.message_id}\tName: {data.name}")
+            # Uncomment to print out all packets contained in log file
+            # print(f"ID: {data.message_id}\tName: {data.name}")
+
+            if data.message_id == definitions.S500_PROFILE6_T:
+                scaled_result = S500.scale_power(data)
+                try:
+                    print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+                except ZeroDivisionError:
+                    print("Length of scaled_result is 0")
 
 # Connected to physical S500
 else:
-    print("\n-------Profile6-------")
     # Tell S500 to send profile6 data
     if args.range is not None:
         parts = args.range.split(':')
@@ -163,9 +170,12 @@ else:
             # Read and print profile6 data
             data = myS500.wait_message([definitions.S500_PROFILE6_T,
                                         definitions.S500_DISTANCE2])
-            if data and not new_log:
+            if data:
                 scaled_result = S500.scale_power(data)
-                print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+                try:
+                    print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+                except ZeroDivisionError:
+                    print("Length of scaled_result is 0")
             elif not data:
                 print("Failed to get message")
     except KeyboardInterrupt:
