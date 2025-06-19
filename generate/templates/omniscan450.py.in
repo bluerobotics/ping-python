@@ -259,6 +259,7 @@ class Omniscan450(PingDevice):
             {# raise FileExistsError(f"Log file already exists: {log_path}") #}
 
         self.current_log = log_path
+        self.logging = True
         self.bytes_written = 0
 
         print(f"Logging to {self.current_log}")

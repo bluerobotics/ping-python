@@ -289,6 +289,7 @@ class S500(PingDevice):
             log_path.unlink() # delete existing file (program was restarted quickly)
             
         self.current_log = log_path
+        self.logging = True
         self.bytes_written = 0
 
         print(f"Logging to {self.current_log}")
