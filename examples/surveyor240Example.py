@@ -57,7 +57,6 @@ if args.log is not None:
         # Logging to default directory
         default_dir.mkdir(parents=True, exist_ok=True)
         mySurveyor240 = Surveyor240(logging=True, log_directory=default_dir)
-        print(f"Logging to new file in: {default_dir}")
         new_log = True
     elif isinstance(args.log, str):
         log_path = Path(args.log).expanduser()
@@ -80,7 +79,6 @@ if args.log is not None:
         elif log_path.is_dir() or log_path.suffix == "":
             # Path is directory, logging to that directory
             mySurveyor240 = Surveyor240(logging=True, log_directory=log_path)
-            print(f"Logging to new file: {Surveyor240.current_log}")
             new_log = True
         
         else:
