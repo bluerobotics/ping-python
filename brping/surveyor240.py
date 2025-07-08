@@ -12,14 +12,32 @@ from brping import definitions
 from brping import PingDevice
 from brping import pingmessage
 import time
-from datetime import datetime, timezone
 import struct
 import socket
+from datetime import datetime, timezone
+from pathlib import Path
+
+# Imports for svlog header
+import json
+import os
+import sys
+import platform
+
+MAX_LOG_SIZE_MB = 500
 
 class Surveyor240(PingDevice):
+    def __init__(self, logging = False, log_directory = None):
+        super().__init__()
+        self.logging = logging
+        self.log_directory = log_directory
+        self.bytes_written = None
+        self.current_log = None
+
     def initialize(self):
         if (self.readDeviceInformation() is None):
             return False
+        if self.logging:
+            self.new_log(self.log_directory)
         return True
 
     ##
@@ -224,6 +242,156 @@ class Surveyor240(PingDevice):
 
         return utc_msec_u64, accuracy_msec
 
+    # Reads a single packet from a file
+    @staticmethod
+    def read_packet(file):
+        sync = file.read(2)
+        if sync != b'BR':
+            return None
+        
+        payload_len_bytes = file.read(2)
+        if len(payload_len_bytes) < 2:
+            return None
+        payload_len = int.from_bytes(payload_len_bytes, 'little')
+
+        msg_id = file.read(2)
+        if len(msg_id) < 2:
+            return None
+
+        remaining = 2 + payload_len + 2
+        rest = file.read(remaining)
+        if len(rest) < remaining:
+            return None
+
+        msg_bytes = sync + payload_len_bytes + msg_id + rest
+        return pingmessage.PingMessage(msg_data=msg_bytes)
+
+    # Builds the packet containing metadata for the beginning of .svlog
+    def build_metadata_packet(self):
+        protocol = "tcp" # default fallback
+        if self.iodev:
+            if self.iodev.type == socket.SOCK_STREAM:
+                protocol = "tcp"
+            elif self.iodev.type == socket.SOCK_DGRAM:
+                protocol = "udp"
+        
+        if self.server_address:
+            url = f"{protocol}://{self.server_address[0]}:{self.server_address[1]}"
+        else:
+            url = f"{protocol}://unknown"
+
+        content = {
+            "session_id": 1,
+            "session_uptime": 0.0,
+            "session_devices": [
+                {
+                    "url": url,
+                    "product_id": "mbes24016"
+                }
+            ],
+            "session_platform": None,
+            "session_clients": [],
+            "session_plan_name": None,
+
+            "is_recording": True,
+            "sonarlink_version": "",
+            "os_hostname": platform.node(),
+            "os_uptime": None,
+            "os_version": platform.version(),
+            "os_platform": platform.system().lower(),
+            "os_release": platform.release(),
+
+            "process_path": sys.executable,
+            "process_version": f"v{platform.python_version()}",
+            "process_uptime": time.process_time(),
+            "process_arch": platform.machine(),
+
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp_timezone_offset": datetime.now().astimezone().utcoffset().total_seconds() // 60
+        }
+
+        json_bytes = json.dumps(content, indent=2).encode("utf-8")
+
+        m = pingmessage.PingMessage(definitions.OMNISCAN450_JSON_WRAPPER)
+        m.payload = json_bytes
+        m.payload_length = len(json_bytes)
+
+        msg_data = bytearray()
+        msg_data += b"BR"
+        msg_data += m.payload_length.to_bytes(2, "little")
+        msg_data += m.message_id.to_bytes(2, "little")
+        msg_data += m.dst_device_id.to_bytes(1, "little")
+        msg_data += m.src_device_id.to_bytes(1, "little")
+        msg_data += m.payload
+
+        checksum = sum(msg_data) & 0xFFFF
+        msg_data += bytearray(struct.pack(pingmessage.PingMessage.endianess + pingmessage.PingMessage.checksum_format, checksum))
+
+        m.msg_data = msg_data 
+        m.checksum = checksum
+
+        return m
+
+    # Enable logging 
+    def start_logging(self, new_log = False, log_directory = None):
+        if self.logging:
+            return
+
+        self.logging = True
+
+        if self.current_log is None or new_log:
+            self.new_log(log_directory)
+    
+    def stop_logging(self):
+        self.logging = False
+
+    # Creates a new log file
+    def new_log(self, log_directory=None):
+        dt = datetime.now()
+        save_name = dt.strftime("%Y-%m-%d-%H-%M")
+        
+        if log_directory is None:
+            project_root = Path.cwd().parent
+            self.log_directory = project_root / "logs/surveyor"
+        else:
+            self.log_directory = Path(log_directory)
+
+        self.log_directory.mkdir(parents=True, exist_ok=True)
+
+        log_path = self.log_directory / f"{save_name}.svlog"
+
+        if log_path.exists():
+            log_path.unlink() # delete existing file (program was restarted quickly)
+            
+        self.current_log = log_path
+        self.logging = True
+        self.bytes_written = 0
+
+        print(f"Logging to {self.current_log}")
+
+        self.write_data(self.build_metadata_packet())
+
+    # Write data to .svlog file
+    def write_data(self, msg):
+        if not self.logging or not self.current_log:
+            return
+        
+        try:
+            if self.bytes_written > MAX_LOG_SIZE_MB * 1000000:
+                self.new_log(log_directory=self.log_directory)
+
+            with open(self.current_log, 'ab') as f:
+                f.write(msg.msg_data)
+                self.bytes_written += len(msg.msg_data)
+
+        except (OSError, IOError) as e:
+            print(f"[LOGGING ERROR] Failed to write to log file {self.current_log}: {e}")
+            self.stop_logging()
+
+        except Exception as e:
+            print(f"[LOGGING ERROR] Unexpected error: {e}")
+            self.stop_logging()
+
     # Override handle_message to respond to a UTC request from Surveyor
     def handle_message(self, msg):
         if msg.message_id == definitions.SURVEYOR240_UTC_REQUEST:
@@ -254,6 +422,8 @@ class Surveyor240(PingDevice):
                     msg.atof_point_data = formatted_atof_array
 
                 if msg.message_id in message_ids:
+                    if self.logging:
+                        self.write_data(msg)
                     return msg
             time.sleep(0.005)
         return None
