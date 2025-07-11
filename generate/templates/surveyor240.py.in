@@ -14,6 +14,7 @@ from brping import pingmessage
 import time
 import struct
 import socket
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -232,7 +233,7 @@ class Surveyor240(PingDevice):
         save_name = dt.strftime("%Y-%m-%d-%H-%M")
         
         if log_directory is None:
-            project_root = Path.cwd().parent
+            project_root = Path.cwd()
             self.log_directory = project_root / "logs/surveyor"
         else:
             self.log_directory = Path(log_directory)
@@ -395,6 +396,10 @@ class Surveyor240(PingDevice):
         yz_list = struct.unpack('<' + 'f' * int(msg.num_points) * 2, raw_array)
         return yz_list
 
+    # Calculate the milliseconds per ping from a ping rate
+    @staticmethod
+    def calc_msec_per_ping(ping_rate):
+        return math.floor(1000.0 / ping_rate)
 
 if __name__ == "__main__":
     import argparse

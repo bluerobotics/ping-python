@@ -245,7 +245,7 @@ class Omniscan450(PingDevice):
         save_name = dt.strftime("%Y-%m-%d-%H-%M")
         
         if log_directory is None:
-            project_root = Path.cwd().parent
+            project_root = Path.cwd()
             self.log_directory = project_root / "logs/omniscan"
         else:
             self.log_directory = Path(log_directory)
