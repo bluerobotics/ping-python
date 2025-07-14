@@ -9,6 +9,7 @@ import argparse
 
 from builtins import input
 
+import math
 import signal
 import sys
 from pathlib import Path
@@ -111,19 +112,32 @@ input("Press Enter to continue...")
 # Running omniscan450Example.py from existing log file
 if args.log is not None and not new_log:
     with open(log_path, 'rb') as f:
+        count = 0
+        overall_sum = 0
         while True:
             data = Omniscan450.read_packet(f)
 
             if data is None:
                 break # EOF or bad packet
 
-            print(f"ID: {data.message_id}\tName: {data.name}")
+            # print(f"ID: {data.message_id}\tName: {data.name}")
             if data.message_id == definitions.OMNISCAN450_OS_MONO_PROFILE:
+                count += 1
             #     # print(data)
 
                 # Printing the same results as if directly connected to the Omniscan
                 scaled_result = Omniscan450.scale_power(data)
-                print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+
+                linear_powers = [10 ** (db / 10) for db in scaled_result]
+
+                avg_linear_power = sum(linear_powers) / len(linear_powers) if linear_powers else 0
+
+                avg_power_db = 10 * math.log10(avg_linear_power) if avg_linear_power > 0 else float('-inf')
+                
+                print(f"Average power (linearized): {avg_power_db:.2f} dB")
+                overall_sum += avg_power_db
+                # print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+    print(f"Final average power: {overall_sum / count if count > 0 else 0:.2f} dB")
 
 # Connected to physical omniscan
 else:
@@ -150,10 +164,10 @@ else:
         myOmniscan450.control_os_ping_params(enable=1)
 
     # For a custom ping rate
-    custom_msec_per_ping = Omniscan450.calc_msec_per_ping(1000)    # 1000 Hz
+    custom_msec_per_ping = Omniscan450.calc_msec_per_ping(20) 
 
     # To find pulse length percent
-    custom_pulse_length = Omniscan450.calc_pulse_length_pc(0.2)    # 0.2%
+    custom_pulse_length = Omniscan450.calc_pulse_length_pc(0.2)
 
     ## Set these attributes like this
     # myOmniscan450.control_os_ping_params(
@@ -174,7 +188,15 @@ else:
             if data:
                 scaled_result = Omniscan450.scale_power(data)
                 try:
-                    print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
+                    linear_powers = [10 ** (db / 10) for db in scaled_result]
+
+                    avg_linear_power = sum(linear_powers) / len(linear_powers) if linear_powers else 0
+
+                    avg_power_db = 10 * math.log10(avg_linear_power) if avg_linear_power > 0 else float('-inf')
+                    
+                    print(f"Average power (linearized): {avg_power_db:.2f} dB")
+
+                    # print(f"Average power: {sum(scaled_result) / len(scaled_result)}")
                 except ZeroDivisionError:
                     print("Length of scaled_result is 0")
             elif not data:
