@@ -388,14 +388,6 @@ class Surveyor240(PingDevice):
         
         return tuple(atof_list)
 
-    # Creates yz_point_data and fills it with the correct data from the message
-    @staticmethod
-    def create_yz_point_data(msg):
-        raw_array = msg.yz_point_data
-
-        yz_list = struct.unpack('<' + 'f' * int(msg.num_points) * 2, raw_array)
-        return yz_list
-
     # Calculate the milliseconds per ping from a ping rate
     @staticmethod
     def calc_msec_per_ping(ping_rate):
