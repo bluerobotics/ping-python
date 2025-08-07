@@ -131,17 +131,6 @@ if args.log is not None and not new_log:
                 roll = math.atan2(vector[1], vector[2])
                 print(f"Pitch: {pitch}\tRoll: {roll}")
 
-            # if data.message_id == definitions.SURVEYOR240_YZ_POINT_DATA:
-            #      # Display YZ point data in a table
-            #     yz_data = Surveyor240.create_yz_point_data(data)
-            #     print(f"Length of yz_data: {len(yz_data)}\tNum_points: {data.num_points}")
-            #     print("Index\tY\tZ")
-            #     for i in range(0, len(yz_data), 2):
-            #         print(f"{i//2}\t{yz_data[i]:.2f}\t{yz_data[i+1]:.2f}")
-            #     print(f"Temperature: {(data.water_degC * 9/5) + 32} F")
-            #     print(f"Temperature: {data.water_degC} C")
-            #     print(f"Pressure: {data.water_bar} Bar")
-
             # if data.message_id == definitions.SURVEYOR240_ATOF_POINT_DATA:
             #     # Just an example packet, could check for other packet types and 
             #     # show results from those too
@@ -201,7 +190,6 @@ else:
             # Set multiple packets to listen for
             data = mySurveyor240.wait_message([definitions.SURVEYOR240_ATOF_POINT_DATA,
                                                definitions.SURVEYOR240_ATTITUDE_REPORT,
-                                               definitions.SURVEYOR240_YZ_POINT_DATA,
                                                definitions.SURVEYOR240_WATER_STATS])
             
             if data:
