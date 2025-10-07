@@ -115,7 +115,7 @@ class S500(PingDevice):
     # @param host: TCP server address (IPV4) or name
     # @param port: port used to connect with server
     #
-    def connect_tcp(self, host: str = None, port: int = 12345):
+    def connect_tcp(self, host: str = None, port: int = 12345, timeout: float = 5.0):
         if host is None:
             host = '0.0.0.0'
         
@@ -123,9 +123,13 @@ class S500(PingDevice):
         try:
             print("Opening %s:%d" % self.server_address)
             self.iodev = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.iodev.settimeout(timeout)
             self.iodev.connect(self.server_address)
             self.iodev.setblocking(0)
-        
+
+        except socket.timeout:
+            print("Unable to connect to device")
+            raise Exception("Connection timed out after {0} seconds".format(timeout))         
         except Exception as exception:
             raise Exception("Failed to open the given TCP port: {0}".format(exception))
 
