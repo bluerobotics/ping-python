@@ -89,7 +89,7 @@ class Omniscan450(PingDevice):
         return data
 
 
-    def control_os_ping_params(self, start_mm, length_mm, msec_per_ping, reserved_1, reserved_2, pulse_len_percent, filter_duration_percent, gain_index, num_results, enable, reserved_3):
+    def control_os_ping_params(self, start_mm=0, length_mm=5000, msec_per_ping=0, reserved_1=0, reserved_2=0, pulse_len_percent=0.002, filter_duration_percent=0.0015, gain_index=-1, num_results=600, enable=True, reserved_3=0, reserved_4=0, reserved_5=0):
         m = pingmessage.PingMessage(definitions.OMNISCAN450_OS_PING_PARAMS)
         m.start_mm = start_mm
         m.length_mm = length_mm
@@ -102,6 +102,8 @@ class Omniscan450(PingDevice):
         m.num_results = num_results
         m.enable = enable
         m.reserved_3 = reserved_3
+        m.reserved_4 = reserved_4
+        m.reserved_5 = reserved_5
         m.pack_msg_data()
         self.write(m.msg_data)
 

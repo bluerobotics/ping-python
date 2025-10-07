@@ -514,25 +514,29 @@ payload_dict_ping360 = {
 
 }
 
-SURVEYOR240_UTC_REQUEST = 14
-SURVEYOR240_SET_PING_PARAMETERS = 3023
 SURVEYOR240_SET_NET_INFO = 17
+SURVEYOR240_SET_PING_PARAMETERS = 3023
 SURVEYOR240_UTC_RESPONSE = 15
+SURVEYOR240_UTC_REQUEST = 14
+SURVEYOR240_JSON_WRAPPER = 10
+SURVEYOR240_ATOF_POINT_DATA = 3012
 SURVEYOR240_ATTITUDE_REPORT = 504
 SURVEYOR240_WATER_STATS = 118
-SURVEYOR240_ATOF_POINT_DATA = 3012
 SURVEYOR240_YZ_POINT_DATA = 3011
 
 # variable length fields are formatted with 's', and always occur at the end of the payload
 # the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
 # see PingMessage.get_payload_format()
 payload_dict_surveyor240 = {
-    SURVEYOR240_UTC_REQUEST: {
-        "name": "utc_request",
-        "format": "",
+    SURVEYOR240_SET_NET_INFO: {
+        "name": "set_net_info",
+        "format": "III",
         "field_names": (
+             "ntp_ip_address",
+             "subnet_mask",
+             "gateway_ip",
             ),
-        "payload_length": 0
+        "payload_length": 12
     },
 
     SURVEYOR240_SET_PING_PARAMETERS: {
@@ -559,17 +563,6 @@ payload_dict_surveyor240 = {
         "payload_length": 36
     },
 
-    SURVEYOR240_SET_NET_INFO: {
-        "name": "set_net_info",
-        "format": "III",
-        "field_names": (
-             "ntp_ip_address",
-             "subnet_mask",
-             "gateway_ip",
-            ),
-        "payload_length": 12
-    },
-
     SURVEYOR240_UTC_RESPONSE: {
         "name": "utc_response",
         "format": "QI",
@@ -578,6 +571,42 @@ payload_dict_surveyor240 = {
              "accuracy_msec",
             ),
         "payload_length": 12
+    },
+
+    SURVEYOR240_UTC_REQUEST: {
+        "name": "utc_request",
+        "format": "",
+        "field_names": (
+            ),
+        "payload_length": 0
+    },
+
+    SURVEYOR240_JSON_WRAPPER: {
+        "name": "JSON_WRAPPER",
+        "format": "",
+        "field_names": (
+             "string",
+            ),
+        "payload_length": 0
+    },
+
+    SURVEYOR240_ATOF_POINT_DATA: {
+        "name": "atof_point_data",
+        "format": "IQffIIfIHH",
+        "field_names": (
+             "pwr_up_msec",
+             "utc_msec",
+             "listening_sec",
+             "sos_mps",
+             "ping_number",
+             "ping_hz",
+             "pulse_sec",
+             "flags",
+             "num_points",
+             "reserved",
+             "atof_point_data",
+            ),
+        "payload_length": 40
     },
 
     SURVEYOR240_ATTITUDE_REPORT: {
@@ -604,25 +633,6 @@ payload_dict_surveyor240 = {
              "pressure",
             ),
         "payload_length": 8
-    },
-
-    SURVEYOR240_ATOF_POINT_DATA: {
-        "name": "atof_point_data",
-        "format": "IQffIIfIHH",
-        "field_names": (
-             "pwr_up_msec",
-             "utc_msec",
-             "listening_sec",
-             "sos_mps",
-             "ping_number",
-             "ping_hz",
-             "pulse_sec",
-             "flags",
-             "num_points",
-             "reserved",
-             "atof_point_data",
-            ),
-        "payload_length": 40
     },
 
     SURVEYOR240_YZ_POINT_DATA: {
@@ -662,29 +672,30 @@ payload_dict_surveyor240 = {
 
 }
 
-S500_SET_SPEED_OF_SOUND = 1002
+S500_JSON_WRAPPER = 10
 S500_SET_PING_PARAMS = 1015
-S500_FW_VERSION = 1200
-S500_SPEED_OF_SOUND = 1203
-S500_RANGE = 1204
-S500_PING_RATE_MSEC = 1206
-S500_GAIN_INDEX = 1207
+S500_SET_SPEED_OF_SOUND = 1002
 S500_ALTITUDE = 1211
-S500_PROCESSOR_DEGC = 1213
 S500_DISTANCE2 = 1223
+S500_FW_VERSION = 1200
+S500_GAIN_INDEX = 1207
+S500_PING_RATE_MSEC = 1206
+S500_PROCESSOR_DEGC = 1213
 S500_PROFILE6_T = 1308
+S500_RANGE = 1204
+S500_SPEED_OF_SOUND = 1203
 
 # variable length fields are formatted with 's', and always occur at the end of the payload
 # the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
 # see PingMessage.get_payload_format()
 payload_dict_s500 = {
-    S500_SET_SPEED_OF_SOUND: {
-        "name": "set_speed_of_sound",
-        "format": "I",
+    S500_JSON_WRAPPER: {
+        "name": "JSON_WRAPPER",
+        "format": "",
         "field_names": (
-             "sos_mm_per_sec",
+             "string",
             ),
-        "payload_length": 4
+        "payload_length": 0
     },
 
     S500_SET_PING_PARAMS: {
@@ -704,51 +715,11 @@ payload_dict_s500 = {
         "payload_length": 20
     },
 
-    S500_FW_VERSION: {
-        "name": "fw_version",
-        "format": "BBHH",
-        "field_names": (
-             "device_type",
-             "device_model",
-             "version_major",
-             "version_minor",
-            ),
-        "payload_length": 6
-    },
-
-    S500_SPEED_OF_SOUND: {
-        "name": "speed_of_sound",
+    S500_SET_SPEED_OF_SOUND: {
+        "name": "set_speed_of_sound",
         "format": "I",
         "field_names": (
              "sos_mm_per_sec",
-            ),
-        "payload_length": 4
-    },
-
-    S500_RANGE: {
-        "name": "range",
-        "format": "II",
-        "field_names": (
-             "start_mm",
-             "length_mm",
-            ),
-        "payload_length": 8
-    },
-
-    S500_PING_RATE_MSEC: {
-        "name": "ping_rate_msec",
-        "format": "H",
-        "field_names": (
-             "msec_per_ping",
-            ),
-        "payload_length": 2
-    },
-
-    S500_GAIN_INDEX: {
-        "name": "gain_index",
-        "format": "I",
-        "field_names": (
-             "gain_index",
             ),
         "payload_length": 4
     },
@@ -763,15 +734,6 @@ payload_dict_s500 = {
         "payload_length": 5
     },
 
-    S500_PROCESSOR_DEGC: {
-        "name": "processor_degC",
-        "format": "I",
-        "field_names": (
-             "centi_degC",
-            ),
-        "payload_length": 4
-    },
-
     S500_DISTANCE2: {
         "name": "distance2",
         "format": "IIHBBI",
@@ -784,6 +746,45 @@ payload_dict_s500 = {
              "timestamp",
             ),
         "payload_length": 16
+    },
+
+    S500_FW_VERSION: {
+        "name": "fw_version",
+        "format": "BBHH",
+        "field_names": (
+             "device_type",
+             "device_model",
+             "version_major",
+             "version_minor",
+            ),
+        "payload_length": 6
+    },
+
+    S500_GAIN_INDEX: {
+        "name": "gain_index",
+        "format": "I",
+        "field_names": (
+             "gain_index",
+            ),
+        "payload_length": 4
+    },
+
+    S500_PING_RATE_MSEC: {
+        "name": "ping_rate_msec",
+        "format": "H",
+        "field_names": (
+             "msec_per_ping",
+            ),
+        "payload_length": 2
+    },
+
+    S500_PROCESSOR_DEGC: {
+        "name": "processor_degC",
+        "format": "I",
+        "field_names": (
+             "centi_degC",
+            ),
+        "payload_length": 4
     },
 
     S500_PROFILE6_T: {
@@ -815,8 +816,28 @@ payload_dict_s500 = {
         "payload_length": 66
     },
 
+    S500_RANGE: {
+        "name": "range",
+        "format": "II",
+        "field_names": (
+             "start_mm",
+             "length_mm",
+            ),
+        "payload_length": 8
+    },
+
+    S500_SPEED_OF_SOUND: {
+        "name": "speed_of_sound",
+        "format": "I",
+        "field_names": (
+             "sos_mm_per_sec",
+            ),
+        "payload_length": 4
+    },
+
 }
 
+OMNISCAN450_JSON_WRAPPER = 10
 OMNISCAN450_SET_SPEED_OF_SOUND = 1002
 OMNISCAN450_OS_PING_PARAMS = 2197
 OMNISCAN450_OS_MONO_PROFILE = 2198
@@ -825,6 +846,15 @@ OMNISCAN450_OS_MONO_PROFILE = 2198
 # the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
 # see PingMessage.get_payload_format()
 payload_dict_omniscan450 = {
+    OMNISCAN450_JSON_WRAPPER: {
+        "name": "JSON_WRAPPER",
+        "format": "",
+        "field_names": (
+             "string",
+            ),
+        "payload_length": 0
+    },
+
     OMNISCAN450_SET_SPEED_OF_SOUND: {
         "name": "set_speed_of_sound",
         "format": "I",
@@ -836,7 +866,7 @@ payload_dict_omniscan450 = {
 
     OMNISCAN450_OS_PING_PARAMS: {
         "name": "os_ping_params",
-        "format": "IIIffffhHBB",
+        "format": "IIIffffhHBBBB",
         "field_names": (
              "start_mm",
              "length_mm",
@@ -849,8 +879,10 @@ payload_dict_omniscan450 = {
              "num_results",
              "enable",
              "reserved_3",
+             "reserved_4",
+             "reserved_5",
             ),
-        "payload_length": 34
+        "payload_length": 36
     },
 
     OMNISCAN450_OS_MONO_PROFILE: {

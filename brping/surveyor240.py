@@ -197,7 +197,7 @@ class Surveyor240(PingDevice):
         m.pack_msg_data()
         self.write(m.msg_data)
 
-    def control_set_ping_parameters(self, start_mm, end_mm, sos_mps, gain_index, msec_per_ping, deprecated, diagnostic_injected_signal, ping_enable, enable_channel_data, reserved_for_raw_data, enable_yz_point_data, enable_atof_data, target_ping_hz, n_range_steps, reserved, pulse_len_steps):
+    def control_set_ping_parameters(self, start_mm=0, end_mm=5000, sos_mps=1500, gain_index=-1, msec_per_ping=100, deprecated=0, diagnostic_injected_signal=0, ping_enable=False, enable_channel_data=False, reserved_for_raw_data=False, enable_yz_point_data=False, enable_atof_data=False, target_ping_hz=240000, n_range_steps=400, reserved=0, pulse_len_steps=1.5):
         m = pingmessage.PingMessage(definitions.SURVEYOR240_SET_PING_PARAMETERS)
         m.start_mm = start_mm
         m.end_mm = end_mm

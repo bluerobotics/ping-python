@@ -235,7 +235,7 @@ class S500(PingDevice):
         return data
 
 
-    def control_set_ping_params(self, start_mm, length_mm, gain_index, msec_per_ping, pulse_len_usec, report_id, reserved, chirp, decimation):
+    def control_set_ping_params(self, start_mm=0, length_mm=5000, gain_index=-1, msec_per_ping=-1, pulse_len_usec=0, report_id=0, reserved=0, chirp=0, decimation=0):
         m = pingmessage.PingMessage(definitions.S500_SET_PING_PARAMS)
         m.start_mm = start_mm
         m.length_mm = length_mm
