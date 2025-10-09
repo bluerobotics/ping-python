@@ -14,6 +14,7 @@ from brping import pingmessage
 import time
 import struct
 import socket
+import math
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -162,6 +163,11 @@ class S500(PingDevice):
                 except ConnectionResetError as e:
                     raise ConnectionError("Socket connection was reset: %s" % str(e))       
 
+    # Calculate the milliseconds per ping from a ping rate
+    @staticmethod
+    def calc_msec_per_ping(ping_rate):
+        return math.floor(1000.0 / ping_rate)
+
     # Converts power results to correct format
     @staticmethod
     def scale_power(msg):
@@ -280,7 +286,7 @@ class S500(PingDevice):
         save_name = dt.strftime("%Y-%m-%d-%H-%M")
         
         if log_directory is None:
-            project_root = Path.cwd().parent
+            project_root = Path.cwd()
             self.log_directory = project_root / "logs/s500"
         else:
             self.log_directory = Path(log_directory)
