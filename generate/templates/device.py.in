@@ -133,10 +133,19 @@ class PingDevice(object):
             return self.iodev.send(data)
 
     ##
-    # @brief Make sure there is a device on and read some initial data
+    # @brief initialize the device communication interface. A serial break signal
+    # is sent to the device followed by 'U' (0x55) to begin the autobaurate procedure
+    # on the device. Some data is then read from the device to verify communications
+    #
+    # @param baudrate: the baudrate to use. if None, the baudrate will not
+    # be changed (default is 115200)
     #
     # @return True if the device replies with expected data, False otherwise
-    def initialize(self):
+    def initialize(self, baudrate=None):
+        if baudrate is not None:
+            self.iodev.baudrate = baudrate
+        self.iodev.send_break()
+        self.iodev.write("U".encode("utf-8"))
         return self.request(definitions.COMMON_PROTOCOL_VERSION) is not None
 
     ##
