@@ -49,7 +49,9 @@ class PingDevice(object):
             ## Serial object for device communication
             # write_timeout fixes it getting stuck forever atempting to write to
             # /dev/ttyAMA0 on Raspberry Pis, this raises an exception instead.
-            self.iodev = serial.Serial(device_name, baudrate, write_timeout=1.0)
+            # exclusive=True ensures that we don't get stuck due to multiple processes
+            # trying to access the same serial port.
+            self.iodev = serial.Serial(device_name, baudrate, write_timeout=1.0, exclusive=True)
             try:
                 self.iodev.set_low_latency_mode(True)
             except Exception as exception:
