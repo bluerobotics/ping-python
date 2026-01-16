@@ -135,7 +135,7 @@ class Surveyor240(PingDevice):
         sync = file.read(2)
         if sync != b'BR':
             return None
-        
+
         payload_len_bytes = file.read(2)
         if len(payload_len_bytes) < 2:
             return None
@@ -161,7 +161,7 @@ class Surveyor240(PingDevice):
                 protocol = "tcp"
             elif self.iodev.type == socket.SOCK_DGRAM:
                 protocol = "udp"
-        
+
         if self.server_address:
             url = f"{protocol}://{self.server_address[0]}:{self.server_address[1]}"
         else:
@@ -214,12 +214,12 @@ class Surveyor240(PingDevice):
         checksum = sum(msg_data) & 0xFFFF
         msg_data += bytearray(struct.pack(pingmessage.PingMessage.endianess + pingmessage.PingMessage.checksum_format, checksum))
 
-        m.msg_data = msg_data 
+        m.msg_data = msg_data
         m.checksum = checksum
 
         return m
 
-    # Enable logging 
+    # Enable logging
     def start_logging(self, new_log = False, log_directory = None):
         if self.logging:
             return
@@ -228,7 +228,7 @@ class Surveyor240(PingDevice):
 
         if self.current_log is None or new_log:
             self.new_log(log_directory)
-    
+
     def stop_logging(self):
         self.logging = False
 
@@ -236,7 +236,7 @@ class Surveyor240(PingDevice):
     def new_log(self, log_directory=None):
         dt = datetime.now()
         save_name = dt.strftime("%Y-%m-%d-%H-%M")
-        
+
         if log_directory is None:
             project_root = Path.cwd().parent
             self.log_directory = project_root / "logs/surveyor"
@@ -249,7 +249,7 @@ class Surveyor240(PingDevice):
 
         if log_path.exists():
             log_path.unlink() # delete existing file (program was restarted quickly)
-            
+
         self.current_log = log_path
         self.logging = True
         self.bytes_written = 0
@@ -262,7 +262,7 @@ class Surveyor240(PingDevice):
     def write_data(self, msg):
         if not self.logging or not self.current_log:
             return
-        
+
         try:
             if self.bytes_written > MAX_LOG_SIZE_MB * 1000000:
                 self.new_log(log_directory=self.log_directory)
@@ -291,9 +291,9 @@ class Surveyor240(PingDevice):
             self.write(response.msg_data)
 
             return True
-        
+
         return super().handle_message(msg)
-            
+
     # Override wait_message to also handle UTC requests from Surveyor and for creating atof_t data
     def wait_message(self, message_ids, timeout=0.5):
         tstart = time.time()
@@ -302,7 +302,7 @@ class Surveyor240(PingDevice):
             if msg is not None:
                 if msg.message_id == definitions.SURVEYOR240_UTC_REQUEST:
                     continue
-                
+
                 if msg.message_id == definitions.SURVEYOR240_ATOF_POINT_DATA:
                     atof_byte_array = bytearray(msg.atof_point_data)
                     formatted_atof_array = struct.unpack('<' + 'I' * (4*int(msg.num_points)), atof_byte_array)
@@ -324,7 +324,7 @@ class Surveyor240(PingDevice):
     def connect_tcp(self, host: str = None, port: int = 12345, timeout: float = 5.0):
         if host is None:
             host = '0.0.0.0'
-        
+
         self.server_address = (host, port)
         try:
             print("Opening %s:%d" % self.server_address)
@@ -335,7 +335,7 @@ class Surveyor240(PingDevice):
 
         except socket.timeout:
             print("Unable to connect to device")
-            raise Exception("Connection timed out after {0} seconds".format(timeout))        
+            raise Exception("Connection timed out after {0} seconds".format(timeout))
         except Exception as exception:
             raise Exception("Failed to open the given TCP port: {0}".format(exception))
 
@@ -365,9 +365,9 @@ class Surveyor240(PingDevice):
 
                 except BlockingIOError as exception:
                     pass # Ignore exceptions related to read before connection, a result of UDP nature
-                
+
                 except ConnectionResetError as e:
-                    raise ConnectionError("Socket connection was reset: %s" % str(e))       
+                    raise ConnectionError("Socket connection was reset: %s" % str(e))
 
     # Class to represent the atof_t struct
     class atof_t:
@@ -394,7 +394,7 @@ class Surveyor240(PingDevice):
 
             atof = Surveyor240.atof_t(angle, tof, reserved)
             atof_list.append(atof)
-        
+
         return tuple(atof_list)
 
     # Creates yz_point_data and fills it with the correct data from the message

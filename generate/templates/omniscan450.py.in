@@ -141,7 +141,7 @@ class Omniscan450(PingDevice):
         sync = file.read(2)
         if sync != b'BR':
             return None
-        
+
         payload_len_bytes = file.read(2)
         if len(payload_len_bytes) < 2:
             return None
@@ -167,7 +167,7 @@ class Omniscan450(PingDevice):
                 protocol = "tcp"
             elif self.iodev.type == socket.SOCK_DGRAM:
                 protocol = "udp"
-        
+
         if self.server_address:
             url = f"{protocol}://{self.server_address[0]}:{self.server_address[1]}"
         else:
@@ -220,12 +220,12 @@ class Omniscan450(PingDevice):
         checksum = sum(msg_data) & 0xFFFF
         msg_data += bytearray(struct.pack(pingmessage.PingMessage.endianess + pingmessage.PingMessage.checksum_format, checksum))
 
-        m.msg_data = msg_data 
+        m.msg_data = msg_data
         m.checksum = checksum
 
         return m
-    
-    # Enable logging 
+
+    # Enable logging
     def start_logging(self, new_log = False, log_directory = None):
         if self.logging:
             return
@@ -243,7 +243,7 @@ class Omniscan450(PingDevice):
     def new_log(self, log_directory=None):
         dt = datetime.now()
         save_name = dt.strftime("%Y-%m-%d-%H-%M")
-        
+
         if log_directory is None:
             project_root = Path.cwd().parent
             self.log_directory = project_root / "logs/omniscan"
@@ -270,7 +270,7 @@ class Omniscan450(PingDevice):
     def write_data(self, msg):
         if not self.logging or not self.current_log:
             return
-        
+
         try:
             if self.bytes_written > MAX_LOG_SIZE_MB * 1000000:
                 self.new_log(log_directory=self.log_directory)
@@ -314,7 +314,7 @@ class Omniscan450(PingDevice):
     def connect_tcp(self, host: str = None, port: int = 12345, timeout: float = 5.0):
         if host is None:
             host = '0.0.0.0'
-        
+
         self.server_address = (host, port)
         try:
             print("Opening %s:%d" % self.server_address)
@@ -322,10 +322,10 @@ class Omniscan450(PingDevice):
             self.iodev.settimeout(timeout)
             self.iodev.connect(self.server_address)
             self.iodev.setblocking(0)
-            
+
         except socket.timeout:
             print("Unable to connect to device")
-            raise Exception("Connection timed out after {0} seconds".format(timeout))          
+            raise Exception("Connection timed out after {0} seconds".format(timeout))
         except Exception as exception:
             raise Exception("Failed to open the given TCP port: {0}".format(exception))
 
@@ -355,7 +355,7 @@ class Omniscan450(PingDevice):
 
                 except BlockingIOError as exception:
                     pass # Ignore exceptions related to read before connection, a result of UDP nature
-                
+
                 except ConnectionResetError as e:
                     raise ConnectionError("Socket connection was reset: %s" % str(e))
 

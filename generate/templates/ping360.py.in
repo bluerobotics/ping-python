@@ -125,7 +125,7 @@ class Ping360(PingDevice):
             0
         )
         return self.wait_message([definitions.PING360_DEVICE_DATA, definitions.COMMON_NACK], 4.0)
-    
+
     def transmit(self):
         return self.transmitAngle(self._angle)
 

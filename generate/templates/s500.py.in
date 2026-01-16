@@ -118,7 +118,7 @@ class S500(PingDevice):
     def connect_tcp(self, host: str = None, port: int = 12345, timeout: float = 5.0):
         if host is None:
             host = '0.0.0.0'
-        
+
         self.server_address = (host, port)
         try:
             print("Opening %s:%d" % self.server_address)
@@ -129,7 +129,7 @@ class S500(PingDevice):
 
         except socket.timeout:
             print("Unable to connect to device")
-            raise Exception("Connection timed out after {0} seconds".format(timeout))         
+            raise Exception("Connection timed out after {0} seconds".format(timeout))
         except Exception as exception:
             raise Exception("Failed to open the given TCP port: {0}".format(exception))
 
@@ -158,9 +158,9 @@ class S500(PingDevice):
 
                 except BlockingIOError as exception:
                     pass # Ignore exceptions related to read before connection, a result of UDP nature
-                
+
                 except ConnectionResetError as e:
-                    raise ConnectionError("Socket connection was reset: %s" % str(e))       
+                    raise ConnectionError("Socket connection was reset: %s" % str(e))
 
     # Converts power results to correct format
     @staticmethod
@@ -170,14 +170,14 @@ class S500(PingDevice):
             scaled_power_results.append(msg.min_pwr_db + (msg.pwr_results[i] / 65535.0) * (msg.max_pwr_db - msg.min_pwr_db))
         final_power_results = tuple(scaled_power_results)
         return final_power_results
-        
+
     # Reads a single packet from a file
     @staticmethod
     def read_packet(file):
         sync = file.read(2)
         if sync != b'BR':
             return None
-        
+
         payload_len_bytes = file.read(2)
         if len(payload_len_bytes) < 2:
             return None
@@ -203,7 +203,7 @@ class S500(PingDevice):
                 protocol = "tcp"
             elif self.iodev.type == socket.SOCK_DGRAM:
                 protocol = "udp"
-        
+
         if self.server_address:
             url = f"{protocol}://{self.server_address[0]}:{self.server_address[1]}"
         else:
@@ -256,12 +256,12 @@ class S500(PingDevice):
         checksum = sum(msg_data) & 0xFFFF
         msg_data += bytearray(struct.pack(pingmessage.PingMessage.endianess + pingmessage.PingMessage.checksum_format, checksum))
 
-        m.msg_data = msg_data 
+        m.msg_data = msg_data
         m.checksum = checksum
 
         return m
 
-    # Enable logging 
+    # Enable logging
     def start_logging(self, new_log = False, log_directory = None):
         if self.logging:
             return
@@ -270,7 +270,7 @@ class S500(PingDevice):
 
         if self.current_log is None or new_log:
             self.new_log(log_directory)
-    
+
     def stop_logging(self):
         self.logging = False
 
@@ -278,7 +278,7 @@ class S500(PingDevice):
     def new_log(self, log_directory=None):
         dt = datetime.now()
         save_name = dt.strftime("%Y-%m-%d-%H-%M")
-        
+
         if log_directory is None:
             project_root = Path.cwd().parent
             self.log_directory = project_root / "logs/s500"
@@ -291,7 +291,7 @@ class S500(PingDevice):
 
         if log_path.exists():
             log_path.unlink() # delete existing file (program was restarted quickly)
-            
+
         self.current_log = log_path
         self.logging = True
         self.bytes_written = 0
@@ -304,7 +304,7 @@ class S500(PingDevice):
     def write_data(self, msg):
         if not self.logging or not self.current_log:
             return
-        
+
         try:
             if self.bytes_written > MAX_LOG_SIZE_MB * 1000000:
                 self.new_log(log_directory=self.log_directory)
