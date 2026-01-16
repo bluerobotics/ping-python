@@ -71,7 +71,7 @@ class S500(PingDevice):
     # @param {{field.name}} - {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
 {% endfor %}
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def {{msg}}(self{% for field in messages["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
         m = pingmessage.PingMessage(definitions.S500_{{msg|upper}})
 {% for field in messages["set"][msg].payload %}
