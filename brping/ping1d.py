@@ -18,7 +18,7 @@ class Ping1D(PingDevice):
         msg = pingmessage.PingMessage()
         # legacy hack logic is in PingMessage
         # TODO: remove that logic and construct/assemble an arbitrary PingMessage
-        msg.request_id = m_id 
+        msg.request_id = m_id
         msg.pack_msg_data()
         self.write(msg.msg_data)
 
