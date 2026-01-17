@@ -347,7 +347,7 @@ class Ping1D(PingDevice):
     #
     # @param device_id - Device ID (0-254). 255 is reserved for broadcast messages.
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_device_id(self, device_id, verify=True):
         m = pingmessage.PingMessage(definitions.PING1D_SET_DEVICE_ID)
         m.device_id = device_id
@@ -369,7 +369,7 @@ class Ping1D(PingDevice):
     #
     # @param gain_setting - The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_gain_setting(self, gain_setting, verify=True):
         m = pingmessage.PingMessage(definitions.PING1D_SET_GAIN_SETTING)
         m.gain_setting = gain_setting
@@ -391,7 +391,7 @@ class Ping1D(PingDevice):
     #
     # @param mode_auto - 0: manual mode. 1: auto mode.
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_mode_auto(self, mode_auto, verify=True):
         m = pingmessage.PingMessage(definitions.PING1D_SET_MODE_AUTO)
         m.mode_auto = mode_auto
@@ -415,7 +415,7 @@ class Ping1D(PingDevice):
     # @param normalization_enabled - If enabled, the profile data is scaled so that the maximum value aligns with the upper limit of 255. (0: Disabled, 1: Enabled)
     # @param enhance_enabled - If enabled, the profile data will be unevenly scaled to enhance peak values. (0: Disabled, 1: Enabled)
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_oss_profile_configuration(self, number_of_points, normalization_enabled, enhance_enabled, verify=True):
         m = pingmessage.PingMessage(definitions.PING1D_SET_OSS_PROFILE_CONFIGURATION)
         m.number_of_points = number_of_points
@@ -439,7 +439,7 @@ class Ping1D(PingDevice):
     #
     # @param ping_enabled - 0: Disable, 1: Enable.
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_ping_enable(self, ping_enabled, verify=True):
         m = pingmessage.PingMessage(definitions.PING1D_SET_PING_ENABLE)
         m.ping_enabled = ping_enabled
@@ -461,7 +461,7 @@ class Ping1D(PingDevice):
     #
     # @param ping_interval - Units: ms; The interval between acoustic measurements.
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_ping_interval(self, ping_interval, verify=True):
         m = pingmessage.PingMessage(definitions.PING1D_SET_PING_INTERVAL)
         m.ping_interval = ping_interval
@@ -484,7 +484,7 @@ class Ping1D(PingDevice):
     # @param scan_start - Units: mm; 
     # @param scan_length - Units: mm; The length of the scan range. Minimum 1000.
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_range(self, scan_start, scan_length, verify=True):
         m = pingmessage.PingMessage(definitions.PING1D_SET_RANGE)
         m.scan_start = scan_start
@@ -507,7 +507,7 @@ class Ping1D(PingDevice):
     #
     # @param speed_of_sound - Units: mm/s; The speed of sound in the measurement medium. ~1,500,000 mm/s for water.
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_speed_of_sound(self, speed_of_sound, verify=True):
         m = pingmessage.PingMessage(definitions.PING1D_SET_SPEED_OF_SOUND)
         m.speed_of_sound = speed_of_sound

@@ -96,7 +96,7 @@ class Ping360(PingDevice):
     # @param id - Device ID (1-254). 0 and 255 are reserved.
     # @param reserved - reserved
     #
-    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
+    # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def set_device_id(self, id, reserved, verify=True):
         m = pingmessage.PingMessage(definitions.PING360_SET_DEVICE_ID)
         m.id = id
