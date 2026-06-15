@@ -31,7 +31,8 @@ definitions = [ "common",
                 "ping360",
                 "surveyor240",
                 "s500",
-                "omniscan450"]
+                "omniscan450",
+                "omniscan3d"]
 
 struct_token = {"u8": "B",
                 "u16": "H",
@@ -105,5 +106,11 @@ f.close()
 definitionFile = "%s/omniscan450.json" % definitionPath
 templateFile = "%s/omniscan450.py.in" % templatePath
 f = open("%s/omniscan450.py" % args.output_directory, "w")
+f.write(g.generate(definitionFile, templateFile, {"structToken": struct_token}))
+f.close()
+
+definitionFile = "%s/omniscan3d.json" % definitionPath
+templateFile = "%s/omniscan3d.py.in" % templatePath
+f = open("%s/omniscan3d.py" % args.output_directory, "w")
 f.write(g.generate(definitionFile, templateFile, {"structToken": struct_token}))
 f.close()

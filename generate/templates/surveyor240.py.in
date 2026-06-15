@@ -28,12 +28,12 @@ MAX_LOG_SIZE_MB = 500
 
 class Surveyor240(PingDevice):
     def __init__(self, logging = False, log_directory = None):
-        super().__init__()
+        super().__init__(payload_dict=definitions.payload_dict_surveyor240)
         self.logging = logging
         self.log_directory = log_directory
         self.bytes_written = None
         self.current_log = None
-
+        
     def initialize(self):
         if (self.readDeviceInformation() is None):
             return False
@@ -75,7 +75,7 @@ class Surveyor240(PingDevice):
     #
     # @return If verify is False, True on successful communication with the device. If verify is True, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def {{msg}}(self{% for field in messages["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
-        m = pingmessage.PingMessage(definitions.SURVEYOR240_{{msg|upper}})
+        m = pingmessage.PingMessage(definitions.SURVEYOR240_{{msg|upper}},payload_dict=definitions.payload_dict_surveyor240)
 {% for field in messages["set"][msg].payload %}
         m.{{field.name}} = {{field.name}}
 {% endfor %}
@@ -99,7 +99,7 @@ class Surveyor240(PingDevice):
 
 {% for msg in messages["control"]|sort %}
     def control_{{msg}}(self{% for field in messages["control"][msg].payload %}, {{field.name}}{% if field.default is defined %}={{field.default}}{% endif %}{% endfor %}):
-        m = pingmessage.PingMessage(definitions.SURVEYOR240_{{msg|upper}})
+        m = pingmessage.PingMessage(definitions.SURVEYOR240_{{msg|upper}},payload_dict=definitions.payload_dict_surveyor240)
 {% for field in messages["control"][msg].payload %}
         m.{{field.name}} = {{field.name}}
 {% endfor %}
@@ -151,7 +151,7 @@ class Surveyor240(PingDevice):
             return None
 
         msg_bytes = sync + payload_len_bytes + msg_id + rest
-        return pingmessage.PingMessage(msg_data=msg_bytes)
+        return pingmessage.PingMessage(msg_data=msg_bytes,payload_dict=definitions.payload_dict_surveyor240)
 
     # Builds the packet containing metadata for the beginning of .svlog
     def build_metadata_packet(self):
@@ -199,7 +199,7 @@ class Surveyor240(PingDevice):
 
         json_bytes = json.dumps(content, indent=2).encode("utf-8")
 
-        m = pingmessage.PingMessage(definitions.OMNISCAN450_JSON_WRAPPER)
+        m = pingmessage.PingMessage(definitions.OMNISCAN450_JSON_WRAPPER,payload_dict=definitions.payload_dict_surveyor240)
         m.payload = json_bytes
         m.payload_length = len(json_bytes)
 
@@ -284,7 +284,7 @@ class Surveyor240(PingDevice):
         if msg.message_id == definitions.SURVEYOR240_UTC_REQUEST:
             now, accuracy = self.get_utc_time()
 
-            response = pingmessage.PingMessage(definitions.SURVEYOR240_UTC_RESPONSE)
+            response = pingmessage.PingMessage(definitions.SURVEYOR240_UTC_RESPONSE,payload_dict=definitions.payload_dict_surveyor240)
             response.utc_msec = now
             response.accuracy_msec = accuracy
             response.pack_msg_data()

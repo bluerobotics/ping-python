@@ -21,9 +21,16 @@ class PingDevice(object):
 {% endfor%}
 
     _input_buffer = deque()
-    def __init__(self):
+    def __init__(self, payload_dict=None):
+        my_payload_dict = {}
+        if payload_dict is not None:
+            my_payload_dict = definitions.payload_dict_common.copy()
+            my_payload_dict.update(payload_dict)
+        else:
+            my_payload_dict = definitions.payload_dict_all
+
         ## A helper class to take care of decoding the input stream
-        self.parser = pingmessage.PingParser()
+        self.parser = pingmessage.PingParser(payload_dict=my_payload_dict)
 
         ## device id of this Ping1D object, used for dst_device_id in outgoing messages
         self.my_id = 255
@@ -187,18 +194,18 @@ class PingDevice(object):
     # @return True if the PingMessage was handled successfully
     def handle_message(self, msg):
         # TODO is this message for us?
-        setattr(self, "_src_device_id", msg.src_device_id)
-        setattr(self, "_dst_device_id", msg.dst_device_id)
+        self._src_device_id = msg.src_device_id
+        self._dst_device_id = msg.dst_device_id
 
-        if msg.message_id in pingmessage.payload_dict:
-            try:
-                for attr in pingmessage.payload_dict[msg.message_id]["field_names"]:
-                    setattr(self, "_" + attr, getattr(msg, attr))
-            except AttributeError as e:
-                print("attribute error while handling msg %d (%s): %s" % (msg.message_id, msg.name, msg.msg_data))
-                return False
-        else:
-            print("Unrecognized message: %d", msg)
+        if not hasattr(msg, "payload_field_names"):
+            print(f"Unrecognized message: {msg.message_id}")
+            return False
+
+        try:
+            for attr in msg.payload_field_names:
+                setattr(self, "_" + attr, getattr(msg, attr))
+        except AttributeError as e:
+            print("attribute error while handling msg %d (%s): %s" % (msg.message_id, msg.name, msg.msg_data))
             return False
 
         return True

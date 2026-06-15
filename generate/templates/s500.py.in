@@ -26,7 +26,7 @@ MAX_LOG_SIZE_MB = 500
 
 class S500(PingDevice):
     def __init__(self, logging = False, log_directory = None):
-        super().__init__()
+        super().__init__(payload_dict=definitions.payload_dict_s500)
         self.logging = logging
         self.log_directory = log_directory
         self.bytes_written = None

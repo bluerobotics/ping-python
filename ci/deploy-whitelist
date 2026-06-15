@@ -6,6 +6,7 @@ brping/ping360.py
 brping/surveyor240.py
 brping/s500.py
 brping/omniscan450.py
+brping/omniscan3d.py
 brping/pingmessage.py
 examples
 tools
