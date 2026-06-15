@@ -7,3 +7,4 @@ from brping.ping360 import Ping360
 from brping.surveyor240 import Surveyor240
 from brping.s500 import S500
 from brping.omniscan450 import Omniscan450
+from brping.omniscan3d import Omniscan3D
