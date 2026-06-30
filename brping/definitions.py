@@ -838,7 +838,7 @@ payload_dict_s500 = {
 }
 
 OMNISCAN450_JSON_WRAPPER = 10
-OMNISCAN450_SET_SPEED_OF_SOUND = 1002
+OMNISCAN450_SET_SPEED_OF_SOUND = 116
 OMNISCAN450_OS_PING_PARAMS = 2197
 OMNISCAN450_OS_MONO_PROFILE = 2198
 
@@ -912,6 +912,130 @@ payload_dict_omniscan450 = {
 
 }
 
+OMNISCAN3D_JSON_WRAPPER = 10
+OMNISCAN3D_OS3D_SET_PING_PARAMS = 3024
+OMNISCAN3D_ATTITUDE_REPORT = 504
+OMNISCAN3D_OS3D_POINT_SET = 3104
+OMNISCAN3D_END_PING_INFO = 3010
+
+# variable length fields are formatted with 's', and always occur at the end of the payload
+# the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
+# see PingMessage.get_payload_format()
+payload_dict_omniscan3d = {
+    OMNISCAN3D_JSON_WRAPPER: {
+        "name": "JSON_WRAPPER",
+        "format": "",
+        "field_names": (
+             "string",
+            ),
+        "payload_length": 0
+    },
+
+    OMNISCAN3D_OS3D_SET_PING_PARAMS: {
+        "name": "os3d_set_ping_params",
+        "format": "fffhhHBBBBBBiHHf",
+        "field_names": (
+             "start_m",
+             "end_m",
+             "sos_mps",
+             "gain_index",
+             "msec_per_ping",
+             "reserved1",
+             "diagnostic_injected_signal",
+             "ping_enable",
+             "enable_channel_data",
+             "reserved_for_raw_data",
+             "reserved2",
+             "enable_atof_data",
+             "target_ping_hz",
+             "n_range_steps",
+             "reserved3",
+             "pulse_len_steps",
+            ),
+        "payload_length": 36
+    },
+
+    OMNISCAN3D_ATTITUDE_REPORT: {
+        "name": "attitude_report",
+        "format": "ffffffQIB",
+        "field_names": (
+             "up_vec_x",
+             "up_vec_y",
+             "up_vec_z",
+             "reserved_1",
+             "reserved_2",
+             "reserved_3",
+             "utc_msec",
+             "pwr_up_msec",
+             "channel_number",
+            ),
+        "payload_length": 37
+    },
+
+    OMNISCAN3D_OS3D_POINT_SET: {
+        "name": "os3d_point_set",
+        "format": "IfhHIQIBBBBfffIIIIIIIII",
+        "field_names": (
+             "ping_number",
+             "sos_mps",
+             "num_points",
+             "unused_1",
+             "unused_2",
+             "utc_msec",
+             "pwr_up_msec",
+             "version",
+             "device_number",
+             "unused_3",
+             "reserved_1",
+             "pwr_threshold_high",
+             "pwr_threshold_med",
+             "pwr_threshold_low",
+             "reserved2_0",
+             "reserved2_1",
+             "reserved2_2",
+             "reserved2_3",
+             "reserved2_4",
+             "reserved2_5",
+             "reserved2_6",
+             "reserved2_7",
+             "reserved2_8",
+             "atof_point_data",
+            ),
+        "payload_length": 80
+    },
+
+    OMNISCAN3D_END_PING_INFO: {
+        "name": "end_ping_info",
+        "format": "IfffffIfffffffiHHHBBIQ",
+        "field_names": (
+             "reserved1",
+             "range_start_m",
+             "range_end_m",
+             "up_vec_x",
+             "up_vec_y",
+             "up_vec_z",
+             "ping_number",
+             "water_degC",
+             "water_bar",
+             "heave_m",
+             "mag_vec_x",
+             "mag_vec_y",
+             "mag_vec_z",
+             "ping_hz_realized",
+             "gain_index",
+             "pulse_usec",
+             "n_range_bins",
+             "samples_per_range_bin",
+             "device_number",
+             "unused",
+             "pwr_up_msec",
+             "utc_msec",
+            ),
+        "payload_length": 80
+    },
+
+}
+
 PINGMESSAGE_UNDEFINED = 0
 payload_dict_all = {
     PINGMESSAGE_UNDEFINED: {
@@ -927,3 +1051,4 @@ payload_dict_all.update(payload_dict_ping360)
 payload_dict_all.update(payload_dict_surveyor240)
 payload_dict_all.update(payload_dict_s500)
 payload_dict_all.update(payload_dict_omniscan450)
+payload_dict_all.update(payload_dict_omniscan3d)
