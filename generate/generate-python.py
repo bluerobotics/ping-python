@@ -30,7 +30,6 @@ definitions = [ "common",
                 "ping1d",
                 "ping360",
                 "surveyor240",
-                "s500",
                 "omniscan450"]
 
 struct_token = {"u8": "B",
@@ -93,12 +92,6 @@ f.close()
 definitionFile = "%s/surveyor240.json" % definitionPath
 templateFile = "%s/surveyor240.py.in" % templatePath
 f = open("%s/surveyor240.py" % args.output_directory, "w")
-f.write(g.generate(definitionFile, templateFile, {"structToken": struct_token}))
-f.close()
-
-definitionFile = "%s/s500.json" % definitionPath
-templateFile = "%s/s500.py.in" % templatePath
-f = open("%s/s500.py" % args.output_directory, "w")
 f.write(g.generate(definitionFile, templateFile, {"structToken": struct_token}))
 f.close()
 
