@@ -3,8 +3,11 @@
 # PingMessage.py
 # Python implementation of the Blue Robotics 'Ping' binary message protocol
 
+import logging
 import struct
 from brping import definitions
+
+logger = logging.getLogger(__name__)
 payload_dict = definitions.payload_dict_all
 asciiMsgs = [definitions.COMMON_NACK, definitions.COMMON_ASCII_TEXT]
 variable_msgs = [
@@ -133,9 +136,8 @@ class PingMessage(object):
                 self.payload_format = self.get_payload_format()
 
             # TODO handle better here, and catch Constructor 1 also
-            except KeyError as e:
-                print("message id not recognized: %d" % self.message_id, msg_data)
-                raise e
+            except KeyError:
+                raise
 
     ## Pack object attributes into self.msg_data (bytearray)
     # @return self.msg_data
@@ -182,7 +184,7 @@ class PingMessage(object):
         try:
             self.name = self.payload_dict[self.message_id]["name"]
         except KeyError:
-            print("Unknown message: ", self.message_id)
+            logger.debug("Unknown message: %s", self.message_id)
             return False
 
         ## The field names of this message
@@ -196,10 +198,15 @@ class PingMessage(object):
             try:
                 payload = struct.unpack(PingMessage.endianess + self.payload_format, self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length])
             except Exception as e:
-                print("error unpacking payload: %s" % e)
-                print("msg_data: %s, header: %s" % (msg_data, header))
-                print("format: %s, buf: %s" % (PingMessage.endianess + self.payload_format, self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length]))
-                print(self.payload_format)
+                logger.debug(
+                    "Error unpacking payload: %s; msg_data=%s; header=%s; format=%s; buf=%s",
+                    e,
+                    msg_data,
+                    header,
+                    PingMessage.endianess + self.payload_format,
+                    self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length],
+                    exc_info=True,
+                )
             else:  # only use payload if didn't raise exception
                 for i, attr in enumerate(self.payload_field_names):
                     try:

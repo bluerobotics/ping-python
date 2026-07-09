@@ -11,6 +11,7 @@
 from brping import definitions
 from brping import PingDevice
 from brping import pingmessage
+import logging
 import time
 import math
 import struct
@@ -25,6 +26,7 @@ import sys
 import platform
 
 MAX_LOG_SIZE_MB = 500
+logger = logging.getLogger(__name__)
 
 class Omniscan450(PingDevice):
     def __init__(self, logging = False, log_directory = None):
@@ -262,7 +264,7 @@ class Omniscan450(PingDevice):
         self.logging = True
         self.bytes_written = 0
 
-        print(f"Logging to {self.current_log}")
+        logger.info("Logging to %s", self.current_log)
 
         self.write_data(self.build_metadata_packet())
 
@@ -280,11 +282,11 @@ class Omniscan450(PingDevice):
                 self.bytes_written += len(msg.msg_data)
 
         except (OSError, IOError) as e:
-            print(f"[LOGGING ERROR] Failed to write to log file {self.current_log}: {e}")
+            logger.exception("Failed to write to log file %s", self.current_log)
             self.stop_logging()
 
         except Exception as e:
-            print(f"[LOGGING ERROR] Unexpected error: {e}")
+            logger.exception("Unexpected error while writing to log file %s", self.current_log)
             self.stop_logging()
 
     # Override wait_message to format power results before returning
@@ -317,14 +319,13 @@ class Omniscan450(PingDevice):
 
         self.server_address = (host, port)
         try:
-            print("Opening %s:%d" % self.server_address)
+            logger.info("Opening %s:%d", *self.server_address)
             self.iodev = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.iodev.settimeout(timeout)
             self.iodev.connect(self.server_address)
             self.iodev.setblocking(0)
 
         except socket.timeout:
-            print("Unable to connect to device")
             raise Exception("Connection timed out after {0} seconds".format(timeout))
         except Exception as exception:
             raise Exception("Failed to open the given TCP port: {0}".format(exception))
