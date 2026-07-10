@@ -68,6 +68,8 @@ It's also possible to connect via UDP server using the `--udp` option with IP:PO
 
 ## Usage
 
+### Ping1D
+
 The [Ping1D](https://docs.bluerobotics.com/ping-python/classPing_1_1Ping1D_1_1Ping1D.html) class provides an easy interface to configure a Ping device and retrieve data.
 
 A Ping1D object must be initialized with the serial device path and the baudrate.
@@ -107,3 +109,72 @@ Use the [`set_*`](https://github.com/bluerobotics/ping-protocol#set) messages (e
 ```
 
 See the [doxygen](https://docs.bluerobotics.com/ping-python/) documentation for complete API documentation.
+
+### Ping360 Auto Scan
+
+The `Ping360` class provides an easy interface to configure a Ping360 device
+and retrieve sonar profiles.
+
+A Ping360 object must be connected over serial or UDP.
+
+```py
+from brping import definitions
+from brping import Ping360
+
+myPing360 = Ping360()
+myPing360.connect_serial("/dev/ttyUSB0", 2000000)
+# For UDP
+# myPing360.connect_udp("192.168.2.2", 9092)
+```
+
+Call `initialize()` to establish communications with the device.
+
+```py
+if myPing360.initialize() is False:
+    print("Failed to initialize Ping!")
+    exit(1)
+```
+
+Use `control_auto_transmit()` to start a continuous full-sector auto-scan. The
+following API snippets are partial; use the [Ping360 auto-scan
+example](examples/ping360AutoScan.py) for a runnable scan.
+
+```py
+myPing360.control_auto_transmit(
+    mode=1,
+    gain_setting=0,
+    transmit_duration=80,
+    sample_period=80,
+    transmit_frequency=750,
+    number_of_samples=1024,
+    start_angle=0,
+    stop_angle=399,
+    num_steps=1,
+    delay=0
+)
+```
+
+The device sends a `PING360_AUTO_DEVICE_DATA` message for each angle. Each
+message contains the scan angle in `angle` and raw echo-strength samples in
+`data`. Use `wait_message()` to receive these messages. See the [`2301
+auto_device_data` message
+definition](https://docs.bluerobotics.com/ping-protocol/pingmessage-ping360/#2301-auto_device_data)
+for the complete list of fields and units.
+
+```py
+message = myPing360.wait_message([definitions.PING360_AUTO_DEVICE_DATA])
+if message:
+    angle = message.angle
+    data = message.data
+    print("Angle: %s gradians\tSample count: %s\tPreview: %s" %
+          (angle, len(data), list(data[:8])))
+else:
+    print("Failed to get profile data")
+```
+
+To stop the device when using serial connections use a break and autobaud
+sequence before `control_motor_off()`; in case of UDP connections call
+`control_motor_off()` directly.
+
+Auto-transmit and `PING360_AUTO_DEVICE_DATA` require Ping Protocol `v1.1.0` and
+supporting Ping360 firmware.
