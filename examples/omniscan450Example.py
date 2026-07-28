@@ -155,6 +155,11 @@ else:
     # To find pulse length percent
     custom_pulse_length = Omniscan450.calc_pulse_length_pc(0.2)    # 0.2%
 
+    #Set Channel Number, Used for multiple Omniscans. 
+    ch_number = 0 #Channel Number of individual Omniscan. Starts from 0 and increment by one for each additional
+    num_ch = 1 #Total Number of channels 
+    myOmniscan450.control_set_sync_channel_number(ch_number, num_ch)
+
     ## Set these attributes like this
     # myOmniscan450.control_os_ping_params(
     #     msec_per_ping=custom_msec_per_ping,
