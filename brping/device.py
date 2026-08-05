@@ -17,8 +17,10 @@ import time
 
 class PingDevice(object):
 
-    _input_buffer = deque()
     def __init__(self, payload_dict=None):
+        ## Receive buffer for this device's io stream.
+        self._input_buffer = deque()
+
         my_payload_dict = {}
         if payload_dict is not None:
             my_payload_dict = definitions.payload_dict_common.copy()
