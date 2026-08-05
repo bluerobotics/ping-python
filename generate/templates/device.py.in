@@ -11,9 +11,12 @@
 from brping import definitions
 from brping import pingmessage
 from collections import deque
+import logging
 import serial
 import socket
 import time
+
+logger = logging.getLogger(__name__)
 
 class PingDevice(object):
 {% for field in all_fields|sort %}
@@ -49,11 +52,10 @@ class PingDevice(object):
     #
     def connect_serial(self, device_name: str, baudrate: int =115200):
         if device_name is None:
-            print("Device name is required")
-            return
+            raise ValueError("Device name is required")
 
         try:
-            print("Opening %s at %d bps" % (device_name, baudrate))
+            logger.info("Opening %s at %d bps", device_name, baudrate)
 
             ## Serial object for device communication
             # write_timeout fixes it getting stuck forever atempting to write to
@@ -64,7 +66,7 @@ class PingDevice(object):
             try:
                 self.iodev.set_low_latency_mode(True)
             except Exception as exception:
-                print("Failed to set low latency mode: {0}".format(exception))
+                logger.debug("Failed to set low latency mode: %s", exception, exc_info=True)
             self.iodev.send_break()
             time.sleep(0.001)
             self.iodev.write("U".encode("ascii"))
@@ -84,7 +86,7 @@ class PingDevice(object):
 
         self.server_address = (host, port)
         try:
-            print("Opening %s:%d" % self.server_address)
+            logger.info("Opening %s:%d", *self.server_address)
             ## Serial object for device communication
             self.iodev = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.iodev.connect(self.server_address)
@@ -200,14 +202,20 @@ class PingDevice(object):
         self._dst_device_id = msg.dst_device_id
 
         if not hasattr(msg, "payload_field_names"):
-            print(f"Unrecognized message: {msg.message_id}")
+            logger.debug("Unrecognized message: %s", msg.message_id)
             return False
 
         try:
             for attr in msg.payload_field_names:
                 setattr(self, "_" + attr, getattr(msg, attr))
         except AttributeError as e:
-            print("attribute error while handling msg %d (%s): %s" % (msg.message_id, msg.name, msg.msg_data))
+            logger.debug(
+                "Attribute error while handling msg %d (%s): %s",
+                msg.message_id,
+                msg.name,
+                msg.msg_data,
+                exc_info=True,
+            )
             return False
 
         return True
