@@ -88,6 +88,23 @@ class Omniscan450(PingDevice):
         })
         return data
 
+    ##
+    # @brief Get a sync_channel_number message from the device\n
+    # Message description:\n
+    # Get the current channel number of the OS.
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
+    # channel_number: channel number assigned to this device\n
+    # number_of_channels: number of sonars to be synchronized\n
+    def get_sync_channel_number(self):
+        if self.request(definitions.OMNISCAN450_SYNC_CHANNEL_NUMBER) is None:
+            return None
+        data = ({
+            "channel_number": self._channel_number,  # channel number assigned to this device
+            "number_of_channels": self._number_of_channels,  # number of sonars to be synchronized
+        })
+        return data
+
 
     def control_os_ping_params(self, start_mm=0, length_mm=5000, msec_per_ping=0, reserved_1=0, reserved_2=0, pulse_len_percent=0.002, filter_duration_percent=0.0015, gain_index=-1, num_results=600, enable=True, reserved_3=0, reserved_4=0, reserved_5=0):
         m = pingmessage.PingMessage(definitions.OMNISCAN450_OS_PING_PARAMS)
@@ -110,6 +127,13 @@ class Omniscan450(PingDevice):
     def control_set_speed_of_sound(self, speed_of_sound):
         m = pingmessage.PingMessage(definitions.OMNISCAN450_SET_SPEED_OF_SOUND)
         m.speed_of_sound = speed_of_sound
+        m.pack_msg_data()
+        self.write(m.msg_data)
+
+    def control_set_sync_channel_number(self, channel_number, number_of_channels):
+        m = pingmessage.PingMessage(definitions.OMNISCAN450_SET_SYNC_CHANNEL_NUMBER)
+        m.channel_number = channel_number
+        m.number_of_channels = number_of_channels
         m.pack_msg_data()
         self.write(m.msg_data)
 

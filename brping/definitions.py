@@ -840,6 +840,8 @@ payload_dict_s500 = {
 OMNISCAN450_JSON_WRAPPER = 10
 OMNISCAN450_SET_SPEED_OF_SOUND = 116
 OMNISCAN450_OS_PING_PARAMS = 2197
+OMNISCAN450_SET_SYNC_CHANNEL_NUMBER = 170
+OMNISCAN450_SYNC_CHANNEL_NUMBER = 169
 OMNISCAN450_OS_MONO_PROFILE = 2198
 
 # variable length fields are formatted with 's', and always occur at the end of the payload
@@ -883,6 +885,26 @@ payload_dict_omniscan450 = {
              "reserved_5",
             ),
         "payload_length": 36
+    },
+
+    OMNISCAN450_SET_SYNC_CHANNEL_NUMBER: {
+        "name": "set_sync_channel_number",
+        "format": "BB",
+        "field_names": (
+             "channel_number",
+             "number_of_channels",
+            ),
+        "payload_length": 2
+    },
+
+    OMNISCAN450_SYNC_CHANNEL_NUMBER: {
+        "name": "sync_channel_number",
+        "format": "BB",
+        "field_names": (
+             "channel_number",
+             "number_of_channels",
+            ),
+        "payload_length": 2
     },
 
     OMNISCAN450_OS_MONO_PROFILE: {
